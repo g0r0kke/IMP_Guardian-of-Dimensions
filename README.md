@@ -1,4 +1,4 @@
-# IMP_AR
+# Guardian of Dimensions
 202221104 강희진<br>
 202221092 박수현<br>
 202221046 배민우<br>
