@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 661595340e84ef64b9c28096a9dcafed
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 98393
+  packageName: LowPoly Fantasy Monsters Pack Ver1.0_DEMO
+  packageVersion: 1.01
+  assetPath: Assets/LowPoly Fantasy Monsters Pack Ver1.0_Demo/Environment/Scripts/Move.cs
+  uploadId: 218625

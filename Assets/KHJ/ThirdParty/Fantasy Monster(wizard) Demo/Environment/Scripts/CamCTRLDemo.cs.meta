@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: e69a2936f4f2c944c821e32c62d34d0d
+timeCreated: 1506608545
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 103037
+  packageName: Fantasy Monster(Wizard) DEMO
+  packageVersion: 1.0
+  assetPath: Assets/Fantasy Monster(wizard) Demo/Environment/Scripts/CamCTRLDemo.cs
+  uploadId: 207472

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d36cd61498604e14abcf4aa2de30bef6
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 98393
+  packageName: LowPoly Fantasy Monsters Pack Ver1.0_DEMO
+  packageVersion: 1.01
+  assetPath: Assets/LowPoly Fantasy Monsters Pack Ver1.0_Demo/Environment/Scripts/PointLight.cs
+  uploadId: 218625
