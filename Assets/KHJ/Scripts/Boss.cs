@@ -8,15 +8,25 @@ public abstract class Boss : MonoBehaviour
     protected Dictionary<System.Type, IState> states = new Dictionary<System.Type, IState>();
 
     // 보스 공통 속성
-    protected int health;
+    protected int health = 100;
     protected Transform target;
+
+    [SerializeField] public float idleDuration = 5f;
+    [SerializeField] public float attackDistance = 2f;
+    [SerializeField] public float moveSpeed = 3f;
+    [SerializeField] public float rotateSpeed = 5f;
+
+    public Animator animator;
+    public GameObject targetPlayer;
 
     protected virtual void Start()
     {
+        animator = GetComponent<Animator>();
+
         // 상태 초기화
         InitializeStates();
         // 초기 상태 설정
-        ChangeState<IdleState>();
+        TransitionToIdle();
     }
 
     // 자식 클래스가 구현할 상태 초기화 메소드
@@ -47,6 +57,45 @@ public abstract class Boss : MonoBehaviour
         }
     }
 
+    // 상태 전환 메서드: 자식 클래스에서 구현/재정의 가능
+    public virtual void TransitionToIdle()
+    {
+        ChangeState<IdleState>();
+    }
+
+    public virtual void TransitionToWalk()
+    {
+        ChangeState<WalkState>();
+    }
+
+    // 공격 상태 전환: 자식 클래스에서 반드시 구현해야 함
+    public abstract void TransitionToAttack();
+
+    // 스턴 상태로 전환
+    public virtual void TransitionToStun()
+    {
+        ChangeState<StunState>();
+    }
+
+    // 사망 상태로 전환
+    public virtual void TransitionToDeath()
+    {
+        ChangeState<DeathState>();
+    }
+
     // 공통 메소드들
-    public abstract void TakeDamage(int damage);
+    public virtual void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    protected virtual void Die()
+    {
+        TransitionToDeath();
+    }
 }
