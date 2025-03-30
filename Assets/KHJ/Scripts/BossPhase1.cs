@@ -26,8 +26,16 @@ namespace Azmodan.Phase1
         // 공격 로직 디버깅을 위한 변수 추가
         private bool attackSelected = false;
         private bool attackInitiated = false;
-        public bool IsAttackSelected() { return attackSelected; }
-        public bool IsAttackInitiated() { return attackInitiated; }
+
+        public bool IsAttackSelected()
+        {
+            return attackSelected;
+        }
+
+        public bool IsAttackInitiated()
+        {
+            return attackInitiated;
+        }
 
         // UI 연결
         [SerializeField] private Slider healthBarUI;
@@ -212,6 +220,15 @@ namespace Azmodan.Phase1
                 return;
             }
 
+            // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인
+            if (!IsPlayerInAttackAngle())
+            {
+                Debug.Log("보스: 플레이어가 공격 각도 범위(90도) 밖에 있음, 다시 추적");
+                attackInitiated = false; // 공격 시도 실패 플래그 초기화
+                TransitionToWalk();
+                return;
+            }
+
             // 공격 거리 내에 있으면 선택된 공격 실행
             currentStateType = selectedAttackType;
 
@@ -232,7 +249,7 @@ namespace Azmodan.Phase1
         public override void TakeDamage(int damage)
         {
             // 이미 사망했다면 데미지 처리하지 않음
-            if (isDead) 
+            if (isDead)
             {
                 Debug.Log("보스: 이미 사망 상태입니다. 데미지 무시.");
                 return;
@@ -254,7 +271,7 @@ namespace Azmodan.Phase1
                 // 사망 플래그 설정 (중복 호출 방지)
                 isDead = true;
                 Debug.Log("보스 1페이즈: 사망 처리 시작");
-        
+
                 // 사망 상태로 전환
                 Die();
                 return; // 이후 코드 실행 방지
@@ -278,19 +295,19 @@ namespace Azmodan.Phase1
                 Debug.Log("보스: 이미 사망 상태입니다. 중복 사망 처리 무시.");
                 return;
             }
-    
+
             Debug.Log("보스 1페이즈: 사망 처리 시작");
-    
+
             // isDead 플래그만 설정하고 (deathAnimationTriggered는 TransitionToDeath에서 설정)
             isDead = true;
-    
+
             // 모든 진행 중인 SubState 초기화
             foreach (BossSubState state in System.Enum.GetValues(typeof(BossSubState)))
             {
                 subStateTimers[state] = 0f;
                 subStateDurations[state] = 0f;
             }
-    
+
             // 사망 상태로 전환 (여기서 deathAnimationTriggered 설정됨)
             TransitionToDeath();
         }
@@ -350,6 +367,39 @@ namespace Azmodan.Phase1
         public float GetAttackDelay()
         {
             return attackDelay;
+        }
+
+        // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인하는 메서드
+        public bool IsPlayerInAttackAngle()
+        {
+            if (targetPlayer == null) return false;
+
+            // 보스로부터 플레이어까지의 방향 벡터
+            Vector3 directionToPlayer = targetPlayer.transform.position - transform.position;
+            directionToPlayer.y = 0; // Y축은 무시 (수평면에서만 체크)
+            directionToPlayer.Normalize();
+
+            // 보스의 forward 벡터 (정면 방향)
+            Vector3 bossForward = transform.forward;
+            bossForward.y = 0; // Y축은 무시
+            bossForward.Normalize();
+
+            // 두 벡터 사이의 각도 계산 (내적 사용)
+            float dotProduct = Vector3.Dot(bossForward, directionToPlayer);
+
+            // 내적 값을 각도로 변환 (라디안에서 도로 변환)
+            float angleToPlayer = Mathf.Acos(Mathf.Clamp(dotProduct, -1f, 1f)) * Mathf.Rad2Deg;
+
+            // 45도 이내인지 확인 (90도 범위 = 양쪽으로 45도씩)
+            bool isInAngle = angleToPlayer <= 45f;
+
+            // 디버그 로그
+            if (!isInAngle)
+            {
+                Debug.Log($"보스: 플레이어가 공격 각도 밖에 있습니다. (각도: {angleToPlayer}°)");
+            }
+
+            return isInAngle;
         }
     }
 
@@ -514,7 +564,7 @@ namespace Azmodan.Phase1
                 {
                     lastDistanceCheck = 0f;
 
-                    // 공격 범위를 크게 벗어났는지만 체크 (작은 움직임은 무시)
+                    // 공격 범위와 각도를 체크
                     if (boss.targetPlayer != null)
                     {
                         Vector3 direction = boss.targetPlayer.transform.position - boss.transform.position;
@@ -534,7 +584,27 @@ namespace Azmodan.Phase1
                             return;
                         }
 
-                        // 거리가 적당하면 보스를 플레이어 방향으로 회전
+                        // 플레이어가 각도 범위를 벗어난 경우
+                        if (!phase1Boss.IsPlayerInAttackAngle())
+                        {
+                            // 각도가 많이 벗어났으면 공격 대기 취소하고 다시 추적
+                            Vector3 bossForward = boss.transform.forward;
+                            bossForward.y = 0;
+                            direction.Normalize();
+                            float dotProduct = Vector3.Dot(bossForward, direction);
+                            float angleToPlayer = Mathf.Acos(Mathf.Clamp(dotProduct, -1f, 1f)) * Mathf.Rad2Deg;
+
+                            // 60도 이상 벗어난 경우에만 Walk로 전환 (약간의 여유를 둠)
+                            if (angleToPlayer > 60f)
+                            {
+                                phase1Boss.SetWaitingForAttack(false);
+                                Debug.Log($"보스: 플레이어가 공격 각도 크게 벗어남 (각도: {angleToPlayer}°), 추적 재개");
+                                boss.TransitionToWalk();
+                                return;
+                            }
+                        }
+
+                        // 플레이어 방향으로 부드럽게 회전 (항상 수행)
                         direction.Normalize();
                         Quaternion targetRotation = Quaternion.LookRotation(direction);
                         boss.transform.rotation = Quaternion.Slerp(
@@ -619,12 +689,12 @@ namespace Azmodan.Phase1
             // 플레이어와의 거리 계산
             float distanceToPlayer = direction.magnitude;
 
+            // 방향 벡터 정규화 (회전 및 이동에 사용)
+            direction.Normalize();
+
             // 플레이어와의 거리가 공격 거리보다 크면 계속 이동
             if (distanceToPlayer > boss.attackDistance)
             {
-                // 방향 벡터 정규화
-                direction.Normalize();
-
                 // 이동 처리
                 boss.transform.position += direction * boss.moveSpeed * Time.deltaTime;
 
@@ -639,7 +709,24 @@ namespace Azmodan.Phase1
             else
             {
                 Debug.Log($"보스: 공격 거리에 도달함 (현재: {distanceToPlayer}m, 공격 거리: {boss.attackDistance}m)");
-    
+
+                // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인
+                if (!phase1Boss.IsPlayerInAttackAngle())
+                {
+                    // 각도가 맞지 않으면 플레이어 방향으로 회전만 계속함
+                    Debug.Log("보스: 플레이어가 공격 각도 범위 밖에 있음, 회전 중");
+
+                    // 플레이어 방향으로 부드럽게 회전 (이동은 하지 않음)
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    boss.transform.rotation = Quaternion.Slerp(
+                        boss.transform.rotation,
+                        targetRotation,
+                        boss.rotateSpeed * Time.deltaTime * 1.5f // 약간 빠르게 회전
+                    );
+
+                    return; // 다른 공격 로직은 수행하지 않음
+                }
+
                 if (!phase1Boss.IsAttackSelected())
                 {
                     // 공격이 아직 선택되지 않았으면 선택
