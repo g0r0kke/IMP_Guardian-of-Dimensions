@@ -83,7 +83,7 @@ public abstract class Boss : MonoBehaviour
         ChangeState<DeathState>();
     }
 
-    // 공통 메소드들
+    // 공통 메소드들 
     public virtual void TakeDamage(int damage)
     {
         health -= damage;
