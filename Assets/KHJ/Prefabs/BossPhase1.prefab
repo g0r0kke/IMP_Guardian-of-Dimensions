@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 4798179886377384163}
   - component: {fileID: 1358585360374043851}
   m_Layer: 0
-  m_Name: troll_02_01
+  m_Name: BossPhase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
