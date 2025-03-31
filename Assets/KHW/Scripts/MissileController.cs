@@ -6,7 +6,7 @@ public class MissileController : MonoBehaviour
     private Transform target;
     public float moveSpeed = 3f; 
     [SerializeField] private float damage = 15f;
-    [SerializeField] private float lifetime = 5f;
+    // [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
 
     //플레이어 타겟 지정 메서드

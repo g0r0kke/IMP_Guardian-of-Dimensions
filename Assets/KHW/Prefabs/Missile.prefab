@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7320121873672141767}
   - component: {fileID: 5662624963983720517}
   - component: {fileID: 8476766459368164894}
+  - component: {fileID: 1890086368749687042}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -110,3 +111,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1890086368749687042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417326299590193921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89623e04834118b4a9919c642f74bb03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  damage: 15
+  impactEffectPrefab: {fileID: 0}

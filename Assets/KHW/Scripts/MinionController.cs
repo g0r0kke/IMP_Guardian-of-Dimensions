@@ -5,29 +5,33 @@ public class MinionController : MonoBehaviour
     private Transform target;
     public float moveSpeed = 3f;
     [SerializeField] private float damage = 15f;
+    [SerializeField] private float maxHP = 30f;
+    private float currentHP;
 
-    //플레이어 타겟 지정 메서드
+    private void Start()
+    {
+        currentHP = maxHP;
+    }
+
+    // 플레이어 타겟 지정 메서드
     public void SetTarget(Transform targetTransform)
     {
         target = targetTransform;
     }
-
     void Update()
     {
         if (target != null)
         {
-            // 플레이어 방향으로 이동
             Vector3 direction = (target.position - transform.position).normalized;
             transform.position += direction * moveSpeed * Time.deltaTime;
         }
     }
 
+    // 플레이어 충돌 시 데미지 주기
     private void OnCollisionEnter(Collision collision)
     {
-        // 충돌한 대상이 플레이어인지 확인
         if (collision.gameObject.CompareTag("Player"))
         {
-            // 플레이어에게 데미지 적용
             SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
             if (player != null)
             {
@@ -36,4 +40,5 @@ public class MinionController : MonoBehaviour
             }
         }
     }
+
 }
