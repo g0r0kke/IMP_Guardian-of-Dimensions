@@ -59,10 +59,16 @@ public class AvoidanceController : MonoBehaviour
     {
         isAvoiding = true;
 
+        // 방안 1 : 데미지 컨트롤러 일시적 비활성화
+        //damageController.enabled = false;
+
+        // 방안 2 :
+        damageController.isAvoid =true;
+
+        // 예외 방법
         // ToggleComponents(false);
         // characterController.enabled = true;
         // gameObject.layer = avoidanceLayer;
-        damageController.enabled = false;
 
         SetTransparency(0.1f);
 
@@ -70,8 +76,14 @@ public class AvoidanceController : MonoBehaviour
 
         SetTransparency(1f);
 
+        // 예외방법
         // gameObject.layer = originLayer;
-        damageController.enabled = true;
+
+        // 방안 2
+        damageController.isAvoid = false;
+
+        // 방안 1
+        //damageController.enabled = true;
 
         ToggleComponents(true);
 

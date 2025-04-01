@@ -8,8 +8,9 @@ public class DamageController : MonoBehaviour
     public int playerDamage = 0;
 
     private float damageTime = 0.0f;
-    private bool constantContact = false;
+    private bool isConstantContact = false;
     private bool isAttacked = false;
+    public bool isAvoid = false;
 
     private PlayerGUI playerGUI;
 
@@ -22,7 +23,7 @@ public class DamageController : MonoBehaviour
     void Update()
     {
         // 적과 상호작용 필요, 공격기에 따라 피해량 수정 필요
-        if (isAttacked)
+        if (isAttacked && !isAvoid)
         {
             Damage(2);
         }
@@ -44,17 +45,17 @@ public class DamageController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (IsInTargetLayer(collision.gameObject) && !constantContact)
+        if (IsInTargetLayer(collision.gameObject) && !isConstantContact)
         {
-            playerDamage += collisionDamage;
+           if(!isAvoid) playerDamage += collisionDamage;
 
-            constantContact = true;
+            isConstantContact = true;
         }
     }
 
     void OnCollisionStay(Collision collision)
     {
-        if (IsInTargetLayer(collision.gameObject) && constantContact)
+        if (IsInTargetLayer(collision.gameObject) && isConstantContact && !isAvoid)
         {
             damageTime += Time.deltaTime;
 
@@ -69,7 +70,7 @@ public class DamageController : MonoBehaviour
 
     void OnCollisionExit(Collision collision)
     {
-        if (IsInTargetLayer(collision.gameObject) && constantContact) constantContact = false;
+        if (IsInTargetLayer(collision.gameObject) && isConstantContact) isConstantContact = false;
     }
 
     private bool IsInTargetLayer(GameObject obj)
