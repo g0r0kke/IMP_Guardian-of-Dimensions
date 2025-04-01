@@ -424,7 +424,7 @@ namespace Azmodan.Phase1
 
             // 공격1 애니메이션 재생
             boss.animator.SetTrigger("Attack");
-            Debug.Log("보스: 공격1 상태 시작");
+            // Debug.Log("보스: 공격1 상태 시작");
         }
 
         public override void Update()
@@ -470,7 +470,7 @@ namespace Azmodan.Phase1
 
         public override void Exit()
         {
-            Debug.Log("보스: 공격1 상태 종료");
+            // Debug.Log("보스: 공격1 상태 종료");
         }
     }
 
@@ -495,7 +495,7 @@ namespace Azmodan.Phase1
 
             // 공격2 애니메이션 재생
             boss.animator.SetTrigger("Attack");
-            Debug.Log("보스: 공격2 상태 시작");
+            // Debug.Log("보스: 공격2 상태 시작");
         }
 
         public override void Update()
@@ -521,7 +521,7 @@ namespace Azmodan.Phase1
 
         public override void Exit()
         {
-            Debug.Log("보스: 공격2 상태 종료");
+            // Debug.Log("보스: 공격2 상태 종료");
         }
     }
 
@@ -544,10 +544,10 @@ namespace Azmodan.Phase1
             boss.animator.SetTrigger("Idle");
 
             // 추가 로깅 - Idle 상태 진입 시 현재 상황 표시
-            string currentStatus = "일반";
-            if (phase1Boss.IsWaitingForAttack()) currentStatus = "공격 대기";
-            if (phase1Boss.IsInPostAttackDelay()) currentStatus = "공격 후 딜레이";
-            Debug.Log($"보스: Idle 상태 시작 (상태: {currentStatus})");
+            // string currentStatus = "일반";
+            // if (phase1Boss.IsWaitingForAttack()) currentStatus = "공격 대기";
+            // if (phase1Boss.IsInPostAttackDelay()) currentStatus = "공격 후 딜레이";
+            // Debug.Log($"보스: Idle 상태 시작 (상태: {currentStatus})");
         }
 
         protected override void HandleStateLogic()

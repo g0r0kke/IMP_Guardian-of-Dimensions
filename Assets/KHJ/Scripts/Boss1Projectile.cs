@@ -50,6 +50,9 @@ public class BossProjectile : MonoBehaviour
         // 충돌한 대상이 플레이어인지 확인
         if (collision.gameObject.CompareTag("Player"))
         {
+            // "원거리 공격!!" 메시지 출력
+            Debug.Log("원거리 공격!!");
+            
             // 플레이어에게 데미지 적용
             SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
             if (player != null)
