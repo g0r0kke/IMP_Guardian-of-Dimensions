@@ -18,6 +18,7 @@ namespace Azmodan.Phase1
         [SerializeField] private float projectileSpeed = 10f; // 투사체 속도
         [SerializeField] private float projectileOffset = 1.5f; // 보스 앞에서 얼마나 떨어진 위치에서 발사할지
         [SerializeField] private float projectileHeight = 7.75f; // 투사체 발사 높이
+        public static BossManager Instance { get; private set; }
 
         private IState previousState; // 스턴 전 상태 저장용
         private int randomAttackNum; // 랜덤 공격 번호 (1-100)
@@ -307,9 +308,25 @@ namespace Azmodan.Phase1
                 subStateTimers[state] = 0f;
                 subStateDurations[state] = 0f;
             }
+            
+            // 죽음 애니메이션 재생 후 Phase2로 전환을 위해 딜레이 설정
+            Invoke("NotifyBossManager", 2.0f);
 
             // 사망 상태로 전환 (여기서 deathAnimationTriggered 설정됨)
             TransitionToDeath();
+        }
+        
+        private void NotifyBossManager()
+        {
+            if (BossManager.Instance != null)
+            {
+                Debug.Log("보스 1페이즈: BossManager에 Phase2 전환 신호 보냄");
+                BossManager.Instance.TransitionToPhase2();
+            }
+            else
+            {
+                Debug.LogError("보스 1페이즈: BossManager.Instance를 찾을 수 없음!");
+            }
         }
 
         // StunState를 Override하여 이전 상태로 돌아가는 기능 구현

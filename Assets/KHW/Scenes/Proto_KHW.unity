@@ -150,6 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase1Prefab: {fileID: 0}
   phase2Prefab: {fileID: 0}
+  phase1SceneName: BossPhase1Scene
+  phase2SceneName: BossPhase2Scene
+  useSceneTransition: 1
 --- !u!4 &408509495
 Transform:
   m_ObjectHideFlags: 0
@@ -1587,6 +1590,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1175101764}
+    - targetCorrespondingSourceObject: {fileID: 2891931738643171426, guid: 6adcedb771ae43a4b91950c5d6dfec70,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1175101766}
   m_SourcePrefab: {fileID: 100100000, guid: 6adcedb771ae43a4b91950c5d6dfec70, type: 3}
 --- !u!1 &1175101763 stripped
 GameObject:
@@ -1642,6 +1649,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1175101766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175101763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782d55763319c2747900aeafdda7f643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleDuration: 2
+  attackDistance: 2
+  moveSpeed: 3
+  rotateSpeed: 5
+  animator: {fileID: 0}
+  targetPlayer: {fileID: 0}
+  enableDebug: 1
+  stateDebugColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  subStateDebugColor: {r: 0, g: 1, b: 0, a: 1}
+  healthDebugColor: {r: 1, g: 0, b: 0, a: 1}
+  debugOffset: {x: 0, y: 2, z: 0}
+  attackDelay: 2
+  phase2DamageMultiplier: 0.8
+  playSpawnEffect: 1
+  preAttackDelay: 0.5
+  spawnEffectPrefab: {fileID: 0}
+  missilePrefab: {fileID: 6417326299590193921, guid: 3ec6d76f88b5b0c40be230173df0ccb9,
+    type: 3}
+  minionPrefab: {fileID: 6678187080261177100, guid: e805e5bbdee658b448c5ae1c35633ed1,
+    type: 3}
+  healthBarUI: {fileID: 0}
 --- !u!1 &1634832803
 GameObject:
   m_ObjectHideFlags: 0
