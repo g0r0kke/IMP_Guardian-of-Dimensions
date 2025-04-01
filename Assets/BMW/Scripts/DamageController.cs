@@ -11,7 +11,7 @@ public class DamageController : MonoBehaviour
     private bool constantContact = false;
     private bool isAttacked = false;
 
-    PlayerGUI playerGUI;
+    private PlayerGUI playerGUI;
 
     void Start()
     {

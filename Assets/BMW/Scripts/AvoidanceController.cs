@@ -17,6 +17,7 @@ public class AvoidanceController : MonoBehaviour
     private CharacterController characterController;
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
+    private DamageController damageController;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class AvoidanceController : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         playerGUI = GetComponent<PlayerGUI>();
+        damageController = GetComponent<DamageController>();
     }
 
     // Update is called once per frame
@@ -57,10 +59,10 @@ public class AvoidanceController : MonoBehaviour
     {
         isAvoiding = true;
 
-        ToggleComponents(false);
-        //characterController.enabled = true;
-
-       // gameObject.layer = avoidanceLayer;
+        // ToggleComponents(false);
+        // characterController.enabled = true;
+        // gameObject.layer = avoidanceLayer;
+        damageController.enabled = false;
 
         SetTransparency(0.1f);
 
@@ -68,7 +70,8 @@ public class AvoidanceController : MonoBehaviour
 
         SetTransparency(1f);
 
-        //gameObject.layer = originLayer;
+        // gameObject.layer = originLayer;
+        damageController.enabled = true;
 
         ToggleComponents(true);
 
@@ -83,12 +86,12 @@ public class AvoidanceController : MonoBehaviour
             col.enabled = state;
         }
 
-        /*
+        
         foreach (MeshRenderer mr in playerMeshRenderers)
         {
             mr.enabled = state;
         }
-        */
+        
     }
     void SetTransparency(float alpha)
     {

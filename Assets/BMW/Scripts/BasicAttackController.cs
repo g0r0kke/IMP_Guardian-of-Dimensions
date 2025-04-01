@@ -42,7 +42,7 @@ public class BasicAttackController: MonoBehaviour
 
     void BasicAttack()
     {
-        Vector3 position = (basicAttackPos != null ? basicAttackPos.position : transform.position) + transform.forward * 0.5f;
+        Vector3 position = (basicAttackPos != null ? basicAttackPos.position : transform.position) + transform.forward * 0.9f;
 
         GameObject basicAttackSphere = Instantiate(basicAttackPrefab, position, Quaternion.identity);
         
