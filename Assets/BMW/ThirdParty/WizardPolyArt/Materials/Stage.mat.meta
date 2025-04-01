@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: df444e54394320b46be51688da21f95e
+timeCreated: 1535601248
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 128097
+  packageName: Battle Wizard Poly Art
+  packageVersion: 1.2
+  assetPath: Assets/WizardPolyArt/Materials/Stage.mat
+  uploadId: 422634

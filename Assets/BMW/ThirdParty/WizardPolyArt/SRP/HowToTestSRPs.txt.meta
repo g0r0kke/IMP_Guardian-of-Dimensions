@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: deb58950d64c620499ec0ad67cd8dd9f
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 128097
+  packageName: Battle Wizard Poly Art
+  packageVersion: 1.2
+  assetPath: Assets/WizardPolyArt/SRP/HowToTestSRPs.txt
+  uploadId: 422634
