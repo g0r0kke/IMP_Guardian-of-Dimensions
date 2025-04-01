@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 079de72b89b92fc45920409aa3f61598
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/GreenArrow/GreenHit.prefab
+  uploadId: 648918

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d17d35e6b7d629e4c882283c7329d2f5
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Smoke.prefab
+  uploadId: 648918

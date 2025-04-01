@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d979ba62ac49f3d4ea248b54727c676e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/PurpleExplosion/Arrow.mat
+  uploadId: 648918

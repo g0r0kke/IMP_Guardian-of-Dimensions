@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a14381a5505a810418fd0bf8c2479dad
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/VolumetricBlood.prefab
+  uploadId: 648918

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 174b164cad6fbdb4eb2769a452399510
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/LightningExplosion/LightningExplosionBullet.prefab
+  uploadId: 648918

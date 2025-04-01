@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4b97aa91da1bec944a8157f0a25c3be2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Trails.prefab
+  uploadId: 648918

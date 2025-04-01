@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6237c576971176a47ab7b77ff094a86a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/EnergyBullet/VerticalLightning.mat
+  uploadId: 648918

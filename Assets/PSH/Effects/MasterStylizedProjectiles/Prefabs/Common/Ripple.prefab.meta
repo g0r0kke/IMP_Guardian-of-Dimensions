@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b9a8de2e3526c81469892d47525a2fcd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Ripple.prefab
+  uploadId: 648918

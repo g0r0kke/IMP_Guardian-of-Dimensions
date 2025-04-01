@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 225e9ab5cda27e041b655e2f8de3687d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/PurpleSwordBeam/SwordBeam.prefab
+  uploadId: 648918

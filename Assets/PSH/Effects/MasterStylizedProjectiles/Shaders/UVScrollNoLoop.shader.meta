@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9454f21a9ac948646b00303194ca2311
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Shaders/UVScrollNoLoop.shader
+  uploadId: 648918

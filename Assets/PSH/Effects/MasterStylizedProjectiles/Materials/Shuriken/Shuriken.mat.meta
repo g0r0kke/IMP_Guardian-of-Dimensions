@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a4bec174b449607448936480e405cf3c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Shuriken/Shuriken.mat
+  uploadId: 648918

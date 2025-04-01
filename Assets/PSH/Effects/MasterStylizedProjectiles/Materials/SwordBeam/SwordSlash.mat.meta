@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ab83cf15ff8cfa7418c37a43b2923528
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/SwordBeam/SwordSlash.mat
+  uploadId: 648918

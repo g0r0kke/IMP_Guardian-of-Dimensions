@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b54b357c76fb77742b2e06977a9e3686
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Spike2.prefab
+  uploadId: 648918

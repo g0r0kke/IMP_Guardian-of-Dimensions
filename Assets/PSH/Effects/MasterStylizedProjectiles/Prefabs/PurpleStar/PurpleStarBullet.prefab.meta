@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 56837d44d5b5ce943878872c76db2b53
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/PurpleStar/PurpleStarBullet.prefab
+  uploadId: 648918

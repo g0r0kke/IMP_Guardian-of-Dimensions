@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6593b77f7aab353499675157480d8efa
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/GreenArrow/GreenArrowBullet.prefab
+  uploadId: 648918

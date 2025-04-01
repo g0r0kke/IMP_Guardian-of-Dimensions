@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 403bb8b29ab6fbb46b1f4b7333a9cfec
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Arrow/ArrowBullet.prefab
+  uploadId: 648918

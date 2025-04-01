@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bcd6d8f376ba4bf4880bb4e67a3de49c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/FireExplosion/FireExplosionHit.prefab
+  uploadId: 648918

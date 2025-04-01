@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1d0617964be06e64b8925786c40e3d10
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/RingTrail.prefab
+  uploadId: 648918

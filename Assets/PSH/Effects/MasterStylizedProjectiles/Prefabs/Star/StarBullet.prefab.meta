@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d7d54c3edceec9740bee0aeabfc5b891
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Star/StarBullet.prefab
+  uploadId: 648918

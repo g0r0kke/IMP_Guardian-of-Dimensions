@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e926fa0db2bae4d479ce912c8761bed2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Common/CommonSplash.mat
+  uploadId: 648918

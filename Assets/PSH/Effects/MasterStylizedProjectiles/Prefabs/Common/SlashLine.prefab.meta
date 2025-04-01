@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 052066e230b9bf94c862cd214264425d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/SlashLine.prefab
+  uploadId: 648918

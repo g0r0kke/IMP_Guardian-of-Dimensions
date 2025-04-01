@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4b3c47f667684e5418d849f7f3f4d9c4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/SmallEnergyBullet/SmallEnergyMuzzle.prefab
+  uploadId: 648918

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 55d89f40d00e3544aac8cc591a18812b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Common/CommonCircle.mat
+  uploadId: 648918

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 56194691821dbea49af3609eba679ad1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/WindShoot/WindHit.prefab
+  uploadId: 648918
