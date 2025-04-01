@@ -1,12 +1,17 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
 public class HealingController : MonoBehaviour
 {
 
+    public GameObject heallingEffectPrefab;
     public int HealingAmount = 5;
+    public Vector3 heallingEffectScale = new Vector3( 1.0f, 1.0f, 1.0f);
+    public float heallingEffectDuration = 4.0f;
 
     public float delayTime = 0f;
+    private GameObject heallingEffectCircle;
     private PlayerGUI playerGUI;
 
     void Start()
@@ -36,5 +41,13 @@ public class HealingController : MonoBehaviour
     void Healing()
     {
         playerGUI.IncreaseHealth(HealingAmount);
+
+        heallingEffectCircle = Instantiate(heallingEffectPrefab, transform.position, Quaternion.identity);
+
+        heallingEffectCircle.transform.localScale = heallingEffectScale;
+
+        heallingEffectCircle.transform.parent = transform;
+
+        Destroy(heallingEffectCircle, heallingEffectDuration);
     }
 }
