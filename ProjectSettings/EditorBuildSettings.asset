@@ -15,6 +15,10 @@ EditorBuildSettings:
     path: Assets/KHW/Scenes/Proto_KHW.unity
     guid: ce6fb6c390983a2438c32799f97a5ce2
   m_configObjects:
+    AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: 4f69fc97e19c81245ba4ad4338eb60c8,
+      type: 2}
+    AR Foundation RemoteARFoundationRemoteSessionRecordsData: {fileID: 11400000, guid: 0dc9ab0d0a32d6f45ba68fdb5e031972,
+      type: 2}
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6ee72d15cf39dd748a13eac57397b9af,
       type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 0465d33c6aee55f44b0237db8b0e0259,
