@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f97fbf16c12e37b48adb83054b63c79b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Ring.prefab
+  uploadId: 648918

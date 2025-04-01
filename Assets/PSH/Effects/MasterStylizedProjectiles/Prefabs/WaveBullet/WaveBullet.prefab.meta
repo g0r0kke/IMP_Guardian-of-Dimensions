@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7595a87e16020ea46b7c5b4724f03655
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/WaveBullet/WaveBullet.prefab
+  uploadId: 648918

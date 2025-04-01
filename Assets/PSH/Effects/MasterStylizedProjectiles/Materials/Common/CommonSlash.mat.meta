@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d524642b0cd640444a8c3d0e05d36119
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Common/CommonSlash.mat
+  uploadId: 648918

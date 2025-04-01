@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dbd278f4833c50d48abc726d2f104fbd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Common/CommonMuzzleComplex.mat
+  uploadId: 648918

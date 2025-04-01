@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 85859c19852f64d43b1f296d4a7fca03
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/CyanBlueBullet/CyanBlueMuzzle.prefab
+  uploadId: 648918

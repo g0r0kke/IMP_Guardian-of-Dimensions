@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 56a31e3fb12a7da4cb69ab4dfcc420ac
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Fireball/Fireball.prefab
+  uploadId: 648918

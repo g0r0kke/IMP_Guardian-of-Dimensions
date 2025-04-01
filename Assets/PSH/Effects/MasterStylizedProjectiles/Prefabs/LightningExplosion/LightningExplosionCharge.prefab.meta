@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cc3e1ab646dc07d4ca9f86d73aa75138
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/LightningExplosion/LightningExplosionCharge.prefab
+  uploadId: 648918

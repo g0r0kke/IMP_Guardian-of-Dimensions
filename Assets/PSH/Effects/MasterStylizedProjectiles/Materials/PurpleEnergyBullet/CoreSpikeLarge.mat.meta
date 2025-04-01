@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3b33285c77e5bf84aa7b91c16f40e4e8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/PurpleEnergyBullet/CoreSpikeLarge.mat
+  uploadId: 648918

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8ee144fa352342747b2c2588f0d5df2d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/SmallIceBullet/SmallIceBullet.prefab
+  uploadId: 648918

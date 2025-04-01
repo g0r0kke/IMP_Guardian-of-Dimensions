@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 50b8a9a226143674b9718ad143c2a7a6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/SmallLightBullet/SmallLightMuzzle.prefab
+  uploadId: 648918

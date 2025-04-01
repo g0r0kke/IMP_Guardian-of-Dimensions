@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5e32a182d19fa640964f32bb1b363aa
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/Common/CommonSpriteSheetSlash.mat
+  uploadId: 648918

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6b0a9977b7451d84497536eb42bc0be3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Fire.prefab
+  uploadId: 648918

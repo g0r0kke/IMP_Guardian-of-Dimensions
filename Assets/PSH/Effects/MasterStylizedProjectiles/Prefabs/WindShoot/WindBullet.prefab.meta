@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4bcd982074500ac49a758e0db1c4a4f8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/WindShoot/WindBullet.prefab
+  uploadId: 648918

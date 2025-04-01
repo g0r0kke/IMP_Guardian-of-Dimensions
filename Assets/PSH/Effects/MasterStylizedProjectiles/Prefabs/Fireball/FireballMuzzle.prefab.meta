@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8bc41e1472c45464980c8feeed5f1649
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Fireball/FireballMuzzle.prefab
+  uploadId: 648918

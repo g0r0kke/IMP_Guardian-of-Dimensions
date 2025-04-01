@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bcad0c1906532a4428cb5ade52088086
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/YellowSwordBeam/YellowSwordBeam.prefab
+  uploadId: 648918

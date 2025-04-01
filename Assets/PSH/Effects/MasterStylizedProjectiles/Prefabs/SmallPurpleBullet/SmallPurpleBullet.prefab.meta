@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bf5deba6f54666948a9373372b1dcf5f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/SmallPurpleBullet/SmallPurpleBullet.prefab
+  uploadId: 648918

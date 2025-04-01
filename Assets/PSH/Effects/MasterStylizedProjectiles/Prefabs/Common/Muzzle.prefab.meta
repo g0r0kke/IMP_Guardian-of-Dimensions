@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 01508c325c59e5d4a85ec618b1d5c4e3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/Common/Muzzle.prefab
+  uploadId: 648918

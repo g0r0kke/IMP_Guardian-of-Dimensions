@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0cccd2730f8ddd54482f3d332c77a092
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Prefabs/WindShoot/WindStart.prefab
+  uploadId: 648918

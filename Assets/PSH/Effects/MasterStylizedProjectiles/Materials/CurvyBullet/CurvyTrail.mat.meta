@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2b1b975a8ab81c9449c15573113913b3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255608
+  packageName: Master Stylized Projectile
+  packageVersion: 1.0
+  assetPath: Assets/MasterStylizedProjectiles/Materials/CurvyBullet/CurvyTrail.mat
+  uploadId: 648918
