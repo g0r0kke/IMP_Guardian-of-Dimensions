@@ -35,11 +35,11 @@ public abstract class IdleState : BossState
         idleTimer += Time.deltaTime;
         
         // 자식 클래스에서 구현할 상태 로직 처리
-        HandleStateLogic();
+        HandleIdle();
     }
     
     // 자식 클래스에서 구현할 추상 메서드
-    protected abstract void HandleStateLogic();
+    protected abstract void HandleIdle();
     
     public override void Exit()
     {
@@ -68,11 +68,11 @@ public abstract class WalkState : BossState
         }
 
         // 자식 클래스에서 구현할 이동 로직 처리
-        HandleMovement();
+        HandleWalk();
     }
     
     // 자식 클래스에서 구현할 추상 메서드
-    protected abstract void HandleMovement();
+    protected abstract void HandleWalk();
     
     public override void Exit()
     {

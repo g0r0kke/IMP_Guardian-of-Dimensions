@@ -429,7 +429,7 @@ namespace Azmodan.Phase2
             this.phase2Boss = boss;
         }
         
-        protected override void HandleStateLogic()
+        protected override void HandleIdle()
         {
             // Phase2 전용 Idle 로직 구현
             // 기본적으로 플레이어 탐색 후 Walk 상태로 전환
@@ -455,7 +455,7 @@ namespace Azmodan.Phase2
             this.phase2Boss = boss;
         }
         
-        protected override void HandleMovement()
+        protected override void HandleWalk()
         {
             // Phase2 전용 이동 로직 구현
             Vector3 direction = boss.targetPlayer.transform.position - boss.transform.position;

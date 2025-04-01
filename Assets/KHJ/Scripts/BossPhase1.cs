@@ -567,7 +567,7 @@ namespace Azmodan.Phase1
             // Debug.Log($"보스: Idle 상태 시작 (상태: {currentStatus})");
         }
 
-        protected override void HandleStateLogic()
+        protected override void HandleIdle()
         {
             // 타이머 증가
             idleTimer += Time.deltaTime;
@@ -697,7 +697,7 @@ namespace Azmodan.Phase1
             this.phase1Boss = boss;
         }
 
-        protected override void HandleMovement()
+        protected override void HandleWalk()
         {
             // 플레이어 방향으로 이동 벡터 계산
             Vector3 direction = boss.targetPlayer.transform.position - boss.transform.position;
