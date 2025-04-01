@@ -1,0 +1,107 @@
+using UnityEngine;
+using System.Collections;
+
+public class AvoidanceController : MonoBehaviour
+{
+
+    public LayerMask originLayer;
+    public LayerMask avoidanceLayer;
+    public float avoidanceDuration = 3.0f;
+    public float rotationThreshold = 1500.0f;
+
+    private float previousRotationY;
+    private Collider[] playerColliders;
+    private MeshRenderer[] playerMeshRenderers;
+    private bool isAvoiding = false;
+
+    private CharacterController characterController;
+    public float delayTime = 0f;
+    private PlayerGUI playerGUI;
+
+    void Start()
+    {
+
+        previousRotationY = Camera.main.transform.eulerAngles.y;
+        playerColliders = GetComponentsInChildren<Collider>();
+        playerMeshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        characterController = GetComponent<CharacterController>();
+        playerGUI = GetComponent<PlayerGUI>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        float currentRotationY = Camera.main.transform.eulerAngles.y;
+        float deltaRotation = Mathf.DeltaAngle(previousRotationY, currentRotationY);
+        float rotationSpeed = Mathf.Abs(deltaRotation) / Time.deltaTime;
+
+
+        if (rotationSpeed > rotationThreshold && !isAvoiding && delayTime <= 0)
+        {
+            StartCoroutine(Avoidance());
+            delayTime = playerGUI.avoidanceSkillDelay;
+        }
+
+        if (delayTime > 0)
+        {
+            delayTime -= Time.deltaTime;
+            if (delayTime <= 0) delayTime = 0f;
+        }
+
+        previousRotationY = currentRotationY;
+    }
+
+    IEnumerator Avoidance()
+    {
+        isAvoiding = true;
+
+        ToggleComponents(false);
+        //characterController.enabled = true;
+
+       // gameObject.layer = avoidanceLayer;
+
+        SetTransparency(0.1f);
+
+        yield return new WaitForSeconds(avoidanceDuration);
+
+        SetTransparency(1f);
+
+        //gameObject.layer = originLayer;
+
+        ToggleComponents(true);
+
+        isAvoiding = false;
+
+    }
+
+    void ToggleComponents(bool state)
+    {
+        foreach (Collider col in playerColliders)
+        {
+            col.enabled = state;
+        }
+
+        /*
+        foreach (MeshRenderer mr in playerMeshRenderers)
+        {
+            mr.enabled = state;
+        }
+        */
+    }
+    void SetTransparency(float alpha)
+    {
+        foreach (MeshRenderer mr in playerMeshRenderers)
+        {
+            Material[] materials = mr.materials;
+
+            foreach (Material mat in materials)
+            {
+                Color color = mat.color;
+                color.a = alpha;
+                mat.color = color;
+            }
+        }
+    }
+}
