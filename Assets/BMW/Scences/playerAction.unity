@@ -374,10 +374,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ultimateAttackPrefab: {fileID: 481661489943509062, guid: e4ddab4e5f1b9b4439b0cd4679d2bca8,
     type: 3}
+  planeCollider: {fileID: 1975704449}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  ultimateAttackStartScale: 0.05
+  ultimateAttackStartScale: 0.03
   ultimateAttackRange: 10
   ultimateAttackStartHeight: 10
   ultimateAttackStartRange: 10
@@ -400,6 +401,7 @@ MonoBehaviour:
   basicAttackPos: {fileID: 1017933015}
   basicAttackPrefab: {fileID: 7657460935615334125, guid: 9ed07964eeedf394f83139c7b9aa2101,
     type: 3}
+  planeCollider: {fileID: 1975704449}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -429,8 +431,8 @@ MonoBehaviour:
   avoidanceSkillDelay: 3
   defenseSkillDelay: 6
   healingSkillDelay: 10
-  debug: 1
-  currentGauge: 0
+  debug: 0
+  currentGauge: 20
 --- !u!143 &331403859
 CharacterController:
   m_ObjectHideFlags: 0

@@ -4,8 +4,9 @@ using UnityEngine;
 public class UltimateAttackController : MonoBehaviour
 {
     public GameObject ultimateAttackPrefab;
+    public Collider planeCollider;
     public LayerMask targetLayer;
-    public float ultimateAttackStartScale = 0.05f;
+    public float ultimateAttackStartScale = 0.03f;
     public float ultimateAttackRange = 10.0f;
     public float ultimateAttackStartHeight = 10.0f;
     public float ultimateAttackStartRange = 10.0f;
@@ -69,7 +70,7 @@ public class UltimateAttackController : MonoBehaviour
             {
                 attackController = ultimateAttackSphere.AddComponent<UltimateAttackSphereController>();
             }
-            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, targetLayer);
+            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, targetLayer, planeCollider);
 
         }
     }

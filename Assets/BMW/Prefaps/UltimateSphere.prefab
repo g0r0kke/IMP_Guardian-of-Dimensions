@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1001175972669629180}
   - component: {fileID: 6400011475766001573}
   - component: {fileID: 4264974818594233901}
+  - component: {fileID: 3421966494809745371}
   m_Layer: 0
   m_Name: UltimateSphere
   m_TagString: Untagged
@@ -69,8 +70,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd1506ce66320e541ab594b691a41194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionEffectPrefab: {fileID: 7415184841493192641, guid: 2483b468e98f3254ea7ad9dfc505c7c4,
+    type: 3}
   startScale: 0.5
   scaleRate: 0.5
+--- !u!65 &3421966494809745371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481661489943509062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6146791550692135612
 GameObject:
   m_ObjectHideFlags: 0

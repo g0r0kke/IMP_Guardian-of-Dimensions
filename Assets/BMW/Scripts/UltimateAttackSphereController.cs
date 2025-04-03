@@ -4,6 +4,8 @@ public class UltimateAttackSphereController : MonoBehaviour
 {
     private Vector3 targetPosition;
     private LayerMask targetLayer;
+    [SerializeField]
+    private GameObject collisionEffectPrefab;
     private float speed = 15.0f;
     public float startScale = 0.5f;
     public float scaleRate = 0.5f;
@@ -11,7 +13,7 @@ public class UltimateAttackSphereController : MonoBehaviour
     private float timer = 0f;
     private bool isInitialized = false;
 
-    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, LayerMask tarLayer)
+    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, LayerMask tarLayer, Collider planeCollider)
     {
         targetPosition = enemyPositions;
         speed = ultimateAttackSpeed;
@@ -23,6 +25,9 @@ public class UltimateAttackSphereController : MonoBehaviour
 
         transform.localScale = Vector3.one * startScale;
         StartCoroutine(ContinuousScaling());
+
+        Collider AttackCollider = GetComponent<Collider>();
+        Physics.IgnoreCollision(AttackCollider, planeCollider);
     }
 
     void Update()
@@ -31,11 +36,17 @@ public class UltimateAttackSphereController : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
+        
         if (transform.position.y <= targetPosition.y)
         {
+
+            GameObject collisionEffect = Instantiate(collisionEffectPrefab, transform.position, Quaternion.identity);
+            collisionEffect.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+            Destroy(collisionEffect, 1f);
             Destroy(gameObject);
             Debug.Log("적을 만나지 못하였지만 적의 위치까지와 삭제 되었습니다.");
         }
+        
 
         timer += Time.deltaTime;
         if (timer >= lifeTime)
@@ -59,7 +70,10 @@ public class UltimateAttackSphereController : MonoBehaviour
 
         if (IsInTargetLayer(collision.gameObject))
         {
+            GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
+            collisionEffect.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
             Destroy(gameObject);
+            Destroy(collisionEffect, 1f);
             Debug.Log("설정 레이어 객체와 충돌하여 삭제되었습니다.");
         }
     }

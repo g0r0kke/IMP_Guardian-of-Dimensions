@@ -5,6 +5,7 @@ public class BasicAttackController: MonoBehaviour
 {
     public Transform basicAttackPos;
     public GameObject basicAttackPrefab;
+    public Collider planeCollider;
     public LayerMask targetLayer;
     public float basicAttackStartScale = 0.5f;
     public float basicAttackForce = 1000.0f;
@@ -67,7 +68,7 @@ public class BasicAttackController: MonoBehaviour
         {
             attackController = basicAttackSphere.AddComponent<BasicAttackSphereController>();
         }
-        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>());
+        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider);
 
     }
 

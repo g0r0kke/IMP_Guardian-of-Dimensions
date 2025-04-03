@@ -132,3 +132,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf94f324770f9f4ba4e68b8c9100141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionEffectPrefab: {fileID: 7672985422119052981, guid: b8dbddeabd81c0442909a2f9995b58a6,
+    type: 3}

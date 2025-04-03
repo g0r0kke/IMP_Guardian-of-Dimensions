@@ -4,6 +4,8 @@ public class BasicAttackSphereController : MonoBehaviour
 {
 
     private Transform player;
+    [SerializeField]
+    private GameObject collisionEffectPrefab;
     private float maxDistance = 10.0f;
     private float lifeTime = 10.0f;
     private float timer = 0f;
@@ -13,7 +15,7 @@ public class BasicAttackSphereController : MonoBehaviour
     private PlayerGUI playerGUI;
     private BasicAttackController basicAttackController;
 
-    public void Initialize(Transform playerTransform, float maxDist, float lifetime, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller)
+    public void Initialize(Transform playerTransform, float maxDist, float lifetime, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider)
     {
         player = playerTransform;
         maxDistance = maxDist;
@@ -22,6 +24,9 @@ public class BasicAttackSphereController : MonoBehaviour
         isInitialized = true;
         playerGUI = GUI;
         basicAttackController = controller;
+
+        Collider AttackCollider = GetComponent<Collider>();
+        Physics.IgnoreCollision(AttackCollider, planeCollider);
     }
  
         void Update()
@@ -60,7 +65,10 @@ public class BasicAttackSphereController : MonoBehaviour
 
         if (IsInTargetLayer(collision.gameObject))
         {
+
+            GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
             Destroy(gameObject);
+            Destroy(collisionEffect, 1f);
             playerGUI.IncreaseGauge(basicAttackController.GaugeIncreaseAmount);
             Debug.Log("설정 레이어 객체와 충돌하여 삭제되었습니다.");
         }
