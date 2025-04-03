@@ -5,7 +5,7 @@ public class UltimateAttackController : MonoBehaviour
 {
     public GameObject ultimateAttackPrefab;
     public LayerMask targetLayer;
-    public float ultimateAttackStartScale = 1.5f;
+    public float ultimateAttackStartScale = 0.05f;
     public float ultimateAttackRange = 10.0f;
     public float ultimateAttackStartHeight = 10.0f;
     public float ultimateAttackStartRange = 10.0f;
