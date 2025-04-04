@@ -8,10 +8,35 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1163157202332985838, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4186470608034871016, guid: 2ec0f779be4a3cb469d85da7fe4da447,
         type: 3}
       propertyPath: m_Name
-      value: EnergyExplosionMuzzle Variant
+      value: BasisSphereExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925692558562711032, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925692558562711032, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925692558562711032, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925692558562711032, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6324283893382468811, guid: 2ec0f779be4a3cb469d85da7fe4da447,
         type: 3}
@@ -63,10 +88,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6324283893382468811, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7917120168021017062, guid: 2ec0f779be4a3cb469d85da7fe4da447,
         type: 3}
       propertyPath: InitialModule.size3D
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216485235506697687, guid: 2ec0f779be4a3cb469d85da7fe4da447,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

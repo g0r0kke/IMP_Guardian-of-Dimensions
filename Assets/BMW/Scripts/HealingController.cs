@@ -7,7 +7,7 @@ public class HealingController : MonoBehaviour
 
     public GameObject heallingEffectPrefab;
     public int HealingAmount = 5;
-    public Vector3 heallingEffectScale = new Vector3( 1.0f, 1.0f, 1.0f);
+    public Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
     public float heallingEffectDuration = 4.0f;
 
     public float delayTime = 0f;

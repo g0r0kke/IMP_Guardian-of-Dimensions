@@ -39,10 +39,6 @@ public class UltimateAttackSphereController : MonoBehaviour
         
         if (transform.position.y <= targetPosition.y)
         {
-
-            GameObject collisionEffect = Instantiate(collisionEffectPrefab, transform.position, Quaternion.identity);
-            collisionEffect.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-            Destroy(collisionEffect, 1f);
             Destroy(gameObject);
             Debug.Log("적을 만나지 못하였지만 적의 위치까지와 삭제 되었습니다.");
         }
@@ -71,9 +67,9 @@ public class UltimateAttackSphereController : MonoBehaviour
         if (IsInTargetLayer(collision.gameObject))
         {
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
-            collisionEffect.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
-            Destroy(gameObject);
+            collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
             Destroy(collisionEffect, 1f);
+            Destroy(gameObject);
             Debug.Log("설정 레이어 객체와 충돌하여 삭제되었습니다.");
         }
     }

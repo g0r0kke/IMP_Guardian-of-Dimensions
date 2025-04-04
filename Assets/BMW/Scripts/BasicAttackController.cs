@@ -7,7 +7,7 @@ public class BasicAttackController: MonoBehaviour
     public GameObject basicAttackPrefab;
     public Collider planeCollider;
     public LayerMask targetLayer;
-    public float basicAttackStartScale = 0.5f;
+    public float basicAttackStartScale = 1.0f;
     public float basicAttackForce = 1000.0f;
     public float basicAttackDelTime = 2.0f;
     public float basicAttackMaxDist = 30.0f;
@@ -58,7 +58,8 @@ public class BasicAttackController: MonoBehaviour
 
         rb.useGravity = false;
 
-        Vector3 directionToCameraCenter = (transform.GetChild(0).position + transform.GetChild(0).forward * basicAttackMaxDist) - basicAttackPos.position;
+        Transform cameraView = transform.parent;
+        Vector3 directionToCameraCenter = (cameraView.position + cameraView.forward * basicAttackMaxDist) - basicAttackPos.position;
         directionToCameraCenter.Normalize();
 
         rb.AddForce(directionToCameraCenter * basicAttackForce);

@@ -4,8 +4,8 @@ public class DefenseController : MonoBehaviour
 {
 
     public GameObject ShieldPrefab;
-    public Vector3 shieldScale = new Vector3(2f, 2f, 2f);
-    public float shieldDuration = 3.0f;
+    public Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
+    public float shieldDuration = 4.0f;
     public float shieldDistance = 1.0f;
 
     private GameObject shieldSphere;

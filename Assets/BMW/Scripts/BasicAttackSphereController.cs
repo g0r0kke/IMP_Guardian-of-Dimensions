@@ -67,8 +67,13 @@ public class BasicAttackSphereController : MonoBehaviour
         {
 
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
-            Destroy(gameObject);
+            Vector3 effectCircleScale = collisionEffect.transform.Find("Circle").localScale;
+            effectCircleScale = new Vector3(effectCircleScale.x * 10, effectCircleScale.y * 10, effectCircleScale.z * 10);
+            Vector3 effectFireScale = collisionEffect.transform.Find("Fire").localScale;
+            effectFireScale = new Vector3(effectFireScale.x * 10, effectFireScale.y * 10, effectFireScale.z * 10);
             Destroy(collisionEffect, 1f);
+
+            Destroy(gameObject);
             playerGUI.IncreaseGauge(basicAttackController.GaugeIncreaseAmount);
             Debug.Log("설정 레이어 객체와 충돌하여 삭제되었습니다.");
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class UltimateAttackController : MonoBehaviour
 {
     public GameObject ultimateAttackPrefab;
+    public GameObject ultimateAttackBeforeEffectPrefab;
     public Collider planeCollider;
     public LayerMask targetLayer;
     public float ultimateAttackStartScale = 0.03f;
@@ -49,14 +50,20 @@ public class UltimateAttackController : MonoBehaviour
 
         List<Vector3> enemyPositions = new List<Vector3>();
         List<Vector3> spawnPositions = new List<Vector3>();
+        List<Vector3> enemyGroundPositions = new List<Vector3>();
 
         foreach (Collider col in hits)
         {
             enemyPositions.Add(col.transform.position);
             spawnPositions.Add(col.transform.position + new Vector3(Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange),ultimateAttackStartHeight,Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange)));
-            
+            enemyGroundPositions.Add(planeCollider.ClosestPoint(col.transform.position));
+
             GameObject ultimateAttackSphere = Instantiate(ultimateAttackPrefab, spawnPositions[spawnPositions.Count - 1], Quaternion.identity);
             Rigidbody rb = ultimateAttackSphere.GetComponent<Rigidbody>();
+
+            GameObject ultimateAttackBeforeEffect = Instantiate(ultimateAttackBeforeEffectPrefab, enemyGroundPositions[enemyGroundPositions.Count - 1], Quaternion.identity);
+            ultimateAttackBeforeEffect.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            Destroy(ultimateAttackBeforeEffect, 1.5f);
 
             if (rb == null)
             {

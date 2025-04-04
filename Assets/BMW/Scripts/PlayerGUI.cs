@@ -6,7 +6,7 @@ public class PlayerGUI : MonoBehaviour
     public int playerHealthLimit = 100;
     public int ultimateAttackGauge = 20;
 
-    public float basicAttackDelay = 1.0f;
+    public float basicAttackDelay = 0.3f;
     public float ultimateAttackDelay = 1.0f;
     public float avoidanceSkillDelay = 3.0f;
     public float defenseSkillDelay = 6.0f;
