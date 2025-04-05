@@ -15,6 +15,7 @@ public class UltimateAttackController : MonoBehaviour
     public float ultimateAttackScaleRate = 0.5f;
     public float ultimateAttackSpeed = 8.0f;
     public float ultimateAttackDelTime = 10.0f;
+    public int attackDamage = 10;
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
@@ -92,7 +93,7 @@ public class UltimateAttackController : MonoBehaviour
             {
                 attackController = ultimateAttackSphere.AddComponent<UltimateAttackSphereController>();
             }
-            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, targetLayer, planeCollider);
+            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, attackDamage, targetLayer, planeCollider);
 
         }
     }

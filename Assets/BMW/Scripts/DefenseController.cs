@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DefenseController : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class DefenseController : MonoBehaviour
     private GameObject shieldSphere;
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
+    private DamageController damageController;
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
+        damageController = GetComponent<DamageController>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
     }
@@ -29,7 +32,7 @@ public class DefenseController : MonoBehaviour
         if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
         {
             animationController.DefenseAnimation();
-            Invoke("Defense", 1.1f);
+            StartCoroutine(Defense());
             delayTime = playerGUI.defenseSkillDelay;
             handGestureController.isDefenseGesture = false;
         }
@@ -45,13 +48,17 @@ public class DefenseController : MonoBehaviour
         }
     }
 
-    void Defense()
+    IEnumerator Defense()
     {
+        yield return new WaitForSeconds(1.1f);
+
         if (shieldSphere != null)
         {
             Destroy(shieldSphere);
         }
-        
+
+        damageController.isDefense = true;
+
         //Vector3 shieldPosition = transform.position + transform.forward * shieldDistance;
 
         shieldSphere = Instantiate(ShieldPrefab, transform.position, transform.rotation);
@@ -60,6 +67,10 @@ public class DefenseController : MonoBehaviour
 
         shieldSphere.transform.parent = transform;
 
-        Destroy(shieldSphere, shieldDuration);
+        yield return new WaitForSeconds(shieldDuration);
+
+        Destroy(shieldSphere);
+
+        damageController.isDefense = false;
     }
 }

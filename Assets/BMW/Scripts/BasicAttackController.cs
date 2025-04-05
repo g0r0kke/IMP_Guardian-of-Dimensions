@@ -13,6 +13,7 @@ public class BasicAttackController: MonoBehaviour
     public float basicAttackDelTime = 2.0f;
     public float basicAttackMaxDist = 30.0f;
     public int GaugeIncreaseAmount = 1;
+    public int attackDamage = 2;
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
@@ -81,7 +82,7 @@ public class BasicAttackController: MonoBehaviour
         {
             attackController = basicAttackSphere.AddComponent<BasicAttackSphereController>();
         }
-        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider);
+        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, attackDamage, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider);
 
     }
 

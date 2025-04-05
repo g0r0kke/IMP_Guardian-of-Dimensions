@@ -7,7 +7,7 @@ public class AvoidanceController : MonoBehaviour
     public LayerMask originLayer;
     public LayerMask avoidanceLayer;
     public float avoidanceDuration = 3.0f;
-    public float rotationThreshold = 1500.0f;
+    public float rotationThreshold = 5000.0f;
 
     private float previousRotationY;
     private Collider[] playerColliders;

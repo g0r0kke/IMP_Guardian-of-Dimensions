@@ -4,16 +4,20 @@ public class UltimateAttackSphereController : MonoBehaviour
 {
     private Vector3 targetPosition;
     private LayerMask targetLayer;
-    [SerializeField]
-    private GameObject collisionEffectPrefab;
+    [SerializeField] private GameObject collisionEffectPrefab;
+
     private float speed = 15.0f;
     public float startScale = 0.5f;
     public float scaleRate = 0.5f;
+    public int attackDamage;
     private float lifeTime = 10.0f;
     private float timer = 0f;
     private bool isInitialized = false;
 
-    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, LayerMask tarLayer, Collider planeCollider)
+    [Header("보스 타겟")]
+    private Boss bossTarget;
+
+    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider)
     {
         targetPosition = enemyPositions;
         speed = ultimateAttackSpeed;
@@ -21,6 +25,7 @@ public class UltimateAttackSphereController : MonoBehaviour
         targetLayer = tarLayer;
         startScale = StarScale;
         scaleRate = scaleRat;
+        attackDamage = attDamage;
         isInitialized = true;
 
         transform.localScale = Vector3.one * startScale;
@@ -28,6 +33,23 @@ public class UltimateAttackSphereController : MonoBehaviour
 
         Collider AttackCollider = GetComponent<Collider>();
         Physics.IgnoreCollision(AttackCollider, planeCollider);
+    }
+
+    private void Start()
+    {
+        GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
+        if (enemyObject != null)
+        {
+            bossTarget = enemyObject.GetComponent<Boss>();
+            if (bossTarget == null)
+            {
+                Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss 컴포넌트를 찾을 수 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Enemy 태그를 가진 게임 오브젝트를 찾을 수 없습니다.");
+        }
     }
 
     void Update()
@@ -56,21 +78,15 @@ public class UltimateAttackSphereController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        /*
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Destroy(gameObject);
-            Debug.Log("적과 충돌하여 삭제되었습니다.");
-        }
-        */
-
-        if (IsInTargetLayer(collision.gameObject))
+        if (IsInTargetLayer(collision.gameObject) || collision.gameObject.CompareTag("Enemy"))
         {
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
             collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
             Destroy(collisionEffect, 1f);
             Destroy(gameObject);
-            Debug.Log("설정 레이어 객체와 충돌하여 삭제되었습니다.");
+
+            bossTarget.TakeDamage(attackDamage);
+            Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
         }
     }
 

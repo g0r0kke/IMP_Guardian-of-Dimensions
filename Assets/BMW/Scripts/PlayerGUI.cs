@@ -8,7 +8,7 @@ public class PlayerGUI : MonoBehaviour
 
     public float basicAttackDelay = 0.6f;
     public float ultimateAttackDelay = 1.0f;
-    public float avoidanceSkillDelay = 3.0f;
+    public float avoidanceSkillDelay = 10.0f;
     public float defenseSkillDelay = 6.0f;
     public float healingSkillDelay = 10.0f;
     public bool debug = true;
