@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class PlayerGUI : MonoBehaviour
 {
-    public int playerHealth = 100;
-    public int playerHealthLimit = 100;
-    public int ultimateAttackGauge = 20;
+    public int playerHealth = 50;
+    public int playerHealthLimit = 50;
+    public int ultimateAttackGauge = 10;
 
-    public float basicAttackDelay = 0.3f;
+    public float basicAttackDelay = 0.6f;
     public float ultimateAttackDelay = 1.0f;
     public float avoidanceSkillDelay = 3.0f;
     public float defenseSkillDelay = 6.0f;
@@ -19,6 +19,7 @@ public class PlayerGUI : MonoBehaviour
     private AvoidanceController avoidanceController;
     private HealingController healingController;
     private DamageController damageController;
+    private AnimationController animationController;
 
     private float basicAttackDelayTime;
     private float ultimateAttackDelayTime;
@@ -39,6 +40,7 @@ public class PlayerGUI : MonoBehaviour
         avoidanceController = GetComponent<AvoidanceController>();
         healingController = GetComponent<HealingController>();
         damageController = GetComponent<DamageController>();
+        animationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -47,8 +49,15 @@ public class PlayerGUI : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            Gameover();
+            animationController.DieAnimation();
+            GameOver();
         }
+        /*if ()
+        {
+            animationController.VictoryAnimation();
+            Victory();
+        }*/
+
         if (debug)
         {
             DEBUG();
@@ -71,15 +80,23 @@ public class PlayerGUI : MonoBehaviour
         if (playerHealthLimit < playerHealth + HealingAmount) playerHealth = playerHealthLimit;
         else playerHealth += HealingAmount;
     }
+
     public void decreaseHealth(int damageAmount)
     {
         playerHealth -= damageAmount;
     }
-    void Gameover()
+
+    void GameOver()
     {
         Debug.Log("Game Over");
         UnityEditor.EditorApplication.isPlaying = false;
     }
+
+    void Victory()
+    {
+
+    }
+
     public void DEBUG()
     {
         if (previousHealth != playerHealth)

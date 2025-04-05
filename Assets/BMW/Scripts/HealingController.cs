@@ -14,11 +14,13 @@ public class HealingController : MonoBehaviour
     private GameObject heallingEffectCircle;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
+    private AnimationController animationController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
+        animationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -28,7 +30,8 @@ public class HealingController : MonoBehaviour
 
         if ((isPressedHealing || handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)
         {
-            Healing();
+            animationController.HealingAnimation();
+            Invoke("Healing", 1.3f);
             delayTime = playerGUI.healingSkillDelay;
             handGestureController.isHealingGesture = false;
         }

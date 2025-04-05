@@ -12,11 +12,13 @@ public class DefenseController : MonoBehaviour
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
+    private AnimationController animationController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
+        animationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -26,7 +28,8 @@ public class DefenseController : MonoBehaviour
 
         if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
         {
-            Defense();
+            animationController.DefenseAnimation();
+            Invoke("Defense", 1.1f);
             delayTime = playerGUI.defenseSkillDelay;
             handGestureController.isDefenseGesture = false;
         }

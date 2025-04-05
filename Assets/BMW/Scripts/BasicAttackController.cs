@@ -18,12 +18,14 @@ public class BasicAttackController: MonoBehaviour
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
     private BasicAttackController basicAttackController;
+    private AnimationController animationController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         basicAttackController = GetComponent<BasicAttackController>();
+        animationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -33,7 +35,8 @@ public class BasicAttackController: MonoBehaviour
 
         if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)
         {
-            BasicAttack();
+            animationController.BasicAttackAnimation();
+            Invoke("BasicAttack", 0.5f);
             delayTime = playerGUI.basicAttackDelay;
             handGestureController.isBasicAttackGesture = false;
         }
@@ -51,6 +54,7 @@ public class BasicAttackController: MonoBehaviour
 
     void BasicAttack()
     {
+
         Vector3 position = (basicAttackPos != null ? basicAttackPos.position : transform.position) + transform.forward * 0.5f;
 
         GameObject basicAttackSphere = Instantiate(basicAttackPrefab, position, Quaternion.identity);

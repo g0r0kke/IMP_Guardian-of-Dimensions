@@ -19,11 +19,13 @@ public class UltimateAttackController : MonoBehaviour
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
+    private AnimationController animationController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
+        animationController = GetComponent<AnimationController>();
     }
 
     // Update is called once per frame
@@ -33,7 +35,8 @@ public class UltimateAttackController : MonoBehaviour
 
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.currentGauge == playerGUI.ultimateAttackGauge)
         {
-            UltimateAttack();
+            animationController.UltimateAttackAnimation();
+            Invoke("UltimateAttack", 0.7f);
             playerGUI.currentGauge = 0;
             delayTime = playerGUI.ultimateAttackDelay;
             handGestureController.isUltimateAttackGesture = false;
@@ -53,6 +56,7 @@ public class UltimateAttackController : MonoBehaviour
 
     void UltimateAttack()
     {
+
         Vector3 center = transform.position;
         Collider[] hits = Physics.OverlapSphere(center, ultimateAttackRange, targetLayer);
 
