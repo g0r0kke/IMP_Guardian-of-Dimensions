@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3627490159321815619}
   m_Layer: 0
   m_Name: Minion
-  m_TagString: Enemy
+  m_TagString: Summon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,3 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   damage: 15
+  maxHP: 30

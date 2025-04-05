@@ -41,4 +41,15 @@ public class MinionController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        Debug.Log($"소환물 체력 : {currentHP}");
+
+        if (currentHP <=0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
