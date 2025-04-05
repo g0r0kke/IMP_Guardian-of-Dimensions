@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c33a548d6df8c8a4daca736f3300dd9c
+timeCreated: 1536372382
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 128097
+  packageName: Battle Wizard Poly Art
+  packageVersion: 1.2
+  assetPath: Assets/WizardPolyArt/Materials/PolyArtStandardMaterial.mat
+  uploadId: 422634
