@@ -11,21 +11,28 @@ public class DefenseController : MonoBehaviour
     private GameObject shieldSphere;
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
+    private HandGestureController handGestureController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
+        handGestureController = GetComponent<HandGestureController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool defensePressed = Input.GetKeyDown(KeyCode.C);
+        bool isPressedDefense = Input.GetKeyDown(KeyCode.C);
 
-        if (defensePressed && delayTime <= 0)
+        if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
         {
             Defense();
             delayTime = playerGUI.defenseSkillDelay;
+            handGestureController.isDefenseGesture = false;
+        }
+        else
+        {
+            handGestureController.isDefenseGesture = false;
         }
 
         if (delayTime > 0)

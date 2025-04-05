@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UltimateAttackController : MonoBehaviour
 {
@@ -17,22 +18,29 @@ public class UltimateAttackController : MonoBehaviour
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
+    private HandGestureController handGestureController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
+        handGestureController = GetComponent<HandGestureController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool ultimateAttackPressed = Input.GetKeyDown(KeyCode.X);
+        bool isPressedUltimateAttack = Input.GetKeyDown(KeyCode.X);
 
-        if (ultimateAttackPressed && delayTime <= 0 && playerGUI.currentGauge == playerGUI.ultimateAttackGauge)
+        if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.currentGauge == playerGUI.ultimateAttackGauge)
         {
             UltimateAttack();
             playerGUI.currentGauge = 0;
             delayTime = playerGUI.ultimateAttackDelay;
+            handGestureController.isUltimateAttackGesture = false;
+        }
+        else
+        {
+            handGestureController.isUltimateAttackGesture = false;
         }
 
         if (delayTime > 0)
@@ -56,7 +64,10 @@ public class UltimateAttackController : MonoBehaviour
         {
             enemyPositions.Add(col.transform.position);
             spawnPositions.Add(col.transform.position + new Vector3(Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange),ultimateAttackStartHeight,Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange)));
-            enemyGroundPositions.Add(planeCollider.ClosestPoint(col.transform.position));
+
+            Ray ray = new Ray(col.transform.position + Vector3.up * 0.1f, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000) && hit.collider == planeCollider) enemyGroundPositions.Add(new Vector3(col.transform.position.x, hit.point.y, col.transform.position.z));
+        
 
             GameObject ultimateAttackSphere = Instantiate(ultimateAttackPrefab, spawnPositions[spawnPositions.Count - 1], Quaternion.identity);
             Rigidbody rb = ultimateAttackSphere.GetComponent<Rigidbody>();

@@ -1,3 +1,4 @@
+using ManoMotion;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
@@ -15,23 +16,30 @@ public class BasicAttackController: MonoBehaviour
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
+    private HandGestureController handGestureController;
     private BasicAttackController basicAttackController;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
+        handGestureController = GetComponent<HandGestureController>();
         basicAttackController = GetComponent<BasicAttackController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool basicAttackPressed = Input.GetKeyDown(KeyCode.Z);
+        bool isPressedBasicAttack = Input.GetKeyDown(KeyCode.Z);
 
-        if (basicAttackPressed && delayTime <= 0)
+        if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)
         {
             BasicAttack();
             delayTime = playerGUI.basicAttackDelay;
+            handGestureController.isBasicAttackGesture = false;
+        }
+        else
+        {
+            handGestureController.isBasicAttackGesture = false;
         }
 
         if (delayTime > 0)
