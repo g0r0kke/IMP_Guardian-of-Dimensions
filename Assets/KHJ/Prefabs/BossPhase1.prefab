@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 4798179886377384163}
   - component: {fileID: 1358585360374043851}
   - component: {fileID: 5406292883794245097}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BossPhase1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -826,8 +826,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleDuration: 5
   attackDistance: 5
-  moveSpeed: 6
-  rotateSpeed: 5
+  moveSpeed: 1
+  rotateSpeed: 1
   animator: {fileID: 1358585360374043851}
   targetPlayer: {fileID: 0}
   enableDebug: 1

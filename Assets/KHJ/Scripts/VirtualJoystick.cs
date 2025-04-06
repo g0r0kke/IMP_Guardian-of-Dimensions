@@ -8,6 +8,10 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [SerializeField, Range(10f, 150f)] private float leverRange;
     [SerializeField] private float distancePerFrame = 2.0f; // 이동 속도
 
+    // 레이캐스트 관련 변수
+    [SerializeField] private float raycastDistance = 0.5f; // 레이캐스트 거리
+    [SerializeField] private LayerMask wallLayer; // Wall 레이어 마스크
+    
     private Vector2 inputVector;
     private bool isInput;
     
@@ -17,10 +21,37 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     // 카메라 참조 (방향 계산용)
     private Camera arCamera;
 
+    // 플레이어 캡슐 콜라이더 참조
+    private CapsuleCollider playerCollider;
+    
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         arCamera = Camera.main;
+        
+        // Player 태그를 가진 오브젝트에서 콜라이더 찾기
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            playerCollider = playerObject.GetComponent<CapsuleCollider>();
+            if (playerCollider == null)
+            {
+                // 직접적으로 연결된 콜라이더가 없으면 자식 오브젝트에서 찾기
+                playerCollider = playerObject.GetComponentInChildren<CapsuleCollider>();
+            }
+            
+            if (playerCollider == null)
+            {
+                Debug.LogWarning("Player 태그를 가진 오브젝트에서 캡슐 콜라이더를 찾을 수 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player 태그를 가진 오브젝트를 찾을 수 없습니다.");
+        }
+        
+        // Wall 레이어 설정
+        wallLayer = LayerMask.GetMask("Wall");
     }
     
     void Update()
@@ -91,10 +122,56 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // 입력벡터에 따른 이동 방향 계산
             Vector3 moveDirection = forward * inputVector.y + right * inputVector.x;
             
-            // 직접 XR Origin 위치 이동
-            xrOrigin.Translate(moveDirection * distancePerFrame * Time.deltaTime, Space.World);
+            // 이동 거리 계산
+            float moveDistance = distancePerFrame * Time.deltaTime;
             
-            Debug.Log("Input Vector: " + inputVector.x + " / " + inputVector.y);
+            // 이동할 위치 계산
+            Vector3 targetPosition = xrOrigin.position + moveDirection * moveDistance;
+            
+            // 벽 충돌 체크 및 이동
+            if (!CheckWallCollision(moveDirection, moveDistance))
+            {
+                // 벽과 충돌하지 않으면 이동
+                xrOrigin.position = targetPosition;
+            }
         }
+    }
+    
+    private bool CheckWallCollision(Vector3 moveDirection, float moveDistance)
+    {
+        if (playerCollider == null) return false;
+        
+        // 플레이어 캡슐 정보 가져오기
+        Vector3 colliderCenter = xrOrigin.position + playerCollider.center;
+        float colliderRadius = playerCollider.radius;
+        float colliderHeight = playerCollider.height;
+        
+        // 레이캐스트 시작 위치들 (캡슐 콜라이더의 경계 부분에서 시작)
+        Vector3[] raycastOrigins = new Vector3[]
+        {
+            colliderCenter, // 중앙
+            colliderCenter + Vector3.up * (colliderHeight * 0.5f - colliderRadius), // 상단
+            colliderCenter + Vector3.down * (colliderHeight * 0.5f - colliderRadius) // 하단
+        };
+        
+        // 여러 방향으로 레이캐스트를 발사하여 벽 충돌 확인
+        foreach (Vector3 origin in raycastOrigins)
+        {
+            // 디버그 레이 표시
+            Debug.DrawRay(origin, moveDirection * (raycastDistance + colliderRadius), Color.red, 0.1f);
+            
+            // 레이캐스트로 벽 감지
+            if (Physics.Raycast(origin, moveDirection, out RaycastHit hit, raycastDistance + colliderRadius, wallLayer))
+            {
+                // 벽과의 거리가 콜라이더 반경보다 작으면 충돌로 간주
+                if (hit.distance <= colliderRadius + raycastDistance)
+                {
+                    Debug.Log("벽 감지: " + hit.collider.name + ", 거리: " + hit.distance);
+                    return true; // 충돌 발생
+                }
+            }
+        }
+        
+        return false; // 충돌 없음
     }
 }
