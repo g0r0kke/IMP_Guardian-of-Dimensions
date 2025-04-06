@@ -2,7 +2,6 @@ using ManoMotion;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Rendering.ShadowCascadeGUI;
 
 public class HandGestureController : MonoBehaviour
 {
