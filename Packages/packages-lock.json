@@ -1,6 +1,6 @@
 {
   "dependencies": {
-
+ main
     "com.kyrylokuzyk.arfoundationremote": {
       "version": "file:../Assets/Plugins/ARFoundationRemoteInstaller/com.kyrylokuzyk.arfoundationremote.tgz",
       "depth": 0,
@@ -16,7 +16,7 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-
+ main
     "com.unity.2d.common": {
       "version": "9.0.7",
       "depth": 1,
@@ -46,9 +46,7 @@
         "com.unity.modules.physics2d": "1.0.0"
       },
       "url": "https://packages.unity.com"
-
-
- 750e1716c2d0be9067cd884f30f8ef928f2584dc
+main
     },
     "com.unity.burst": {
       "version": "1.8.19",
