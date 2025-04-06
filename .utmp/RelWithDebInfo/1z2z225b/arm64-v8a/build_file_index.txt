@@ -1,2 +1,0 @@
-C:\Projects\Unity\IMP_AR_TeamProject\IMP_AR\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
-C:\Projects\Unity\IMP_AR_TeamProject\IMP_AR\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
