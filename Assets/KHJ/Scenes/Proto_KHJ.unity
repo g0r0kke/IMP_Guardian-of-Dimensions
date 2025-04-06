@@ -379,6 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase1Prefab: {fileID: 114000011944869003}
   phase2Prefab: {fileID: 0}
+  phase1SceneName: BossPhase1Scene
+  phase2SceneName: BossPhase2Scene
+  useSceneTransition: 1
 --- !u!4 &540752651
 Transform:
   m_ObjectHideFlags: 0
@@ -1562,12 +1565,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1983299500 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2654575746742538750, guid: e8892ba98c7546040b97e0e7a759bc57,
-    type: 3}
-  m_PrefabInstance: {fileID: 7066678730941874604}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2004594443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1947,32 +1944,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1192324102805840446}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &114000011944869003
+--- !u!114 &114000011944869003 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
+    type: 3}
+  m_PrefabInstance: {fileID: 7066678730941874604}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983299500}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10889afdcc7baab44943b6b53ade43d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleDuration: 5
-  attackDistance: 5
-  moveSpeed: 6
-  rotateSpeed: 5
-  animator: {fileID: 114000011944869004}
-  targetPlayer: {fileID: 242369315}
-  stunThreshold: 30
-  phase1DamageMultiplier: 1
---- !u!95 &114000011944869004 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1358585360374043851, guid: e8892ba98c7546040b97e0e7a759bc57,
-    type: 3}
-  m_PrefabInstance: {fileID: 7066678730941874604}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1192324102805840446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2079,6 +2062,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossPhase1
       objectReference: {fileID: 0}
+    - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
+        type: 3}
+      propertyPath: healthBarUI
+      value: 
+      objectReference: {fileID: 1188547744}
+    - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
+        type: 3}
+      propertyPath: targetPlayer
+      value: 
+      objectReference: {fileID: 242369315}
     - target: {fileID: 5773275625782211609, guid: e8892ba98c7546040b97e0e7a759bc57,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2129,15 +2122,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5008863552590742165, guid: e8892ba98c7546040b97e0e7a759bc57, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2654575746742538750, guid: e8892ba98c7546040b97e0e7a759bc57,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 114000011944869003}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8892ba98c7546040b97e0e7a759bc57, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
