@@ -5,15 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 4755b35b590504809a7525fd2109c2e2
-  - enabled: 1
-    path: Assets/KHJ/Scenes/Proto_KHJ.unity
-    guid: 9b87ed49a41c8304487eb65ed628d4de
-  - enabled: 1
-    path: Assets/KHW/Scenes/Proto_KHW.unity
-    guid: ce6fb6c390983a2438c32799f97a5ce2
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: 4f69fc97e19c81245ba4ad4338eb60c8,
       type: 2}
