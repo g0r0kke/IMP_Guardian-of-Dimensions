@@ -74,6 +74,7 @@ public class PlayerGUI : MonoBehaviour
     {
         if(currentGauge < ultimateAttackGauge) currentGauge += GaugeIncreaseAmount;
     }
+
     public void IncreaseHealth(int HealingAmount)
     {
         
@@ -89,12 +90,11 @@ public class PlayerGUI : MonoBehaviour
     void GameOver()
     {
         Debug.Log("Game Over");
-        UnityEditor.EditorApplication.isPlaying = false;
     }
 
     void Victory()
     {
-
+        Debug.Log("Victory");
     }
 
     public void DEBUG()
