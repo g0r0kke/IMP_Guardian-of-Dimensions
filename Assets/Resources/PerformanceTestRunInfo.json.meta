@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 777780fcb4424cd4298f5974a2e8d5f2
+=======
+guid: 8e528875263be12469e4354cf4e4280b
+>>>>>>> parent of d694510 (Fix: main 브랜치 병합 충돌 해결)
 TextScriptImporter:
   externalObjects: {}
   userData: 

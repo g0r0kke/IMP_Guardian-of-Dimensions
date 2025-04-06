@@ -15,6 +15,7 @@
     "com.unity.ugui": "2.0.0",
     "com.unity.xr.arcore": "6.0.5",
     "com.unity.xr.arfoundation": "6.0.5",
+    "com.unity.xr.arkit": "6.0.5",
     "com.unity.xr.interaction.toolkit": "3.0.7",
     "com.unity.xr.management": "4.5.0",
     "com.unity.modules.accessibility": "1.0.0",
