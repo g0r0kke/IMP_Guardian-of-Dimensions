@@ -1,13 +1,15 @@
 {
   "dependencies": {
-    "com.kyrylokuzyk.arfoundationremote": "file:../Assets/Plugins/ARFoundationRemoteInstaller/com.kyrylokuzyk.arfoundationremote.tgz",
+
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.spriteshape": "10.0.7",
     "com.kyrylokuzyk.arfoundationremote": "file:../Assets/Plugins/ARFoundationRemoteInstaller/com.kyrylokuzyk.arfoundationremote.tgz",
     "com.unity.collab-proxy": "2.7.1",
+    "com.unity.device-simulator.devices": "1.0.0",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.13.1",
     "com.unity.learn.iet-framework": "4.0.4",
+    "com.unity.mobile.android-logcat": "1.4.4",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.render-pipelines.universal": "17.0.4",
     "com.unity.timeline": "1.8.7",
