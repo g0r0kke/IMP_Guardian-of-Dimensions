@@ -4,7 +4,7 @@ using UnityEngine;
 public class MissileController : MonoBehaviour
 {
     private Transform target;
-    public float moveSpeed = 3f; 
+    public float moveSpeed = 5f; 
     [SerializeField] private float damage = 15f;
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
