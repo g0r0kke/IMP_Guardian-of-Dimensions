@@ -701,12 +701,12 @@ GameObject:
   - component: {fileID: 5773275625782211609}
   - component: {fileID: 7096057580930860117}
   - component: {fileID: 6917012888366290632}
-  - component: {fileID: 5008863552590742165}
   - component: {fileID: 4798179886377384163}
   - component: {fileID: 1358585360374043851}
-  m_Layer: 0
+  - component: {fileID: 5406292883794245097}
+  m_Layer: 7
   m_Name: BossPhase1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,33 +776,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 10
   m_Center: {x: 0, y: 10, z: -1.2071486}
---- !u!54 &5008863552590742165
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2654575746742538750}
-  serializedVersion: 4
-  m_Mass: 500
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 122
-  m_CollisionDetection: 0
 --- !u!114 &4798179886377384163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,6 +812,39 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5406292883794245097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654575746742538750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10889afdcc7baab44943b6b53ade43d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleDuration: 5
+  attackDistance: 5
+  moveSpeed: 1
+  rotateSpeed: 1
+  animator: {fileID: 1358585360374043851}
+  targetPlayer: {fileID: 0}
+  enableDebug: 1
+  stateDebugColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  subStateDebugColor: {r: 0, g: 1, b: 0, a: 1}
+  healthDebugColor: {r: 1, g: 0, b: 0, a: 1}
+  debugOffset: {x: 0, y: 2, z: 0}
+  attackDelay: 2
+  attack1Distance: 2
+  attack2Distance: 5
+  preAttackDelay: 0.5
+  projectilePrefab: {fileID: 6259453625854727909, guid: 370a8dd117f329c4c9713dad40674770,
+    type: 3}
+  projectileSpeed: 10
+  projectileOffset: 1.5
+  projectileHeight: 7.75
+  healthBarUI: {fileID: 0}
 --- !u!1 &3011347094287913833
 GameObject:
   m_ObjectHideFlags: 0

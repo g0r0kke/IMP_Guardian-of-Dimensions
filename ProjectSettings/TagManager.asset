@@ -7,15 +7,16 @@ TagManager:
   - Enemy
   - Summon
   - Missile
+  - baseSDK
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
