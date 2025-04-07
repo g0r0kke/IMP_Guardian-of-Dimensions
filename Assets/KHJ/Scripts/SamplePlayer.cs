@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class SamplePlayer : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class SamplePlayer : MonoBehaviour
 
     [Header("보스 타겟")] private Boss bossTarget;
 
-    [Header("소환물 타겟")] private MinionController minionTarget;
+    [Header("소환물 타겟들")]
+    private List<MinionController> minionTargets = new List<MinionController>();
+
 
     void Start()
     {
@@ -35,19 +38,7 @@ public class SamplePlayer : MonoBehaviour
             Debug.LogWarning("Enemy 태그를 가진 게임 오브젝트를 찾을 수 없습니다.");
         }
 
-        GameObject summonObject = GameObject.FindGameObjectWithTag("Summon");
-        if (summonObject != null)
-        {
-            minionTarget = summonObject.GetComponent<MinionController>();
-            if (minionTarget == null)
-            {
-                Debug.LogWarning("Summon 태그를 가진 오브젝트에서 Minion 컴포넌트를 찾을 수 없습니다.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Summon 태그를 가진 게임 오브젝트를 찾을 수 없습니다.");
-        }
+        FindAllMinions();  // 소환물 타겟들 찾기기
     }
 
     void Update()
@@ -92,24 +83,40 @@ public class SamplePlayer : MonoBehaviour
                 }
             }
 
-            if (minionTarget != null)
+            // 소환물 공격
+            if (minionTargets.Count > 0)
             {
-            // 소환물에게 데미지 주기
-                minionTarget.TakeDamage(attackDamage);
-                Debug.Log($"플레이어가 소환물에게 {attackDamage} 데미지를 입혔습니다!");
+                foreach (MinionController minion in minionTargets)
+                {
+                    if (minion != null)
+                    {
+                        minion.TakeDamage(attackDamage);
+                        Debug.Log($"플레이어가 소환물에게 {attackDamage} 데미지를 입혔습니다!");
+                    }
+                }
             }
             else
             {
-                Debug.LogWarning("소환물 타겟이 설정되지 않았습니다!");
-    
-                // Summon 태그로 다시 찾아보기
-                GameObject summonObject = GameObject.FindGameObjectWithTag("Summon");
-                if (summonObject != null)
-                {
-                    minionTarget = summonObject.GetComponent<MinionController>();
-                }
+                Debug.LogWarning("소환물 타겟이 없습니다. 다시 검색합니다.");
+                FindAllMinions();
             }
         }
+    }
+
+    void FindAllMinions()
+    {
+        minionTargets.Clear();
+        GameObject[] minions = GameObject.FindGameObjectsWithTag("Summon");
+        foreach (GameObject minionObj in minions)
+        {
+            MinionController minion = minionObj.GetComponent<MinionController>();
+            if (minion != null)
+            {
+                minionTargets.Add(minion);
+            }
+        }
+
+        Debug.Log($"소환물 {minionTargets.Count}개 찾음");
     }
 
     // 플레이어가 데미지를 받는 메서드
