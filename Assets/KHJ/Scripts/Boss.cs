@@ -26,7 +26,7 @@ public abstract class Boss : MonoBehaviour
 {
     protected IState currentState;
     protected Dictionary<System.Type, IState> states = new Dictionary<System.Type, IState>();
-
+    
     // 현재 상태 유형
     protected BossStateType currentStateType;
 
