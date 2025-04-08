@@ -167,6 +167,10 @@ MonoBehaviour:
   lever: {fileID: 6624757706896432841}
   leverRange: 120
   distancePerFrame: 2
+  raycastDistance: 0.5
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
   xrOrigin: {fileID: 0}
 --- !u!1 &7902363178793143801
 GameObject:
