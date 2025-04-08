@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 
-public class BossManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    // 보스 관련 변수
     [SerializeField] private BossPhase1 phase1Prefab;
     [SerializeField] private BossPhase2 phase2Prefab;
     
@@ -16,12 +17,14 @@ public class BossManager : MonoBehaviour
     
     private Boss currentBoss;
     
-    // Singleton pattern to maintain the boss manager across scene transitions
-    public static BossManager Instance { get; private set; }
+    // 플레이어 관련 변수
+    public float playerHealth = 100f;
+    
+    // 싱글톤 패턴
+    public static GameManager Instance { get; private set; }
     
     private void Awake()
     {
-        // Handle singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

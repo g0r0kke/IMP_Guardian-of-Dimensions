@@ -1335,7 +1335,7 @@ PrefabInstance:
     - target: {fileID: 1239296250143361832, guid: b36ec6ac928d1924ab0c7344fffe94fc,
         type: 3}
       propertyPath: m_Name
-      value: BossManager
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 1670779415317434671, guid: b36ec6ac928d1924ab0c7344fffe94fc,
         type: 3}
