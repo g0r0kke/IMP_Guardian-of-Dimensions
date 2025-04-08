@@ -41,6 +41,102 @@ namespace Azmodan.Phase1
         // UI 연결
         [SerializeField] private Slider healthBarUI;
 
+        // Phase1 전용 오디오 설정 추가
+        [Header("Phase 1 Audio")]
+        [SerializeField] private AudioSource walkAudioSource; // 걷기 전용 오디오 소스
+        [SerializeField] private AudioSource attackAudioSource; // 공격 전용 오디오 소스
+        [SerializeField] public AudioClip walkSound;
+        [SerializeField] public AudioClip attack1Sound;
+        [SerializeField] public AudioClip attack2Sound;
+        [SerializeField] public AudioClip takeDamageSound;
+        
+        protected override void Start()
+        {
+            base.Start();
+            
+            // 초기 체력 로그 출력
+            Debug.Log($"보스 초기 체력: {health}");
+
+            // 초기 체력바 설정
+            if (healthBarUI != null)
+            {
+                healthBarUI.maxValue = health;
+                healthBarUI.value = health;
+            }
+            
+            // 걷기용 AudioSource 초기화 (없는 경우)
+            if (walkAudioSource == null)
+            {
+                walkAudioSource = gameObject.AddComponent<AudioSource>();
+                walkAudioSource.loop = true;
+                walkAudioSource.playOnAwake = false;
+            }
+    
+            // 공격용 AudioSource 초기화 (없는 경우)
+            if (attackAudioSource == null)
+            {
+                attackAudioSource = gameObject.AddComponent<AudioSource>();
+                attackAudioSource.loop = false; // 공격 소리는 루프하지 않음
+                attackAudioSource.playOnAwake = false;
+            }
+        }
+        
+        public void PlayWalkSound()
+        {
+            if (walkAudioSource != null && walkSound != null)
+            {
+                walkAudioSource.clip = walkSound;
+                if (!walkAudioSource.isPlaying)
+                {
+                    walkAudioSource.Play();
+                    Debug.Log("보스 Phase1: 걷기 소리 재생 시작");
+                }
+            }
+        }
+
+        public void StopWalkSound()
+        {
+            if (walkAudioSource != null && walkAudioSource.isPlaying)
+            {
+                walkAudioSource.Stop();
+                Debug.Log("보스 Phase1: 걷기 소리 정지");
+            }
+        }
+
+        public void PlayAttackSound(int attackNum)
+        {
+            if (attackAudioSource != null)
+            {
+                switch (attackNum)
+                {
+                    case 1:
+                        if (attack1Sound != null)
+                        {
+                            attackAudioSource.clip = attack1Sound;
+                            attackAudioSource.Play();
+                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
+                        }
+                        break;
+                    case 2:
+                        if (attack2Sound != null)
+                        {
+                            attackAudioSource.clip = attack2Sound;
+                            attackAudioSource.Play();
+                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
+                        }
+                        break;
+                    case 3:
+                        if (takeDamageSound != null)
+                        {
+                            attackAudioSource.clip = takeDamageSound;
+                            attackAudioSource.Play();
+                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
+                        }
+                        break;
+                }
+            }
+        }
+        
         public BossStateType GetSelectedAttackType()
         {
             return selectedAttackType;
@@ -59,21 +155,6 @@ namespace Azmodan.Phase1
         public IState GetPreviousState()
         {
             return previousState;
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            // 초기 체력 로그 출력
-            Debug.Log($"보스 초기 체력: {health}");
-
-            // 초기 체력바 설정
-            if (healthBarUI != null)
-            {
-                healthBarUI.maxValue = health;
-                healthBarUI.value = health;
-            }
         }
 
         protected override void InitializeStates()
@@ -258,6 +339,7 @@ namespace Azmodan.Phase1
 
             // 데미지 적용
             health -= damage;
+            PlayAttackSound(3);
             Debug.Log($"보스 1페이즈: {damage} 데미지 받음 (현재 체력: {health})");
 
             // UI 업데이트
@@ -426,6 +508,7 @@ namespace Azmodan.Phase1
         private float attackTimer = 0f;
         private float attackDuration = 2f;
         private bool hasDealtDamage = false;
+        private bool hasSoundPlayed = false; // 소리 재생 여부 추적을 위한 변수
         private BossPhase1 phase1Boss;
 
         public Attack1State(Boss boss) : base(boss)
@@ -438,6 +521,7 @@ namespace Azmodan.Phase1
             // 타이머 초기화
             attackTimer = 0f;
             hasDealtDamage = false;
+            hasSoundPlayed = false;
 
             // 공격1 애니메이션 재생
             boss.animator.SetTrigger("Attack");
@@ -448,6 +532,15 @@ namespace Azmodan.Phase1
         {
             attackTimer += Time.deltaTime;
 
+            // 공격 1초 시점에서 공격 소리 재생
+            if (attackTimer >= 1.0f && !hasSoundPlayed)
+            {
+                // 공격 소리 재생
+                phase1Boss.PlayAttackSound(1);
+                hasSoundPlayed = true;
+                Debug.Log("보스: 공격1 소리 재생");
+            }
+            
             // 공격 중간 지점에서 데미지 적용 (애니메이션 이벤트로 대체 가능)
             if (attackTimer >= 1.0f && !hasDealtDamage)
             {
@@ -497,6 +590,7 @@ namespace Azmodan.Phase1
         private float attackTimer = 0f;
         private float attackDuration = 3f;
         private bool hasProjectileFired = false;
+        private bool hasSoundPlayed = false; // 소리 재생 여부 추적을 위한 변수
         private BossPhase1 phase1Boss;
 
         public Attack2State(Boss boss) : base(boss)
@@ -509,6 +603,7 @@ namespace Azmodan.Phase1
             // 타이머 초기화
             attackTimer = 0f;
             hasProjectileFired = false;
+            hasSoundPlayed = false;
 
             // 공격2 애니메이션 재생
             boss.animator.SetTrigger("Attack");
@@ -518,6 +613,15 @@ namespace Azmodan.Phase1
         public override void Update()
         {
             attackTimer += Time.deltaTime;
+            
+            // 공격 1초 시점에서 공격 소리 재생
+            if (attackTimer >= 1.0f && !hasSoundPlayed)
+            {
+                // 공격 소리 재생
+                phase1Boss.PlayAttackSound(2);
+                hasSoundPlayed = true;
+                Debug.Log("보스: 공격1 소리 재생");
+            }
 
             // 공격 중간 지점에서 투사체 발사 (애니메이션 이벤트로 대체 가능)
             if (attackTimer >= 1.5f && !hasProjectileFired)
@@ -695,6 +799,20 @@ namespace Azmodan.Phase1
         public Phase1WalkState(BossPhase1 boss) : base(boss)
         {
             this.phase1Boss = boss;
+        }
+        
+        public override void Enter()
+        {
+            // Walk 애니메이션 재생
+            boss.animator.SetTrigger("Walk");
+        
+            // Phase1 전용 걷기 소리 재생
+            phase1Boss.PlayWalkSound();
+        }
+        
+        public override void Exit()
+        {
+            phase1Boss.StopWalkSound();
         }
 
         protected override void HandleWalk()
