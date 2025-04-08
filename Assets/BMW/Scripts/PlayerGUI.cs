@@ -90,11 +90,13 @@ public class PlayerGUI : MonoBehaviour
     void GameOver()
     {
         Debug.Log("Game Over");
+        /*
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else
                 Application.Quit();
         #endif
+        */
     }
 
     void Victory()
