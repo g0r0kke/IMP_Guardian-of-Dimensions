@@ -4765,19 +4765,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
         type: 3}
-      propertyPath: moveSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
-        type: 3}
       propertyPath: healthBarUI
       value: 
       objectReference: {fileID: 1188547744}
-    - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
-        type: 3}
-      propertyPath: targetPlayer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5773275625782211609, guid: e8892ba98c7546040b97e0e7a759bc57,
         type: 3}
       propertyPath: m_LocalPosition.x
