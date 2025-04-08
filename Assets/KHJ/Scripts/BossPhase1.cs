@@ -18,7 +18,7 @@ namespace Azmodan.Phase1
         [SerializeField] private float projectileSpeed = 10f; // 투사체 속도
         [SerializeField] private float projectileOffset = 1.5f; // 보스 앞에서 얼마나 떨어진 위치에서 발사할지
         [SerializeField] private float projectileHeight = 7.75f; // 투사체 발사 높이
-        public static BossManager Instance { get; private set; }
+        public static GameManager Instance { get; private set; }
 
         private IState previousState; // 스턴 전 상태 저장용
         private int randomAttackNum; // 랜덤 공격 번호 (1-100)
@@ -400,10 +400,10 @@ namespace Azmodan.Phase1
         
         private void NotifyBossManager()
         {
-            if (BossManager.Instance != null)
+            if (GameManager.Instance != null)
             {
                 Debug.Log("보스 1페이즈: BossManager에 Phase2 전환 신호 보냄");
-                BossManager.Instance.TransitionToPhase2();
+                GameManager.Instance.TransitionToPhase2();
             }
             else
             {
