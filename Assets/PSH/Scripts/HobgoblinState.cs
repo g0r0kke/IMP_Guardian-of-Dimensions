@@ -1,3 +1,4 @@
+// hobgoblinState.cs
 using NUnit.Framework.Interfaces;
 using UnityEngine;
 
@@ -181,7 +182,3 @@ public class DeadState : IState
 
     public void Exit() { }
 }
-
-
-
-
