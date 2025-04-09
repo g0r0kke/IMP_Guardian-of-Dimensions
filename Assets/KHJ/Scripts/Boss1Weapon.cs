@@ -106,7 +106,7 @@ public class WeaponCollision : MonoBehaviour
         //
         if (isAttacking && other.CompareTag("Player"))
         {
-            Debug.Log("근접 공격!!");
+            // Debug.Log("근접 공격!!");
             
             // 데미지를 주는 로직 추가
             SamplePlayer player = other.GetComponent<SamplePlayer>();
@@ -114,6 +114,7 @@ public class WeaponCollision : MonoBehaviour
             {
                 // BossPhase1.cs의 Attack1State에서 지정한 동일한 데미지값 사용
                 player.TakeDamage(20);
+                Debug.Log($"보스가 플레이어에게 근접 공격으로 20 데미지를 입혔습니다!");
             }
         }
     }

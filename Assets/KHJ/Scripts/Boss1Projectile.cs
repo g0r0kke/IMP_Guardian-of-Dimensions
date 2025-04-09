@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossProjectile : MonoBehaviour
 {
-    [SerializeField] private float damage = 15f;
+    [SerializeField] private float damage = 10f;
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
     
@@ -51,7 +51,7 @@ public class BossProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             // "원거리 공격!!" 메시지 출력
-            Debug.Log("원거리 공격!!");
+            // Debug.Log("원거리 공격!!");
             
             // 플레이어에게 데미지 적용
             SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
