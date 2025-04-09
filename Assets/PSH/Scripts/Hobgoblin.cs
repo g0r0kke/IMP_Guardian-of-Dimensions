@@ -16,7 +16,12 @@ public class Hobgoblin : MonoBehaviour
     //public float runSpeed = 3.5f;
     public int hp = 1;
 
+    public AudioSource audioSource;
 
+    public AudioClip goblinLaugh;   // idle
+    public AudioClip goblinCackle;  // walk
+    public AudioClip goblinPunch;   // attack
+    public AudioClip goblinDeath;   // damage/death
 
     void Start()
     {
@@ -50,7 +55,7 @@ public class Hobgoblin : MonoBehaviour
 
         if (hp <= 0)
         {
-            ChangeState(new DeadState(this));
+            ChangeState(new HobDeadState(this));
         }
     }
 
@@ -70,4 +75,12 @@ public class Hobgoblin : MonoBehaviour
             return hob;
         }
 
-    }
+        public void PlayPunchSound()
+        {
+            if (audioSource != null && goblinPunch != null)
+            {
+                audioSource.PlayOneShot(goblinPunch);
+            }
+        }
+
+}
