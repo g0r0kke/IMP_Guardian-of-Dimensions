@@ -27,7 +27,22 @@ namespace Azmodan.Phase1
         // 공격 로직 디버깅을 위한 변수 추가
         private bool attackSelected = false;
         private bool attackInitiated = false;
+        
+        [Header("Attack Effects")]
+        [SerializeField]
+        private GameObject attack1EffectPrefab; // 공격1 이펙트 프리팹
+        [SerializeField] private Vector3 attack1EffectOffset = new Vector3(-1.56f, 3.6f, -8.4f); // 이펙트 위치 오프셋
 
+        public GameObject GetAttack1EffectPrefab()
+        {
+            return attack1EffectPrefab;
+        }
+
+        public Vector3 GetAttack1EffectOffset()
+        {
+            return attack1EffectOffset;
+        }
+        
         public bool IsAttackSelected()
         {
             return attackSelected;
@@ -42,18 +57,20 @@ namespace Azmodan.Phase1
         [SerializeField] private Slider healthBarUI;
 
         // Phase1 전용 오디오 설정 추가
-        [Header("Phase 1 Audio")]
-        [SerializeField] private AudioSource walkAudioSource; // 걷기 전용 오디오 소스
+        [Header("Phase 1 Audio")] [SerializeField]
+        private AudioSource walkAudioSource; // 걷기 전용 오디오 소스
+
         [SerializeField] private AudioSource attackAudioSource; // 공격 전용 오디오 소스
-        [SerializeField] public AudioClip walkSound;
-        [SerializeField] public AudioClip attack1Sound;
-        [SerializeField] public AudioClip attack2Sound;
-        [SerializeField] public AudioClip takeDamageSound;
-        
+        [SerializeField] private AudioClip walkSound;
+        [SerializeField] private AudioClip attack1Sound;
+        [SerializeField] private AudioClip attack2Sound;
+        [SerializeField] private AudioClip takeDamageSound;
+        [SerializeField] private AudioClip deathSound;
+
         protected override void Start()
         {
             base.Start();
-            
+
             // 초기 체력 로그 출력
             Debug.Log($"보스 초기 체력: {health}");
 
@@ -63,7 +80,7 @@ namespace Azmodan.Phase1
                 healthBarUI.maxValue = health;
                 healthBarUI.value = health;
             }
-            
+
             // 걷기용 AudioSource 초기화 (없는 경우)
             if (walkAudioSource == null)
             {
@@ -71,7 +88,7 @@ namespace Azmodan.Phase1
                 walkAudioSource.loop = true;
                 walkAudioSource.playOnAwake = false;
             }
-    
+
             // 공격용 AudioSource 초기화 (없는 경우)
             if (attackAudioSource == null)
             {
@@ -80,7 +97,7 @@ namespace Azmodan.Phase1
                 attackAudioSource.playOnAwake = false;
             }
         }
-        
+
         public void PlayWalkSound()
         {
             if (walkAudioSource != null && walkSound != null)
@@ -89,7 +106,7 @@ namespace Azmodan.Phase1
                 if (!walkAudioSource.isPlaying)
                 {
                     walkAudioSource.Play();
-                    Debug.Log("보스 Phase1: 걷기 소리 재생 시작");
+                    // Debug.Log("보스 Phase1: 걷기 소리 재생 시작");
                 }
             }
         }
@@ -99,7 +116,7 @@ namespace Azmodan.Phase1
             if (walkAudioSource != null && walkAudioSource.isPlaying)
             {
                 walkAudioSource.Stop();
-                Debug.Log("보스 Phase1: 걷기 소리 정지");
+                // Debug.Log("보스 Phase1: 걷기 소리 정지");
             }
         }
 
@@ -114,29 +131,37 @@ namespace Azmodan.Phase1
                         {
                             attackAudioSource.clip = attack1Sound;
                             attackAudioSource.Play();
-                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
                         }
+
                         break;
                     case 2:
                         if (attack2Sound != null)
                         {
                             attackAudioSource.clip = attack2Sound;
                             attackAudioSource.Play();
-                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
                         }
+
                         break;
                     case 3:
                         if (takeDamageSound != null)
                         {
                             attackAudioSource.clip = takeDamageSound;
                             attackAudioSource.Play();
-                            Debug.Log("보스 Phase1: 공격 소리 재생 시작");
                         }
+
+                        break;
+                    case 4:
+                        if (deathSound != null)
+                        {
+                            attackAudioSource.clip = deathSound;
+                            attackAudioSource.Play();
+                        }
+
                         break;
                 }
             }
         }
-        
+
         public BossStateType GetSelectedAttackType()
         {
             return selectedAttackType;
@@ -173,14 +198,14 @@ namespace Azmodan.Phase1
             if (isWaiting)
             {
                 SetSubState(BossSubState.PreAttackDelay, preAttackDelay);
-                Debug.Log("보스: 공격 대기(선딜레이) 상태 설정됨");
+                // Debug.Log("보스: 공격 대기(선딜레이) 상태 설정됨");
             }
             else
             {
                 // 디버깅 메시지 추가
                 if (IsInSubState(BossSubState.PreAttackDelay))
                 {
-                    Debug.Log("보스: 공격 대기(선딜레이) 상태 해제됨");
+                    // Debug.Log("보스: 공격 대기(선딜레이) 상태 해제됨");
                 }
             }
         }
@@ -196,7 +221,7 @@ namespace Azmodan.Phase1
             if (isDelaying)
             {
                 SetSubState(BossSubState.PostAttackDelay, attackDelay);
-                Debug.Log("보스: 공격 후 딜레이 상태 설정됨");
+                // Debug.Log("보스: 공격 후 딜레이 상태 설정됨");
 
                 // 공격 플래그 초기화
                 attackSelected = false;
@@ -207,7 +232,7 @@ namespace Azmodan.Phase1
                 // 디버깅 메시지 추가
                 if (IsInSubState(BossSubState.PostAttackDelay))
                 {
-                    Debug.Log("보스: 공격 후 딜레이 상태 해제됨");
+                    // Debug.Log("보스: 공격 후 딜레이 상태 해제됨");
                 }
             }
         }
@@ -279,6 +304,9 @@ namespace Azmodan.Phase1
             // 공격 시작 플래그 설정 - 디버깅 및 중복 호출 방지용
             attackInitiated = true;
 
+            // 모든 애니메이터 파라미터 초기화 (확실히 초기화)
+            ResetAllAnimatorParameters();
+            
             Debug.Log($"보스: TransitionToAttack 호출됨 - 선택된 공격 타입: {selectedAttackType}");
 
             // 플레이어와의 거리 확인
@@ -379,10 +407,11 @@ namespace Azmodan.Phase1
                 return;
             }
 
-            Debug.Log("보스 1페이즈: 사망 처리 시작");
+            PlayAttackSound(4);
 
             // isDead 플래그만 설정하고 (deathAnimationTriggered는 TransitionToDeath에서 설정)
             isDead = true;
+            
 
             // 모든 진행 중인 SubState 초기화
             foreach (BossSubState state in System.Enum.GetValues(typeof(BossSubState)))
@@ -390,14 +419,14 @@ namespace Azmodan.Phase1
                 subStateTimers[state] = 0f;
                 subStateDurations[state] = 0f;
             }
-            
+
             // 죽음 애니메이션 재생 후 Phase2로 전환을 위해 딜레이 설정
             Invoke("NotifyBossManager", 2.0f);
 
             // 사망 상태로 전환 (여기서 deathAnimationTriggered 설정됨)
             TransitionToDeath();
         }
-        
+
         private void NotifyBossManager()
         {
             if (GameManager.Instance != null)
@@ -509,6 +538,7 @@ namespace Azmodan.Phase1
         private float attackDuration = 2f;
         private bool hasDealtDamage = false;
         private bool hasSoundPlayed = false; // 소리 재생 여부 추적을 위한 변수
+        private bool hasSpawnedEffect = false;
         private BossPhase1 phase1Boss;
 
         public Attack1State(Boss boss) : base(boss)
@@ -522,6 +552,7 @@ namespace Azmodan.Phase1
             attackTimer = 0f;
             hasDealtDamage = false;
             hasSoundPlayed = false;
+            hasSpawnedEffect = false;
 
             // 공격1 애니메이션 재생
             boss.animator.SetTrigger("Attack");
@@ -538,14 +569,20 @@ namespace Azmodan.Phase1
                 // 공격 소리 재생
                 phase1Boss.PlayAttackSound(1);
                 hasSoundPlayed = true;
-                Debug.Log("보스: 공격1 소리 재생");
+                // Debug.Log("보스: 공격1 소리 재생");
             }
             
+            if (attackTimer >= 1.0f && !hasSpawnedEffect)
+            {
+                SpawnAttack1Effect();
+                hasSpawnedEffect = true;
+            }
+
             // 공격 중간 지점에서 데미지 적용 (애니메이션 이벤트로 대체 가능)
             if (attackTimer >= 1.0f && !hasDealtDamage)
             {
                 // 공격 범위 내 플레이어 확인 및 데미지 적용
-                ApplyDamageToPlayer();
+                // ApplyDamageToPlayer();
                 hasDealtDamage = true;
             }
 
@@ -555,6 +592,28 @@ namespace Azmodan.Phase1
                 // 공격 후 딜레이를 위한 Idle 상태로 전환
                 phase1Boss.SetPostAttackDelay(true); // 공격 후 딜레이 상태 설정
                 boss.TransitionToIdle();
+            }
+        }
+        
+        private void SpawnAttack1Effect()
+        {
+            if (phase1Boss.GetAttack1EffectPrefab() != null)
+            {
+                // 보스의 world position을 기준으로 정확한 월드 좌표 (-1.56, 3.6, -8.4)에 이펙트 생성
+                // 오프셋을 직접 적용하지 않고 월드 좌표로 변환하여 적용
+                Vector3 effectWorldPosition = phase1Boss.transform.TransformPoint(phase1Boss.GetAttack1EffectOffset());
+        
+                // 지정된 위치에 이펙트 생성 (보스의 회전을 고려)
+                GameObject effect = GameObject.Instantiate(
+                    phase1Boss.GetAttack1EffectPrefab(), 
+                    effectWorldPosition,
+                    phase1Boss.transform.rotation  // 보스의 회전값을 적용
+                );
+        
+                // 일정 시간 후 이펙트 제거 (3초 후 제거, 필요에 따라 조정)
+                GameObject.Destroy(effect, 3f);
+        
+                Debug.Log("보스: 공격1 이펙트 생성됨 - 위치: " + effectWorldPosition);
             }
         }
 
@@ -613,14 +672,14 @@ namespace Azmodan.Phase1
         public override void Update()
         {
             attackTimer += Time.deltaTime;
-            
+
             // 공격 1초 시점에서 공격 소리 재생
             if (attackTimer >= 1.0f && !hasSoundPlayed)
             {
                 // 공격 소리 재생
                 phase1Boss.PlayAttackSound(2);
                 hasSoundPlayed = true;
-                Debug.Log("보스: 공격1 소리 재생");
+                // Debug.Log("보스: 공격2 소리 재생");
             }
 
             // 공격 중간 지점에서 투사체 발사 (애니메이션 이벤트로 대체 가능)
@@ -741,11 +800,11 @@ namespace Azmodan.Phase1
                 {
                     // 디버깅용 로그 추가
                     Debug.Log($"보스: 선딜레이 완료 ({idleTimer}초 경과), 공격 상태로 전환");
-
+                    
                     // 공격 플래그 설정 - 상태 전환 명확히
                     phase1Boss.SetWaitingForAttack(false);
 
-                    // 여기가 핵심! 명시적으로 직접 공격 상태로 전환
+                    // 직접 공격 상태로 전환
                     boss.TransitionToAttack();
                     return;
                 }
@@ -800,16 +859,16 @@ namespace Azmodan.Phase1
         {
             this.phase1Boss = boss;
         }
-        
+
         public override void Enter()
         {
             // Walk 애니메이션 재생
             boss.animator.SetTrigger("Walk");
-        
+
             // Phase1 전용 걷기 소리 재생
             phase1Boss.PlayWalkSound();
         }
-        
+
         public override void Exit()
         {
             phase1Boss.StopWalkSound();
