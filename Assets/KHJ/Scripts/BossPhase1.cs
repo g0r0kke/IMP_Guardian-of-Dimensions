@@ -253,7 +253,7 @@ namespace Azmodan.Phase1
             // 이미 공격이 선택된 상태라면 중복 실행 방지
             if (attackSelected)
             {
-                Debug.Log("보스: 이미 공격이 선택되어 있습니다.");
+                // Debug.Log("보스: 이미 공격이 선택되어 있습니다.");
                 return;
             }
 
@@ -264,14 +264,14 @@ namespace Azmodan.Phase1
                 // 근접 공격 선택 및 저장
                 attackDistance = attack1Distance;
                 selectedAttackType = BossStateType.Attack1;
-                Debug.Log("보스: 근접 공격 선택됨, 거리: " + attackDistance);
+                // Debug.Log("보스: 근접 공격 선택됨, 거리: " + attackDistance);
             }
             else if (randomAttackNum >= 71 && randomAttackNum <= 100)
             {
                 // 원거리 공격 선택 및 저장
                 attackDistance = attack2Distance;
                 selectedAttackType = BossStateType.Attack2;
-                Debug.Log("보스: 원거리 공격 선택됨, 거리: " + attackDistance);
+                // Debug.Log("보스: 원거리 공격 선택됨, 거리: " + attackDistance);
             }
             else
             {
@@ -280,13 +280,13 @@ namespace Azmodan.Phase1
                 {
                     attackDistance = attack1Distance;
                     selectedAttackType = BossStateType.Attack1;
-                    Debug.Log("보스: 기본 근접 공격 선택됨");
+                    // Debug.Log("보스: 기본 근접 공격 선택됨");
                 }
                 else
                 {
                     attackDistance = attack2Distance;
                     selectedAttackType = BossStateType.Attack2;
-                    Debug.Log("보스: 기본 원거리 공격 선택됨");
+                    // Debug.Log("보스: 기본 원거리 공격 선택됨");
                 }
             }
 
@@ -307,7 +307,7 @@ namespace Azmodan.Phase1
             // 모든 애니메이터 파라미터 초기화 (확실히 초기화)
             ResetAllAnimatorParameters();
             
-            Debug.Log($"보스: TransitionToAttack 호출됨 - 선택된 공격 타입: {selectedAttackType}");
+            // Debug.Log($"보스: TransitionToAttack 호출됨 - 선택된 공격 타입: {selectedAttackType}");
 
             // 플레이어와의 거리 확인
             float distanceToPlayer = 0;
@@ -316,7 +316,7 @@ namespace Azmodan.Phase1
                 Vector3 direction = targetPlayer.transform.position - transform.position;
                 direction.y = 0; // Y축 무시
                 distanceToPlayer = direction.magnitude;
-                Debug.Log($"보스: 플레이어와의 거리: {distanceToPlayer}, 공격 거리: {attackDistance}");
+                // Debug.Log($"보스: 플레이어와의 거리: {distanceToPlayer}, 공격 거리: {attackDistance}");
             }
 
             // 공격 거리 확인 - 거리를 크게 벗어났을 때만 Walk 상태로 전환
@@ -324,7 +324,7 @@ namespace Azmodan.Phase1
             if (selectedAttackType == BossStateType.Attack1 && distanceToPlayer > attack1Distance * 1.5f ||
                 selectedAttackType == BossStateType.Attack2 && distanceToPlayer > attack2Distance * 1.5f)
             {
-                Debug.Log("보스: 공격 거리에서 크게 벗어남, 다시 추적");
+                // Debug.Log("보스: 공격 거리에서 크게 벗어남, 다시 추적");
                 attackInitiated = false; // 공격 시도 실패 플래그 초기화
                 TransitionToWalk();
                 return;
@@ -333,7 +333,7 @@ namespace Azmodan.Phase1
             // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인
             if (!IsPlayerInAttackAngle())
             {
-                Debug.Log("보스: 플레이어가 공격 각도 범위(90도) 밖에 있음, 다시 추적");
+                // Debug.Log("보스: 플레이어가 공격 각도 범위(90도) 밖에 있음, 다시 추적");
                 attackInitiated = false; // 공격 시도 실패 플래그 초기화
                 TransitionToWalk();
                 return;
@@ -343,7 +343,7 @@ namespace Azmodan.Phase1
             currentStateType = selectedAttackType;
 
             // 현재 공격 중인지 명확히 기록
-            Debug.Log($"보스: {selectedAttackType} 상태로 명시적 전환 시작");
+            // Debug.Log($"보스: {selectedAttackType} 상태로 명시적 전환 시작");
 
             // 공격 상태로 전환 완료 후
             if (selectedAttackType == BossStateType.Attack1)
@@ -361,7 +361,7 @@ namespace Azmodan.Phase1
             // 이미 사망했다면 데미지 처리하지 않음
             if (isDead)
             {
-                Debug.Log("보스: 이미 사망 상태입니다. 데미지 무시.");
+                // Debug.Log("보스: 이미 사망 상태입니다. 데미지 무시.");
                 return;
             }
 
@@ -403,7 +403,7 @@ namespace Azmodan.Phase1
             // 이미 죽음 처리 중이거나 사망 상태면 중복 실행 방지
             if (isDead && deathAnimationTriggered)
             {
-                Debug.Log("보스: 이미 사망 상태입니다. 중복 사망 처리 무시.");
+                // Debug.Log("보스: 이미 사망 상태입니다. 중복 사망 처리 무시.");
                 return;
             }
 
@@ -613,7 +613,7 @@ namespace Azmodan.Phase1
                 // 일정 시간 후 이펙트 제거 (3초 후 제거, 필요에 따라 조정)
                 GameObject.Destroy(effect, 3f);
         
-                Debug.Log("보스: 공격1 이펙트 생성됨 - 위치: " + effectWorldPosition);
+                // Debug.Log("보스: 공격1 이펙트 생성됨 - 위치: " + effectWorldPosition);
             }
         }
 
