@@ -8,6 +8,7 @@ TagManager:
   - Summon
   - Missile
   - baseSDK
+  - Hobgoblin
   layers:
   - Default
   - TransparentFX

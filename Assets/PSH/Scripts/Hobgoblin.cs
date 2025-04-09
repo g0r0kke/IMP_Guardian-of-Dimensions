@@ -6,23 +6,27 @@ public class Hobgoblin : MonoBehaviour
     public Animator animator;
     public Transform player;
 
-
-    
-
-
     private IState currentState;
-
+    public float rotationSpeed = 5f;
 
     public float walkSpeed = 2f;
    // public float walkRange = 3f;  
     public float detectionRange = 10f;
-    public float attackRange = 1.5f;
+    public float attackRange = 1.5f; // 공격 거리
     //public float runSpeed = 3.5f;
     public int hp = 1;
+
+    public AudioSource audioSource;
+
+    public AudioClip goblinLaugh;   // idle
+    public AudioClip goblinCackle;  // walk
+    public AudioClip goblinPunch;   // attack
+    public AudioClip goblinDeath;   // damage/death
 
     void Start()
     {
         animator = GetComponent<Animator>();
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         ChangeState(new HobIdleState(this)); // 초기 상태
@@ -51,7 +55,32 @@ public class Hobgoblin : MonoBehaviour
 
         if (hp <= 0)
         {
-            ChangeState(new DeadState(this));
+            ChangeState(new HobDeadState(this));
         }
     }
+
+    // 외부에서 Hobgoblin 소환활 수 있도록 Spawn 하는 함수
+        public static Hobgoblin Spawner(GameObject prefab, Vector3 spawnPosition, Transform targetPlayer)
+        {
+        
+            if (prefab == null)
+            {
+                Debug.LogError("Hobgoblin 프리팹 안 넣음");
+                return null;
+            }
+
+            GameObject hobgoblinObj = GameObject.Instantiate(prefab, spawnPosition, Quaternion.identity);
+            Hobgoblin hob = hobgoblinObj.GetComponent<Hobgoblin>();
+            hob.player = targetPlayer;
+            return hob;
+        }
+
+        public void PlayPunchSound()
+        {
+            if (audioSource != null && goblinPunch != null)
+            {
+                audioSource.PlayOneShot(goblinPunch);
+            }
+        }
+
 }

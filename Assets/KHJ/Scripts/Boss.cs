@@ -200,11 +200,11 @@ public abstract class Boss : MonoBehaviour
         // 이미 Death 애니메이션이 트리거 되었으면 중복 호출 방지
         if (deathAnimationTriggered)
         {
-            Debug.Log("보스: 이미 사망 처리 중입니다. 중복 호출 무시.");
+            // Debug.Log("보스: 이미 사망 처리 중입니다. 중복 호출 무시.");
             return;
         }
 
-        Debug.Log("보스: Death 상태로 전환 시작");
+        // Debug.Log("보스: Death 상태로 전환 시작");
 
         // Death 애니메이션 트리거 플래그 설정
         deathAnimationTriggered = true;
@@ -262,7 +262,7 @@ public abstract class Boss : MonoBehaviour
             subStateDurations[state] = 0f;
         }
     
-        Debug.Log("보스: 모든 상태 초기화됨 (사망 처리)");
+        // Debug.Log("보스: 모든 상태 초기화됨 (사망 처리)");
     }
 
     protected virtual void Die()

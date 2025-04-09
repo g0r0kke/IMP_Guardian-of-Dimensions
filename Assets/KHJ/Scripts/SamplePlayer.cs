@@ -97,7 +97,7 @@ public class SamplePlayer : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("소환물 타겟이 없습니다. 다시 검색합니다.");
+                // Debug.LogWarning("소환물 타겟이 없습니다. 다시 검색합니다.");
                 FindAllMinions();
             }
         }
@@ -116,7 +116,7 @@ public class SamplePlayer : MonoBehaviour
             }
         }
 
-        Debug.Log($"소환물 {minionTargets.Count}개 찾음");
+        // Debug.Log($"소환물 {minionTargets.Count}개 찾음");
     }
 
     // 플레이어가 데미지를 받는 메서드
