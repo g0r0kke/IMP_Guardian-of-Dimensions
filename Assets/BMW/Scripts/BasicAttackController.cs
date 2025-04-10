@@ -8,6 +8,8 @@ public class BasicAttackController: MonoBehaviour
     public GameObject basicAttackPrefab;
     public Collider planeCollider;
     public LayerMask targetLayer;
+    public AudioSource basicAttackStartSound;
+    public AudioSource basicAttackEndSound;
     public float basicAttackStartScale = 1.0f;
     public float basicAttackForce = 1000.0f;
     public float basicAttackDelTime = 2.0f;
@@ -39,12 +41,8 @@ public class BasicAttackController: MonoBehaviour
             animationController.BasicAttackAnimation();
             Invoke("BasicAttack", 0.5f);
             delayTime = playerGUI.basicAttackDelay;
-            handGestureController.isBasicAttackGesture = false;
         }
-        else
-        {
-            handGestureController.isBasicAttackGesture = false;
-        }
+        handGestureController.isBasicAttackGesture = false;
 
         if (delayTime > 0)
         {
@@ -55,6 +53,7 @@ public class BasicAttackController: MonoBehaviour
 
     void BasicAttack()
     {
+        basicAttackStartSound.Play();
 
         Vector3 position = (basicAttackPos != null ? basicAttackPos.position : transform.position) + transform.forward * 0.5f;
 
@@ -82,7 +81,7 @@ public class BasicAttackController: MonoBehaviour
         {
             attackController = basicAttackSphere.AddComponent<BasicAttackSphereController>();
         }
-        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, attackDamage, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider);
+        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, attackDamage, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider, basicAttackEndSound);
 
     }
 

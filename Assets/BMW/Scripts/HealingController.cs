@@ -6,6 +6,7 @@ public class HealingController : MonoBehaviour
 {
 
     public GameObject heallingEffectPrefab;
+    public AudioSource heallingSound;
     public int HealingAmount = 5;
     public Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
     public float heallingEffectDuration = 4.0f;
@@ -33,12 +34,8 @@ public class HealingController : MonoBehaviour
             animationController.HealingAnimation();
             Invoke("Healing", 1.3f);
             delayTime = playerGUI.healingSkillDelay;
-            handGestureController.isHealingGesture = false;
         }
-        else
-        {
-            handGestureController.isHealingGesture = false;
-        }
+        handGestureController.isHealingGesture = false;
 
         if (delayTime > 0)
         {
@@ -50,6 +47,8 @@ public class HealingController : MonoBehaviour
 
     void Healing()
     {
+        heallingSound.Play();
+
         playerGUI.IncreaseHealth(HealingAmount);
 
         heallingEffectCircle = Instantiate(heallingEffectPrefab, transform.position, Quaternion.identity);

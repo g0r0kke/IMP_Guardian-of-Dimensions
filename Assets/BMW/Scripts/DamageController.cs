@@ -4,6 +4,7 @@ public class DamageController : MonoBehaviour
 {
 
     public LayerMask targetLayer;
+    public AudioSource PlayerTakeDamageSound;
     public int collisionDamage = 2;
     public int playerDamage = 0;
 
@@ -31,14 +32,23 @@ public class DamageController : MonoBehaviour
 
     void PlayerTakeDamage(int damageIntensity)
     {
-        if (!isAvoid && !isDefense) playerDamage += damageIntensity;
+        if (!isAvoid && !isDefense)
+        {
+            playerDamage += damageIntensity;
+            PlayerTakeDamageSound.Play();
+
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (IsInTargetLayer(collision.gameObject) && !isConstantContact)
         {
-           if(!isAvoid && !isDefense) playerDamage += collisionDamage;
+            if (!isAvoid && !isDefense)
+            {
+                playerDamage += collisionDamage;
+                PlayerTakeDamageSound.Play();
+            }
 
             isConstantContact = true;
         }

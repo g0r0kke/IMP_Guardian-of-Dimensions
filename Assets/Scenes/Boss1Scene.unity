@@ -603,6 +603,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1325685200 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2597261329923799738, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685201 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5586872403785116716, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685202 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2651799542348585244, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685203 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2846353322531038895, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685204 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7582189971182168355, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685205 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5665636970122807775, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685206 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5534434664717015865, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1325685207 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5189019668468112837, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395747798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,11 +2040,41 @@ PrefabInstance:
       propertyPath: planeCollider
       value: 
       objectReference: {fileID: 1225320183}
+    - target: {fileID: 2652216780130495351, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: basicAttackEndSound
+      value: 
+      objectReference: {fileID: 1325685206}
+    - target: {fileID: 2652216780130495351, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: basicAttackStartSound
+      value: 
+      objectReference: {fileID: 1325685207}
+    - target: {fileID: 4439591891553361647, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerTakeDamageSound
+      value: 
+      objectReference: {fileID: 1325685200}
     - target: {fileID: 4641375784037552862, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: planeCollider
       value: 
       objectReference: {fileID: 1225320183}
+    - target: {fileID: 4641375784037552862, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: ultimateAttackEndSound
+      value: 
+      objectReference: {fileID: 1325685204}
+    - target: {fileID: 4641375784037552862, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: ultimateAttackStartSound
+      value: 
+      objectReference: {fileID: 1325685205}
+    - target: {fileID: 5589778470852039940, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: ShieldSound
+      value: 
+      objectReference: {fileID: 1325685203}
     - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: PlayerHpBar
@@ -2077,6 +2155,16 @@ PrefabInstance:
       propertyPath: PlayerUltimateAttackGlobe
       value: 
       objectReference: {fileID: 5134977108675491315}
+    - target: {fileID: 7663121471199286818, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: heallingSound
+      value: 
+      objectReference: {fileID: 1325685202}
+    - target: {fileID: 8244825301201614628, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: AvoidSound
+      value: 
+      objectReference: {fileID: 1325685201}
     m_RemovedComponents:
     - {fileID: 0}
     m_RemovedGameObjects: []

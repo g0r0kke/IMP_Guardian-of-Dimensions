@@ -8,6 +8,9 @@ public class UltimateAttackController : MonoBehaviour
     public GameObject ultimateAttackBeforeEffectPrefab;
     public Collider planeCollider;
     public LayerMask targetLayer;
+    public AudioSource ultimateAttackStartSound;
+    public AudioSource ultimateAttackEndSound;
+
     public float ultimateAttackStartScale = 0.03f;
     public float ultimateAttackRange = 10.0f;
     public float ultimateAttackStartHeight = 10.0f;
@@ -18,6 +21,7 @@ public class UltimateAttackController : MonoBehaviour
     public int attackDamage = 30;
 
     public float delayTime = 0f;
+
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
     private AnimationController animationController;
@@ -38,14 +42,9 @@ public class UltimateAttackController : MonoBehaviour
         {
             animationController.UltimateAttackAnimation();
             Invoke("UltimateAttack", 0.7f);
-            playerGUI.ultimateAttackGauge = 0;
-            delayTime = playerGUI.ultimateAttackDelay;
-            handGestureController.isUltimateAttackGesture = false;
         }
-        else
-        {
-            handGestureController.isUltimateAttackGesture = false;
-        }
+        
+        handGestureController.isUltimateAttackGesture = false;
 
         if (delayTime > 0)
         {
@@ -60,6 +59,18 @@ public class UltimateAttackController : MonoBehaviour
 
         Vector3 center = transform.position;
         Collider[] hits = Physics.OverlapSphere(center, ultimateAttackRange, targetLayer);
+
+        if (hits == null || hits.Length == 0)
+        {
+            Debug.Log("공격 범위에 적이 존재하지 않습니다");
+            return;
+
+        }
+
+        ultimateAttackStartSound.Play();
+
+        playerGUI.ultimateAttackGauge = 0;
+        delayTime = playerGUI.ultimateAttackDelay;
 
         List<Vector3> enemyPositions = new List<Vector3>();
         List<Vector3> spawnPositions = new List<Vector3>();
@@ -93,7 +104,7 @@ public class UltimateAttackController : MonoBehaviour
             {
                 attackController = ultimateAttackSphere.AddComponent<UltimateAttackSphereController>();
             }
-            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, attackDamage, targetLayer, planeCollider);
+            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, attackDamage, targetLayer, planeCollider, ultimateAttackEndSound);
 
         }
     }
