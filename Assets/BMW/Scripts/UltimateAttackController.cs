@@ -34,11 +34,11 @@ public class UltimateAttackController : MonoBehaviour
     {
         bool isPressedUltimateAttack = Input.GetKeyDown(KeyCode.X);
 
-        if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.currentGauge == playerGUI.ultimateAttackGauge)
+        if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)
         {
             animationController.UltimateAttackAnimation();
             Invoke("UltimateAttack", 0.7f);
-            playerGUI.currentGauge = 0;
+            playerGUI.ultimateAttackGauge = 0;
             delayTime = playerGUI.ultimateAttackDelay;
             handGestureController.isUltimateAttackGesture = false;
         }

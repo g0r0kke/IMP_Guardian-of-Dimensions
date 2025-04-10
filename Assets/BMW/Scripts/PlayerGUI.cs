@@ -1,10 +1,20 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerGUI : MonoBehaviour
 {
-    public int playerHealth = 50;
-    public int playerHealthLimit = 50;
-    public int ultimateAttackGauge = 10;
+    public int playerHealthLimit;
+    public int playerHealth;
+    private int previousHealth;
+    public Slider PlayerHpBar;
+    public TextMeshProUGUI PlayerHpText;
+
+    public int ultimateAttackGaugeLimit;
+    public int ultimateAttackGauge;
+    private int previousGauge;
+    public Slider PlayerGaugeBar;
+    public TextMeshProUGUI PlayerGaugeText;
 
     public float basicAttackDelay = 0.6f;
     public float ultimateAttackDelay = 1.0f;
@@ -20,17 +30,13 @@ public class PlayerGUI : MonoBehaviour
     private HealingController healingController;
     private DamageController damageController;
     private AnimationController animationController;
+    private PlayerDataManager playerDataManager;
 
     private float basicAttackDelayTime;
     private float ultimateAttackDelayTime;
     private float avoidanceSkillDelayTime;
     private float defenseSkillDelayTime;
     private float healingSkillDelayTime;
-
-    private int previousHealth = 0;
-    private int previousGauge = 0;
-    public int currentGauge = 0;
-
 
     void Start()
     {
@@ -41,6 +47,16 @@ public class PlayerGUI : MonoBehaviour
         healingController = GetComponent<HealingController>();
         damageController = GetComponent<DamageController>();
         animationController = GetComponent<AnimationController>();
+
+        playerDataManager = PlayerDataManager.Instance;
+
+        if (playerDataManager == null)
+        {
+            Debug.LogError("PlayerDataManager 인스턴스를 찾을 수 없습니다!");
+            return;
+        }
+        playerHealth = playerDataManager.playerLinkHealth;
+        ultimateAttackGauge = playerDataManager.playerLinkGauge;
     }
 
     // Update is called once per frame
@@ -68,23 +84,35 @@ public class PlayerGUI : MonoBehaviour
         defenseSkillDelayTime = defenseController.delayTime;
         avoidanceSkillDelayTime = avoidanceController.delayTime;
         healingSkillDelayTime = healingController.delayTime;
+
+        PlayerHpBar.value = (float)playerHealth / (float)playerHealthLimit;
+        PlayerHpText.text = playerHealth + "/" + playerHealthLimit;
+        PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
+        PlayerGaugeText.text = ultimateAttackGauge + "/" + ultimateAttackGaugeLimit;
+
+        playerDataManager.playerLinkHealth = playerHealth;
+        playerDataManager.playerLinkGauge = ultimateAttackGauge;
     }
 
     public void IncreaseGauge(int GaugeIncreaseAmount)
     {
-        if(currentGauge < ultimateAttackGauge) currentGauge += GaugeIncreaseAmount;
+        if (ultimateAttackGauge < ultimateAttackGaugeLimit) ultimateAttackGauge += GaugeIncreaseAmount;
+         playerDataManager.playerLinkGauge = ultimateAttackGauge;
     }
 
     public void IncreaseHealth(int HealingAmount)
     {
         
-        if (playerHealthLimit < playerHealth + HealingAmount) playerHealth = playerHealthLimit;
+        if (playerHealthLimit < playerHealth + HealingAmount) playerHealth = playerHealthLimit - playerHealth;
         else playerHealth += HealingAmount;
+        playerDataManager.playerLinkHealth = playerHealth;
     }
 
     public void decreaseHealth(int damageAmount)
     {
-        playerHealth -= damageAmount;
+        if (playerHealth > 0) playerHealth -= damageAmount;
+        playerDataManager.playerLinkHealth = playerHealth;
+
     }
 
     void GameOver()
@@ -111,11 +139,11 @@ public class PlayerGUI : MonoBehaviour
             Debug.Log("Player Health:" + playerHealth);
             previousHealth = playerHealth;
         }
-        if (previousGauge != currentGauge)
+        if (previousGauge != ultimateAttackGauge)
         {
-            Debug.Log("currentGauge: " + currentGauge);
-            if (currentGauge >= ultimateAttackGauge) Debug.Log("Ultimate skill available");
-            previousGauge = currentGauge;
+            Debug.Log("currentGauge: " + ultimateAttackGauge);
+            if (ultimateAttackGauge >= ultimateAttackGaugeLimit) Debug.Log("Ultimate skill available");
+            previousGauge = ultimateAttackGauge;
         }
         Debug.Log("basicAttackDelay:" + basicAttackDelayTime + "\n" +
                   "ultimateAttackDelay:" + ultimateAttackDelayTime + "\n" +
