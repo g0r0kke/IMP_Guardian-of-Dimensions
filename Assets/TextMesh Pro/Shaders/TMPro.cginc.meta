@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b4e1d89a74ea0d04abfbbbf1d8aa6117
+guid: 407bc68d299748449bbf7f48ee690f8d
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
@@ -7,10 +7,3 @@ ShaderImporter:
   userData: Version 2.0
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Shaders/TMPro.cginc
-  uploadId: 727894

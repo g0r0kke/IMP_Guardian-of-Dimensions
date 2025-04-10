@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e1cb802f230ab784da5a61f244360fac
+guid: cf81c85f95fe47e1a27f6ae460cf182c
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
@@ -7,10 +7,3 @@ ShaderImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Shaders/TMP_Sprite.shader
-  uploadId: 727894

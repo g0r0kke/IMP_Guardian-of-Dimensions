@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc42977a2afae244ea2beb289736278e
+guid: 128e987d567d4e2c824d754223b3f3b0
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
@@ -7,10 +7,3 @@ ShaderImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader
-  uploadId: 727894

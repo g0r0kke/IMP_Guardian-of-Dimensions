@@ -1,16 +1,8 @@
 fileFormatVersion: 2
-guid: 6e71f2107df2b444d8f4d06f4ac91644
+guid: e73a58f6e2794ae7b1b7e50b7fb811b0
 timeCreated: 1484172806
 licenseType: Pro
 NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF -
-    Drop Shadow.mat
-  uploadId: 727894
