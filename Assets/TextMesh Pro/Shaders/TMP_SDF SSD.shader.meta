@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d5994c977214bec4eb30614210f374c2
+guid: 14eb328de4b8eb245bb7cea29e4ac00b
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
@@ -7,10 +7,3 @@ ShaderImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader
-  uploadId: 727894

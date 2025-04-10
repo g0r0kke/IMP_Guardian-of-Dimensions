@@ -4,15 +4,30 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
     public AudioMixer audioMixer;
+    public AudioMixerGroup musicGroup;
+    public AudioMixerGroup sfxGroup;
+
+    private AudioSource bgmSource;
+    private AudioSource sfxSource;
+
+    public AudioClip buttonSFX;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            // 씬 전환되어도 바뀌지 않고 살아있음
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
+
+            // 오디오 소스 생성
+            bgmSource = gameObject.AddComponent<AudioSource>();
+            sfxSource = gameObject.AddComponent<AudioSource>();
+
+            // 믹서 그룹 연결 (에디터에서 드래그)
+            bgmSource.outputAudioMixerGroup = musicGroup;
+            sfxSource.outputAudioMixerGroup = sfxGroup;
         }
         else
         {
@@ -22,22 +37,33 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        // 시작할 때 볼륨 불러옴 (종료해도 그 볼륨 그대로)
         LoadVolume();
     }
 
     public void SetMusicVolume(float volume)
     {
-        // 슬라이더 움직였을때 
         Debug.Log("SetMusicVolume: " + volume);
-        
-        audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
+        if (volume <= 0.0001f)
+        {
+            audioMixer.SetFloat("Music", -80f); // 음소거처럼 처리
+        }
+        else
+        {
+            audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
+        }
         PlayerPrefs.SetFloat("musicVolume", volume);
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        if (volume <= 0.0001f)
+        {
+            audioMixer.SetFloat("SFX", -80f);
+        }
+        else
+        {
+            audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        }
         PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 
@@ -50,15 +76,34 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(sfx);
     }
 
-    // 다른씬에서 오디오 음악 바꾸기 위한 함수 
     public void PlayBGM(AudioClip clip)
     {
-        AudioSource bgmSource = GetComponent<AudioSource>();
         if (bgmSource.clip != clip)
         {
             bgmSource.clip = clip;
             bgmSource.loop = true;
             bgmSource.Play();
         }
+    }
+
+    public void StopBGM()
+    {
+        if (bgmSource.isPlaying)
+        {
+            bgmSource.Stop();
+        }
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            sfxSource.PlayOneShot(clip);
+        }
+    }
+
+    public void PlayButtonSFX()
+    {
+        PlaySFX(buttonSFX);
     }
 }

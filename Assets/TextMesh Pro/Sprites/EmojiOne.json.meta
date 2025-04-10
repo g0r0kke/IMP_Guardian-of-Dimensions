@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 8c27d4b54c2919944957c32875c74b52
+guid: 8f05276190cf498a8153f6cbe761d4e6
 timeCreated: 1480316860
 licenseType: Pro
 TextScriptImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Sprites/EmojiOne.json
-  uploadId: 727894

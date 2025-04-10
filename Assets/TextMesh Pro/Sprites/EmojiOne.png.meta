@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7eddd1f996dc1f54b9cbdef83e9b65b6
+guid: dffef66376be4fa480fb02b19edbe903
 TextureImporter:
   fileIDToRecycleName:
     21300000: EmojiOne_0
@@ -429,10 +429,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Sprites/EmojiOne.png
-  uploadId: 727894

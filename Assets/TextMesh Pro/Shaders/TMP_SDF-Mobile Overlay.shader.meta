@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cfdfca852e637204a8c658d5bb3fcb4a
+guid: a02a7d8c237544f1962732b55a9aebf1
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
@@ -7,10 +7,3 @@ ShaderImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280702
-  packageName: ManoMotion SDK
-  packageVersion: 2.1
-  assetPath: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader
-  uploadId: 727894
