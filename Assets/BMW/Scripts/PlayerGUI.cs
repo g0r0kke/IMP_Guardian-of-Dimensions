@@ -17,10 +17,22 @@ public class PlayerGUI : MonoBehaviour
     public TextMeshProUGUI PlayerGaugeText;
 
     public float basicAttackDelay = 0.6f;
-    public float ultimateAttackDelay = 1.0f;
-    public float avoidanceSkillDelay = 10.0f;
+    public Slider PlayerBasicAttackGlobe;
+    public TextMeshProUGUI PlayerBasicAttackText;
+
+    public float ultimateAttackDelay = 6.0f;
+    public Slider PlayerUltimateAttackGlobe;
+    public TextMeshProUGUI PlayerUltimateAttackText;
+
     public float defenseSkillDelay = 6.0f;
+    public Slider PlayerShildGlobe;
+    public TextMeshProUGUI PlayerShildText;
+
     public float healingSkillDelay = 10.0f;
+    public Slider PlayerHealingGlobe;
+    public TextMeshProUGUI PlayerHealingText;
+
+    public float avoidanceSkillDelay = 10.0f;
     public bool debug = true;
 
     private BasicAttackController basicAttackController;
@@ -43,9 +55,9 @@ public class PlayerGUI : MonoBehaviour
         basicAttackController = GetComponent<BasicAttackController>();
         ultimateAttackController = GetComponent<UltimateAttackController>();
         defenseController = GetComponent<DefenseController>();
-        avoidanceController = GetComponent<AvoidanceController>();
         healingController = GetComponent<HealingController>();
         damageController = GetComponent<DamageController>();
+        avoidanceController = GetComponent<AvoidanceController>();
         animationController = GetComponent<AnimationController>();
 
         playerDataManager = PlayerDataManager.Instance;
@@ -79,16 +91,29 @@ public class PlayerGUI : MonoBehaviour
             DEBUG();
         }
 
-        basicAttackDelayTime = basicAttackController.delayTime;
-        ultimateAttackDelayTime = ultimateAttackController.delayTime;
-        defenseSkillDelayTime = defenseController.delayTime;
-        avoidanceSkillDelayTime = avoidanceController.delayTime;
-        healingSkillDelayTime = healingController.delayTime;
-
         PlayerHpBar.value = (float)playerHealth / (float)playerHealthLimit;
         PlayerHpText.text = playerHealth + "/" + playerHealthLimit;
+
         PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
         PlayerGaugeText.text = ultimateAttackGauge + "/" + ultimateAttackGaugeLimit;
+
+        basicAttackDelayTime = basicAttackController.delayTime;
+        PlayerBasicAttackGlobe.value = (float)basicAttackDelayTime / (float)basicAttackDelay;
+        PlayerBasicAttackText.text = $"{Mathf.Ceil(basicAttackDelayTime)}";
+
+        ultimateAttackDelayTime = ultimateAttackController.delayTime;
+        PlayerUltimateAttackGlobe.value = (float)ultimateAttackDelayTime / (float)ultimateAttackDelay;
+        PlayerUltimateAttackText.text = $"{Mathf.Ceil(ultimateAttackDelayTime)}";
+
+        defenseSkillDelayTime = defenseController.delayTime;
+        PlayerShildGlobe.value = (float)defenseSkillDelayTime / (float)defenseSkillDelay;
+        PlayerShildText.text = $"{Mathf.Ceil(defenseSkillDelayTime)}";
+
+        healingSkillDelayTime = healingController.delayTime;
+        PlayerHealingGlobe.value = (float)healingSkillDelayTime / (float)healingSkillDelay;
+        PlayerHealingText.text = $"{Mathf.Ceil(healingSkillDelayTime)}";
+
+        avoidanceSkillDelayTime = avoidanceController.delayTime;
 
         playerDataManager.playerLinkHealth = playerHealth;
         playerDataManager.playerLinkGauge = ultimateAttackGauge;
