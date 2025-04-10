@@ -29,7 +29,7 @@ public class DamageController : MonoBehaviour
         }
     }
 
-    void PlayTakeDamage(int damageIntensity)
+    void PlayerTakeDamage(int damageIntensity)
     {
         if (!isAvoid && !isDefense) playerDamage += damageIntensity;
     }

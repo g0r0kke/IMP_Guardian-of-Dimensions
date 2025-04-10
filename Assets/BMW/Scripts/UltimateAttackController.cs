@@ -15,7 +15,7 @@ public class UltimateAttackController : MonoBehaviour
     public float ultimateAttackScaleRate = 0.5f;
     public float ultimateAttackSpeed = 8.0f;
     public float ultimateAttackDelTime = 10.0f;
-    public int attackDamage = 10;
+    public int attackDamage = 30;
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;

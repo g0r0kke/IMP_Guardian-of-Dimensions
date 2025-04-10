@@ -18,18 +18,17 @@ public class PlayerDataManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
 
-            playerLinkHealth = originPlayerHealth;
-            playerLinkGauge = originPlayerGauge;
-        }
-        else if (Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            PlayerOriginSetting();
         }
 
         playerGUI = FindObjectOfType<PlayerGUI>();
@@ -40,6 +39,12 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         LoadPlayerData();
+    }
+
+    public void PlayerOriginSetting()
+    {
+        playerLinkHealth = originPlayerHealth;
+        playerLinkGauge = originPlayerGauge;
     }
 
     private void OnEnable()
@@ -75,8 +80,13 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (playerGUI == null)
         {
-            Debug.LogWarning("PlayerGUI가 존재하지 않아 데이터를 로드할 수 없습니다.");
-            return;
+            playerGUI = FindObjectOfType<PlayerGUI>();
+
+            if (playerGUI == null)
+            {
+                Debug.LogWarning("PlayerGUI가 존재하지 않아 데이터를 로드할 수 없습니다.");
+                return;
+            }
         }
 
         playerGUI.playerHealthLimit = playerHealthLimit;
@@ -100,3 +110,5 @@ public class PlayerDataManager : MonoBehaviour
         playerGUI.PlayerGaugeText.text = $"{playerLinkGauge}/{playerGaugeLimit}";
     }
 }
+
+

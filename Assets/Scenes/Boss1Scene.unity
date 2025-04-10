@@ -918,30 +918,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67a145c34cd25d47995913526f55ad5, type: 3}
---- !u!1 &1678918439 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1239296250143361832, guid: b36ec6ac928d1924ab0c7344fffe94fc,
-    type: 3}
-  m_PrefabInstance: {fileID: 4064147330406651345}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1678918443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1678918439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fae9090c5afafa4c8309ce5d5684d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHealthLimit: 50
-  originPlayerHealth: 50
-  playerGaugeLimit: 10
-  originPlayerGauge: 0
-  playerLinkHealth: 0
-  playerLinkGauge: 0
 --- !u!1 &1883931782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,6 +978,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1959088770 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4398136918708322778, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 9066874670393342533}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1974600875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1593,11 +1575,7 @@ PrefabInstance:
     - {fileID: 8458335052630748020, guid: b36ec6ac928d1924ab0c7344fffe94fc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1239296250143361832, guid: b36ec6ac928d1924ab0c7344fffe94fc,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1678918443}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b36ec6ac928d1924ab0c7344fffe94fc, type: 3}
 --- !u!1001 &5119708332005481654
 PrefabInstance:
@@ -1750,6 +1728,11 @@ PrefabInstance:
       propertyPath: healthBarUI
       value: 
       objectReference: {fileID: 1188547744}
+    - target: {fileID: 5406292883794245097, guid: e8892ba98c7546040b97e0e7a759bc57,
+        type: 3}
+      propertyPath: targetPlayer
+      value: 
+      objectReference: {fileID: 1959088770}
     - target: {fileID: 5773275625782211609, guid: e8892ba98c7546040b97e0e7a759bc57,
         type: 3}
       propertyPath: m_LocalPosition.x

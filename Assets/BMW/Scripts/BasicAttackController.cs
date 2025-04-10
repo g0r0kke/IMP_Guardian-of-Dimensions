@@ -13,7 +13,7 @@ public class BasicAttackController: MonoBehaviour
     public float basicAttackDelTime = 2.0f;
     public float basicAttackMaxDist = 30.0f;
     public int GaugeIncreaseAmount = 1;
-    public int attackDamage = 2;
+    public int attackDamage = 10;
 
     public float delayTime = 0f;
     private PlayerGUI playerGUI;
