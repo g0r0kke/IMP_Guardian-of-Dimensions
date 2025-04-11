@@ -5,6 +5,8 @@ public class WeaponCollision : MonoBehaviour
     private Azmodan.Phase1.BossPhase1 bossPhase1;
     private BoxCollider weaponCollider;
     private bool isAttacking = false;
+    private DamageController playerDamageController;
+    [SerializeField] private int attack1Damage = 20;
 
     [Header("애니메이션 프레임 설정")]
     [SerializeField] private int attackStartFrame = 17; // 콜라이더 활성화 시작 프레임
@@ -29,6 +31,15 @@ public class WeaponCollision : MonoBehaviour
         
         // 초기에는 콜라이더 비활성화
         weaponCollider.enabled = false;
+        
+        playerDamageController = FindObjectOfType<DamageController>();
+        if (playerDamageController == null)
+        {
+
+            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
+            return;
+
+        }
     }
 
     void Update()
@@ -108,14 +119,17 @@ public class WeaponCollision : MonoBehaviour
         {
             // Debug.Log("근접 공격!!");
             
-            // 데미지를 주는 로직 추가
-            SamplePlayer player = other.GetComponent<SamplePlayer>();
-            if (player != null)
-            {
-                // BossPhase1.cs의 Attack1State에서 지정한 동일한 데미지값 사용
-                player.TakeDamage(20);
-                Debug.Log($"보스가 플레이어에게 근접 공격으로 20 데미지를 입혔습니다!");
-            }
+            // 데미지를 주는 로직
+            playerDamageController.PlayerTakeDamage(attack1Damage);
+            Debug.Log($"보스1 근접 공격: 플레이어에게 {attack1Damage} 데미지를 입혔습니다!");
+            
+            // SamplePlayer player = other.GetComponent<SamplePlayer>();
+            // if (player != null)
+            // {
+            //     // BossPhase1.cs의 Attack1State에서 지정한 동일한 데미지값 사용
+            //     player.TakeDamage(20);
+            //     Debug.Log($"보스가 플레이어에게 근접 공격으로 20 데미지를 입혔습니다!");
+            // }
         }
     }
 }
