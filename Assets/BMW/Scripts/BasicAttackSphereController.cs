@@ -9,6 +9,7 @@ public class BasicAttackSphereController : MonoBehaviour
     private float maxDistance = 10.0f;
     private float lifeTime = 10.0f;
     private float timer = 0f;
+    private AudioSource basicAttackEndSound;
     public int attackDamage;
     private LayerMask targetLayer;
     private bool isInitialized = false;
@@ -19,7 +20,7 @@ public class BasicAttackSphereController : MonoBehaviour
     [Header("보스 타겟")]
     private Boss bossTarget;
 
-    public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider)
+    public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider, AudioSource audioSource)
     {
         player = playerTransform;
         maxDistance = maxDist;
@@ -29,6 +30,7 @@ public class BasicAttackSphereController : MonoBehaviour
         isInitialized = true;
         playerGUI = GUI;
         basicAttackController = controller;
+        basicAttackEndSound = audioSource;
 
         Collider AttackCollider = GetComponent<Collider>();
         Physics.IgnoreCollision(AttackCollider, planeCollider);
@@ -93,6 +95,7 @@ public class BasicAttackSphereController : MonoBehaviour
 
             bossTarget.TakeDamage(attackDamage);
             Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            basicAttackEndSound.Play();
         }
     }
 

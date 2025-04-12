@@ -6,6 +6,7 @@ public class AvoidanceController : MonoBehaviour
 
     public LayerMask originLayer;
     public LayerMask avoidanceLayer;
+    public AudioSource AvoidSound;
     public float avoidanceDuration = 3.0f;
     public float rotationThreshold = 5000.0f;
 
@@ -57,6 +58,8 @@ public class AvoidanceController : MonoBehaviour
 
     IEnumerator Avoidance()
     {
+        AvoidSound.Play();
+
         isAvoiding = true;
 
         // 방안 1 : 데미지 컨트롤러 일시적 비활성화

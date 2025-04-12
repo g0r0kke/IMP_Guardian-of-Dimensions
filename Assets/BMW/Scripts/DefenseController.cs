@@ -5,6 +5,7 @@ public class DefenseController : MonoBehaviour
 {
 
     public GameObject ShieldPrefab;
+    public AudioSource ShieldSound;
     public Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
     public float shieldDuration = 4.0f;
     public float shieldDistance = 1.0f;
@@ -34,12 +35,8 @@ public class DefenseController : MonoBehaviour
             animationController.DefenseAnimation();
             StartCoroutine(Defense());
             delayTime = playerGUI.defenseSkillDelay;
-            handGestureController.isDefenseGesture = false;
         }
-        else
-        {
-            handGestureController.isDefenseGesture = false;
-        }
+        handGestureController.isDefenseGesture = false;
 
         if (delayTime > 0)
         {
@@ -56,6 +53,8 @@ public class DefenseController : MonoBehaviour
         {
             Destroy(shieldSphere);
         }
+
+        ShieldSound.Play();
 
         damageController.isDefense = true;
 

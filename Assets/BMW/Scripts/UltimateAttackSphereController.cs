@@ -13,11 +13,12 @@ public class UltimateAttackSphereController : MonoBehaviour
     private float lifeTime = 10.0f;
     private float timer = 0f;
     private bool isInitialized = false;
+    private AudioSource ultimateAttackEndSound;
 
     [Header("보스 타겟")]
     private Boss bossTarget;
 
-    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider)
+    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
     {
         targetPosition = enemyPositions;
         speed = ultimateAttackSpeed;
@@ -26,6 +27,7 @@ public class UltimateAttackSphereController : MonoBehaviour
         startScale = StarScale;
         scaleRate = scaleRat;
         attackDamage = attDamage;
+        ultimateAttackEndSound = audioSource;
         isInitialized = true;
 
         transform.localScale = Vector3.one * startScale;
@@ -84,6 +86,8 @@ public class UltimateAttackSphereController : MonoBehaviour
             collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
             Destroy(collisionEffect, 1f);
             Destroy(gameObject);
+
+            ultimateAttackEndSound.Play();
 
             bossTarget.TakeDamage(attackDamage);
             Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");

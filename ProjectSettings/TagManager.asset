@@ -5,7 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Summon
+  - Missile
   - baseSDK
+  - Hobgoblin
   layers:
   - Default
   - TransparentFX

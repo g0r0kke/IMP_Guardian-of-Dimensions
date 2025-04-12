@@ -26,7 +26,7 @@ public abstract class IdleState : BossState
     {
         idleTimer = 0f;
         boss.animator.SetTrigger("Idle");
-        Debug.Log("보스: Idle 상태 시작");
+        // Debug.Log("보스: Idle 상태 시작");
     }
 
     public override void Update()
@@ -43,7 +43,7 @@ public abstract class IdleState : BossState
     
     public override void Exit()
     {
-        Debug.Log("보스: Idle 상태 종료");
+        // Debug.Log("보스: Idle 상태 종료");
     }
 }
 
@@ -55,7 +55,7 @@ public abstract class WalkState : BossState
     {
         // Walk 애니메이션 재생
         boss.animator.SetTrigger("Walk");
-        Debug.Log("보스: Walk 상태 시작");
+        // Debug.Log("보스: Walk 상태 시작");
     }
 
     public override void Update()
@@ -76,7 +76,7 @@ public abstract class WalkState : BossState
     
     public override void Exit()
     {
-        Debug.Log("보스: Walk 상태 종료");
+        // Debug.Log("보스: Walk 상태 종료");
     }
 }
 
@@ -91,7 +91,7 @@ public class StunState : BossState
     {
         stunTimer = 0f;
         boss.animator.SetBool("Damage", true);
-        Debug.Log("보스: 스턴 상태 시작");
+        // Debug.Log("보스: 스턴 상태 시작");
     }
 
     public override void Update()
@@ -131,7 +131,7 @@ public class StunState : BossState
     public override void Exit()
     {
         boss.animator.SetBool("Damage", false);
-        Debug.Log("보스: 스턴 상태 종료");
+        // Debug.Log("보스: 스턴 상태 종료");
     }
 }
 
@@ -151,7 +151,7 @@ public class DeathState : BossState
         // 명시적인 애니메이션 트리거 설정은 하지 않음
         // 이미 TransitionToDeath에서 설정했기 때문
         
-        Debug.Log("보스: 사망 상태 시작");
+        // Debug.Log("보스: 사망 상태 시작");
     }
 
     public override void Update()
@@ -163,7 +163,7 @@ public class DeathState : BossState
         if (deathTimer >= deathDuration)
         {
             animationComplete = true;
-            Debug.Log("보스: 사망 애니메이션 완료");
+            // Debug.Log("보스: 사망 애니메이션 완료");
             
             boss.gameObject.SetActive(false);
         }
@@ -171,6 +171,6 @@ public class DeathState : BossState
 
     public override void Exit()
     {
-        Debug.Log("보스: 사망 상태 종료 - 이 메시지가 출력되면 상태 전환에 문제가 있음");
+        // Debug.Log("보스: 사망 상태 종료 - 이 메시지가 출력되면 상태 전환에 문제가 있음");
     }
 }
