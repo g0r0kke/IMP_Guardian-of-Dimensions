@@ -54,9 +54,12 @@
         {
             // 걷기 애니메이션 재생
             hobgoblin.animator.Play("walk");
-            //hobgoblin.audioSource.PlayOneShot(hobgoblin.goblinCackle);
+        //hobgoblin.audioSource.PlayOneShot(hobgoblin.goblinCackle);
+        if (hobgoblin.audioSource.clip != hobgoblin.goblinCackle || !hobgoblin.audioSource.isPlaying)
+        {
             hobgoblin.audioSource.clip = hobgoblin.goblinCackle;
             hobgoblin.audioSource.Play();
+        }
     }
 
     public void Update()
@@ -89,52 +92,84 @@
 
 
 
-    // 공격 상태
-    public class HobAttackState : IState
+
+public class HobAttackState : IState
+{
+    private Hobgoblin hobgoblin;
+    private bool soundPlayed = false;
+    private bool animationCompleted = false;
+    private float attackTimer = 0f;
+    private float attackDuration = 1.5f; // 공격 애니메이션  지속 시간
+    private float attackCooldown = 0.7f; // 공격 사이의 간격
+
+    public HobAttackState(Hobgoblin hobgoblin)
     {
-        private Hobgoblin hobgoblin;
-
-        public HobAttackState(Hobgoblin hobgoblin)
-        {
-            this.hobgoblin = hobgoblin;
-        }
-
-        public void Enter()
-        {
-            hobgoblin.animator.Play("attack02");
-            hobgoblin.audioSource.PlayOneShot(hobgoblin.goblinPunch);
-
+        this.hobgoblin = hobgoblin;
     }
 
-        public void Update()
+    public void Enter()
+    {
+        Debug.Log("공격 상태 진입");
+        hobgoblin.animator.Play("attack02", 0, 0f); // 애니메이션을 처음부터 시작하도록 강제
+        attackTimer = 0f;
+        soundPlayed = false;
+        animationCompleted = false;
+    }
+
+    public void Update()
+    {
+        attackTimer += Time.deltaTime;
+        AnimatorStateInfo stateInfo = hobgoblin.animator.GetCurrentAnimatorStateInfo(0);
+
+        // 공격 사운드 재생 (망치 휘두르는 시점)
+        if (!soundPlayed && attackTimer >= 0.2f) // 시간 기준으로 사운드 재생 (더 안정적)
         {
-            // 공격 애니메이션이 끝났는지 확인
-            AnimatorStateInfo stateInfo = hobgoblin.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("attack02") && stateInfo.normalizedTime < 1f)
-            {
-                return; // 애니메이션이 아직 안 끝났으면 아무 것도 하지 않음
-            }
+            //hobgoblin.PlayPunchSound();
+            soundPlayed = true;
+            Debug.Log("공격 사운드 재생");
+        }
 
+        // 애니메이션 완료 여부 확인 (시간 또는 normalizedTime 기준)
+        if (!animationCompleted &&
+            (attackTimer >= attackDuration || stateInfo.normalizedTime >= 0.95f))
+        {
+            animationCompleted = true;
+            Debug.Log("공격 애니메이션 완료");
+        }
+
+        // 애니메이션이 완료되고 쿨다운이 지났는지 확인
+        if (animationCompleted && attackTimer >= attackDuration + attackCooldown)
+        {
             float distance = Vector3.Distance(hobgoblin.transform.position, hobgoblin.player.position);
+            Debug.Log($"상태 전환 고려 중. 거리: {distance}, 공격 범위: {hobgoblin.attackRange}");
 
+            // 플레이어와의 거리에 따른 상태 전환
             if (distance <= hobgoblin.attackRange)
             {
-                // 반복 공격 가능하게 다시 Attack 상태로 전환
+                // 다시 공격
                 hobgoblin.ChangeState(new HobAttackState(hobgoblin));
+            }
+            else if (distance <= hobgoblin.detectionRange)
+            {
+                // 플레이어가 감지 범위 내에 있음
+                hobgoblin.ChangeState(new HobWalkState(hobgoblin));
             }
             else
             {
+                // 플레이어가 감지 범위 밖에 있음 
                 hobgoblin.ChangeState(new HobIdleState(hobgoblin));
             }
         }
-
-
-
-    public void Exit() { }
     }
 
-    // 피격 상태
-    public class HobDamageState : IState
+    public void Exit()
+    {
+        Debug.Log("공격 상태 종료");
+    }
+}
+
+// 피격 상태
+public class HobDamageState : IState
     {
         private Hobgoblin hobgoblin;
 
