@@ -9,6 +9,7 @@ public enum BossStateType
     Walk,
     Attack1,
     Attack2,
+    Attack3,
     Stun,
     Death
 }
