@@ -25,6 +25,15 @@ namespace Azmodan.Phase2
         [Header("UI")]
         [SerializeField] private Slider healthBarUI;
 
+        [Header("Audio")]
+        [SerializeField] public AudioClip attack1Sound;
+        [SerializeField] public AudioClip attack2Sound;
+        [SerializeField] public AudioClip hitSound;
+        [SerializeField] public AudioClip deathSound;
+        public AudioSource audioSource;
+
+
+
         // 내부 처리용
         private BossStateType selectedAttackType;
         private int randomAttackNum;
@@ -36,11 +45,13 @@ namespace Azmodan.Phase2
         {
             // 살짝 딜레이 후 Start
             StartCoroutine(DelayedStart());
+
         }
 
         private IEnumerator DelayedStart()
         {
             yield return new WaitForSeconds(0.1f);
+            audioSource = GetComponent<AudioSource>();
 
             // Y 위치 고정
             Vector3 fixedPos = transform.position;
@@ -51,19 +62,19 @@ namespace Azmodan.Phase2
             base.Start();
 
             // targetPlayer 자동 할당
-    if (targetPlayer == null)
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            targetPlayer = player;
-            Debug.Log("보스 2페이즈: targetPlayer 자동 설정 완료");
-        }
-        else
-        {
-            Debug.LogWarning("보스 2페이즈: Player 태그 오브젝트를 찾지 못함!");
-        }
-    }
+             if (targetPlayer == null)
+            {
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null)
+                {
+                    targetPlayer = player;
+                    Debug.Log("보스 2페이즈: targetPlayer 자동 설정 완료");
+                }
+                else
+                {
+                    Debug.LogWarning("보스 2페이즈: Player 태그 오브젝트를 찾지 못함!");
+                }
+            }
 
             // 스폰 이펙트
             if (playSpawnEffect)
@@ -298,6 +309,17 @@ namespace Azmodan.Phase2
                 healthBarUI.value = health;
             }
 
+            if (animator != null)
+            {
+                animator.SetTrigger("Damage"); 
+            }
+
+            // 피격 사운드 재생
+            if (audioSource != null && hitSound != null)
+            {
+                audioSource.PlayOneShot(hitSound);
+            }
+
             if (health <= 0)
             {
                 Die();
@@ -307,6 +329,12 @@ namespace Azmodan.Phase2
         protected override void Die()
         {
             Debug.Log("보스 2페이즈 사망 - 게임 종료");
+            
+            if (audioSource != null && deathSound != null)
+            {
+                audioSource.PlayOneShot(deathSound);
+            }
+
             TransitionToDeath();
         }
         public bool IsPlayerInAttackAngle()
@@ -408,6 +436,11 @@ namespace Azmodan.Phase2
             hasSpawnedMinions = false;
             boss.animator.SetTrigger("Attack");
             Debug.Log("보스 2페이즈: 공격1 시작");
+
+            if (phase2Boss != null && phase2Boss.audioSource != null && phase2Boss.attack1Sound != null)
+            {
+                phase2Boss.audioSource.PlayOneShot(phase2Boss.attack1Sound);
+            }
         }
 
         public override void Update()
@@ -453,6 +486,12 @@ namespace Azmodan.Phase2
             hasFiredMissile = false;
             boss.animator.SetTrigger("Attack");
             Debug.Log("보스 2페이즈: 공격2 시작");
+
+            if (phase2Boss != null && phase2Boss.audioSource != null && phase2Boss.attack2Sound != null)
+            {
+                phase2Boss.audioSource.PlayOneShot(phase2Boss.attack2Sound);
+            }
+
         }
 
         public override void Update()
