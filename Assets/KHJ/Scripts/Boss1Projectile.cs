@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class BossProjectile : MonoBehaviour
 {
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private int attack2Damage = 10;
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
+    private DamageController playerDamageController;
     
     private float timer = 0f;
     private bool hasHit = false;
@@ -28,6 +29,15 @@ public class BossProjectile : MonoBehaviour
             SphereCollider sphereCol = gameObject.AddComponent<SphereCollider>();
             sphereCol.radius = 0.5f;
             sphereCol.isTrigger = false;
+        }
+        
+        playerDamageController = FindObjectOfType<DamageController>();
+        if (playerDamageController == null)
+        {
+
+            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
+            return;
+
         }
     }
 
@@ -54,12 +64,15 @@ public class BossProjectile : MonoBehaviour
             // Debug.Log("원거리 공격!!");
             
             // 플레이어에게 데미지 적용
-            SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
-            if (player != null)
-            {
-                player.TakeDamage((int)damage);
-                Debug.Log($"보스 투사체가 플레이어에게 {damage} 데미지를 입혔습니다!");
-            }
+            playerDamageController.PlayerTakeDamage(attack2Damage);
+            Debug.Log($"보스1 근접 공격: 플레이어에게 {attack2Damage} 데미지를 입혔습니다!");
+            
+            // SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
+            // if (player != null)
+            // {
+            //     player.TakeDamage((int)damage);
+            //     Debug.Log($"보스 투사체가 플레이어에게 {damage} 데미지를 입혔습니다!");
+            // }
         }
         
         // 충돌 이펙트 생성

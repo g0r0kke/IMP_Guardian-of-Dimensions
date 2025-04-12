@@ -30,7 +30,7 @@ public class DamageController : MonoBehaviour
         }
     }
 
-    void PlayerTakeDamage(int damageIntensity)
+    public void PlayerTakeDamage(int damageIntensity)
     {
         if (!isAvoid && !isDefense)
         {
