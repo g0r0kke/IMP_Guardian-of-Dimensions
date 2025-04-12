@@ -24,7 +24,7 @@ public class PlayerGUI : MonoBehaviour
     public Slider PlayerUltimateAttackGlobe;
     public TextMeshProUGUI PlayerUltimateAttackText;
 
-    public float defenseSkillDelay = 6.0f;
+    public float defenseSkillDelay = 4.0f;
     public Slider PlayerShildGlobe;
     public TextMeshProUGUI PlayerShildText;
 
@@ -99,19 +99,23 @@ public class PlayerGUI : MonoBehaviour
 
         basicAttackDelayTime = basicAttackController.delayTime;
         PlayerBasicAttackGlobe.value = (float)basicAttackDelayTime / (float)basicAttackDelay;
-        PlayerBasicAttackText.text = $"{Mathf.Ceil(basicAttackDelayTime)}";
+        if (Mathf.Ceil(basicAttackDelayTime) != 0) PlayerBasicAttackText.text = $"{Mathf.Ceil(basicAttackDelayTime)}";
+        else PlayerBasicAttackText.text = $" ";
 
         ultimateAttackDelayTime = ultimateAttackController.delayTime;
         PlayerUltimateAttackGlobe.value = (float)ultimateAttackDelayTime / (float)ultimateAttackDelay;
-        PlayerUltimateAttackText.text = $"{Mathf.Ceil(ultimateAttackDelayTime)}";
+        if (Mathf.Ceil(ultimateAttackDelayTime) != 0) PlayerUltimateAttackText.text = $"{Mathf.Ceil(ultimateAttackDelayTime)}";
+        else PlayerUltimateAttackText.text = " ";
 
         defenseSkillDelayTime = defenseController.delayTime;
         PlayerShildGlobe.value = (float)defenseSkillDelayTime / (float)defenseSkillDelay;
-        PlayerShildText.text = $"{Mathf.Ceil(defenseSkillDelayTime)}";
+        if (Mathf.Ceil(defenseSkillDelayTime) != 0) PlayerShildText.text = $"{Mathf.Ceil(defenseSkillDelayTime)}";
+        else PlayerShildText.text = " ";
 
         healingSkillDelayTime = healingController.delayTime;
         PlayerHealingGlobe.value = (float)healingSkillDelayTime / (float)healingSkillDelay;
-        PlayerHealingText.text = $"{Mathf.Ceil(healingSkillDelayTime)}";
+        if (Mathf.Ceil(healingSkillDelayTime) != 0) PlayerHealingText.text = $"{Mathf.Ceil(healingSkillDelayTime)}";
+        else PlayerHealingText.text = " ";
 
         avoidanceSkillDelayTime = avoidanceController.delayTime;
 
@@ -143,13 +147,13 @@ public class PlayerGUI : MonoBehaviour
     void GameOver()
     {
         Debug.Log("Game Over");
-        /*
+        
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else
                 Application.Quit();
         #endif
-        */
+        
     }
 
     void Victory()

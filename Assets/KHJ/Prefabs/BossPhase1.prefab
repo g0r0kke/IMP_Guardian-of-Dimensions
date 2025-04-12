@@ -723,7 +723,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.8, y: 0, z: -11.4}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 80720320999594000}
@@ -20773,6 +20773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91cb7541477f124a939e27511943192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attack1Damage: 20
   attackStartFrame: 17
   attackEndFrame: 30
   totalAnimationFrames: 60
