@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string phase2SceneName = "BossPhase2Scene";
     
     [SerializeField] private bool useSceneTransition = true;
+    [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, 0f, -11.4f);
     
     private Boss currentBoss;
     
@@ -93,5 +94,18 @@ public class GameManager : MonoBehaviour
         // Instantiate Phase 2 boss in the new scene
         Debug.Log("매니저: Phase 2 씬 로드 완료, 보스 생성");
         currentBoss = Instantiate(phase2Prefab, transform.position, Quaternion.identity);
+    }
+    
+    // 보스 위치 Getter
+    public Vector3 GetBossPosition()
+    {
+        return bossPosition;
+    }
+
+    // 보스 위치 Setter
+    public void SetBossPosition(Vector3 position)
+    {
+        bossPosition = new Vector3(position.x, 0f, position.z);
+        Debug.Log($"보스 위치가 설정되었습니다: {bossPosition}");
     }
 }
