@@ -5,9 +5,14 @@ public class MissileController : MonoBehaviour
 {
     private Transform target;
     public float moveSpeed = 5f; 
+    public float rotationSpeed = 5f;
     [SerializeField] private float damage = 15f;
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
+    [SerializeField] private AudioClip flightSound;
+    [SerializeField] private AudioClip explosionSound;
+    private AudioSource audioSource;
+
 
     //플레이어 타겟 지정 메서드
     public void SetTarget(Transform targetTransform)
@@ -17,6 +22,17 @@ public class MissileController : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        audioSource = gameObject.AddComponent<AudioSource>();
+
+        if (flightSound != null)
+        {
+            audioSource.clip = flightSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         // 일정 시간 후 미사일 자동 제거
         Destroy(gameObject, lifetime);
     }
@@ -25,14 +41,25 @@ public class MissileController : MonoBehaviour
     {
         if (target != null)
         {
-            // 플레이어 방향으로 이동
             Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += direction * moveSpeed * Time.deltaTime;
+
+            // 현재 방향과 타겟 방향 사이를 부드럽게 보간
+            Quaternion toRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+
+            // 전방으로 이동
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (flightSound != null && audioSource != null)
+        audioSource.Stop(); // 날아가는 소리 멈추기
+
+        if (explosionSound != null)
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+
         // 충돌한 대상이 플레이어인지 확인
         if (collision.gameObject.CompareTag("Player"))
         {

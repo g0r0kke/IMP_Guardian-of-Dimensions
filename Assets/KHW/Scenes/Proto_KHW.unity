@@ -427,6 +427,7 @@ MonoBehaviour:
   phase1SceneName: BossPhase1Scene
   phase2SceneName: BossPhase2Scene
   useSceneTransition: 1
+  playerHealth: 100
 --- !u!4 &408509495
 Transform:
   m_ObjectHideFlags: 0
@@ -2278,6 +2279,11 @@ MonoBehaviour:
   minionPrefab: {fileID: 6678187080261177100, guid: e805e5bbdee658b448c5ae1c35633ed1,
     type: 3}
   healthBarUI: {fileID: 1291001074}
+  attack1Sound: {fileID: 0}
+  attack2Sound: {fileID: 0}
+  hitSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!95 &1175101771 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6702728619813380592, guid: 6adcedb771ae43a4b91950c5d6dfec70,
