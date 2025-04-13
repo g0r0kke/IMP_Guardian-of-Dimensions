@@ -20,7 +20,7 @@ public class Boss2Test : MonoBehaviour
     void Update()
     {
         // 테스트용: S 키 누르면 소환
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             SummonHobgoblins();
         }
