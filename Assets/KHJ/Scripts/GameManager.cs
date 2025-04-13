@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
     [SerializeField] private GameObject virtualJoystick;
+    [SerializeField] private GameObject hobgoblin;
     
     private void Awake()
     {
@@ -100,25 +101,28 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                bossPrefab.SetActive(true);
-                virtualJoystick.SetActive(true);
+                if (bossPrefab) bossPrefab.SetActive(true);
+                if (virtualJoystick) virtualJoystick.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.BossPhase2:
-                bossPrefab.SetActive(true);
-                virtualJoystick.SetActive(true);
+                if (bossPrefab) bossPrefab.SetActive(true);
+                if (virtualJoystick) virtualJoystick.SetActive(true);
+                if(hobgoblin) hobgoblin.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.Victory:
                 // 승리 상태 시작 시 처리
-                bossPrefab.SetActive(false);
-                virtualJoystick.SetActive(false);
+                if (bossPrefab) bossPrefab.SetActive(false);
+                if (virtualJoystick) virtualJoystick.SetActive(false);
+                if (hobgoblin) hobgoblin.SetActive(false);
                 ShowVictoryUI();
                 break;
             case GameState.Defeat:
                 // 사망 상태 시작 시 처리
-                bossPrefab.SetActive(false);
-                virtualJoystick.SetActive(false);
+                if (bossPrefab) bossPrefab.SetActive(false);
+                if (virtualJoystick) virtualJoystick.SetActive(false);
+                if (hobgoblin) hobgoblin.SetActive(false);
                 ShowDefeatUI();
                 break;
         }
@@ -129,8 +133,9 @@ public class GameManager : MonoBehaviour
         // null인 레퍼런스만 찾기 (이미 있다면 재사용)
         bossPrefab = GameObject.Find("BossPhase1");
         if (bossPrefab == null) bossPrefab = GameObject.Find("BossPhase2");
-        
         if (virtualJoystick == null) virtualJoystick = GameObject.Find("UI_JoyStick");
+        if (hobgoblin == null) hobgoblin = GameObject.Find("Hobgoblin 1");
+        
         
         // 먼저 부모 UI 컨테이너 찾기
         GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat_UI");
@@ -151,9 +156,6 @@ public class GameManager : MonoBehaviour
     
     public void TransitionToPhase2()
     {
-        // Phase1 보스가 죽었을 때 호출됨
-        Debug.Log("매니저: Phase 2로 전환 시작");
-        
         // 현재 씬을 Phase2 씬으로 교체
         Debug.Log("매니저: Phase 2 씬으로 전환");
         SceneManager.LoadScene(phase2SceneName);
