@@ -31,9 +31,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
-    
+
     // 플레이어 관련 변수
-    public float playerHealth = 100f;
+    private PlayerDataManager playerDataManager;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     
         // 씬 전환 이벤트에도 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        playerDataManager = PlayerDataManager.Instance; 
     }
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 // 인트로 시작 시 처리
-                playerHealth = 100f;
+                playerDataManager.PlayerOriginSetting();
                 HideAllUI();
                 break;
             case GameState.BossPhase1:

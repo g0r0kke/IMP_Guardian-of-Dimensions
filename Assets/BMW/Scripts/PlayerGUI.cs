@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class PlayerGUI : MonoBehaviour
 {
-    public int playerHealthLimit;
+    public int playerHealthLimit = 1;
     public int playerHealth;
     private int previousHealth;
     public Slider PlayerHpBar;
     public TextMeshProUGUI PlayerHpText;
 
-    public int ultimateAttackGaugeLimit;
+    public int ultimateAttackGaugeLimit = 1;
     public int ultimateAttackGauge;
     private int previousGauge;
     public Slider PlayerGaugeBar;
@@ -75,7 +75,7 @@ public class PlayerGUI : MonoBehaviour
     void Update()
     {
 
-        if (playerHealth <= 0)
+        if (playerHealth <= 0 && playerDataManager.isControlPlayer)
         {
             animationController.DieAnimation();
             GameOver();
@@ -91,10 +91,18 @@ public class PlayerGUI : MonoBehaviour
             DEBUG();
         }
 
-        PlayerHpBar.value = (float)playerHealth / (float)playerHealthLimit;
-        PlayerHpText.text = playerHealth + "/" + playerHealthLimit;
+        if (playerHealth > 0)
+        {
+            PlayerHpBar.value = (float)playerHealth / (float)playerHealthLimit;
+            PlayerHpText.text = playerHealth + "/" + playerHealthLimit;
+        }
+        else
+        {
+            PlayerHpBar.value = 0;
+            PlayerHpText.text = "0/" + playerHealthLimit;
+        }
 
-        PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
+            PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
         PlayerGaugeText.text = ultimateAttackGauge + "/" + ultimateAttackGaugeLimit;
 
         basicAttackDelayTime = basicAttackController.delayTime;
@@ -146,14 +154,26 @@ public class PlayerGUI : MonoBehaviour
 
     void GameOver()
     {
-        Debug.Log("Game Over");
         
+      playerDataManager.isControlPlayer = false;
+        Debug.Log("Game Over");
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetState(GameState.Defeat);
+        }
+        else
+        {
+            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+        }
+
+        /*
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else
                 Application.Quit();
         #endif
-        
+        */
     }
 
     void Victory()

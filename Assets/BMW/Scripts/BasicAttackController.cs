@@ -23,17 +23,23 @@ public class BasicAttackController: MonoBehaviour
     private BasicAttackController basicAttackController;
     private AnimationController animationController;
 
+    private PlayerDataManager playerDataManager;
+
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         basicAttackController = GetComponent<BasicAttackController>();
         animationController = GetComponent<AnimationController>();
+
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
+        
         bool isPressedBasicAttack = Input.GetKeyDown(KeyCode.Z);
 
         if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)

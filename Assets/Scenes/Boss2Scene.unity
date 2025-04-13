@@ -2790,7 +2790,7 @@ PrefabInstance:
     - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: playerHealthLimit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2817,6 +2817,11 @@ PrefabInstance:
       propertyPath: PlayerUltimateAttackText
       value: 
       objectReference: {fileID: 264209360}
+    - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: ultimateAttackGaugeLimit
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: PlayerUltimateAttackGlobe

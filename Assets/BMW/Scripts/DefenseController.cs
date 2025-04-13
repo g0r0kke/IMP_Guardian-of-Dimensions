@@ -17,17 +17,22 @@ public class DefenseController : MonoBehaviour
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
+    private PlayerDataManager playerDataManager;
+
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         damageController = GetComponent<DamageController>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
+
         bool isPressedDefense = Input.GetKeyDown(KeyCode.C);
 
         if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
