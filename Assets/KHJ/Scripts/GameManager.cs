@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
-
+    [SerializeField] private GameObject BossIndicatorUI;
+    
     // 플레이어 관련 변수
     private PlayerDataManager playerDataManager;
 
@@ -106,12 +107,14 @@ public class GameManager : MonoBehaviour
                 playerDataManager.PlayerOriginSetting();
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.BossPhase2:
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 if(hobgoblin) hobgoblin.SetActive(true);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.Victory:
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
                 if (bossPrefab) bossPrefab.SetActive(false);
                 if (virtualJoystick) virtualJoystick.SetActive(false);
                 if (hobgoblin) hobgoblin.SetActive(false);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
                 ShowVictoryUI();
                 break;
             case GameState.Defeat:
@@ -126,6 +130,7 @@ public class GameManager : MonoBehaviour
                 if (bossPrefab) bossPrefab.SetActive(false);
                 if (virtualJoystick) virtualJoystick.SetActive(false);
                 if (hobgoblin) hobgoblin.SetActive(false);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
                 ShowDefeatUI();
                 break;
         }
@@ -135,9 +140,10 @@ public class GameManager : MonoBehaviour
     {
         // null인 레퍼런스만 찾기 (이미 있다면 재사용)
         bossPrefab = GameObject.Find("BossPhase1");
-        if (bossPrefab == null) bossPrefab = GameObject.Find("BossPhase2");
-        if (virtualJoystick == null) virtualJoystick = GameObject.Find("UI_JoyStick");
-        if (hobgoblin == null) hobgoblin = GameObject.Find("Hobgoblin 1");
+        if (!bossPrefab) bossPrefab = GameObject.Find("BossPhase2");
+        if (!virtualJoystick) virtualJoystick = GameObject.Find("UI_JoyStick");
+        if (!hobgoblin) hobgoblin = GameObject.Find("Hobgoblin 1");
+        if (!BossIndicatorUI) BossIndicatorUI = GameObject.Find("BossIndicator");
         
         
         // 먼저 부모 UI 컨테이너 찾기

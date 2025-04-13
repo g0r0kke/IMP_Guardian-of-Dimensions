@@ -78,16 +78,29 @@ public class BossDirectionIndicator : MonoBehaviour
             indicatorImage.enabled = false;
             return;
         }
-        
-        // 인디케이터 항상 표시
-        indicatorImage.enabled = true;
-        
+    
         // 보스의 월드 위치를 뷰포트 좌표로 변환 (0~1 범위)
         Vector3 viewportPosition = mainCamera.WorldToViewportPoint(targetBoss.position);
-        
+    
+        // 보스가 카메라 뒤에 있는지 확인 (z < 0)
+        bool isBossBehind = viewportPosition.z < 0;
+    
+        // 보스가 화면 밖에 있는지 확인
+        bool isOffScreen = viewportPosition.x < 0 || viewportPosition.x > 1 || 
+                           viewportPosition.y < 0 || viewportPosition.y > 1;
+    
+        // 보스가 화면 밖에 있거나 카메라 뒤에 있을 때만 인디케이터 표시
+        indicatorImage.enabled = isOffScreen || isBossBehind;
+    
+        // 인디케이터가 비활성화된 경우 더 이상 계산하지 않음
+        if (!indicatorImage.enabled)
+        {
+            return;
+        }
+
         // 캔버스 크기 얻기
         Vector2 canvasSize = canvasRect.sizeDelta;
-        
+    
         // 화면 테두리를 따라 인디케이터 위치 계산
         Vector2 indicatorPos = CalculateIndicatorPosition(viewportPosition, canvasSize);
         
@@ -126,9 +139,6 @@ public class BossDirectionIndicator : MonoBehaviour
         // 보스 위치를 스크린 좌표로 변환
         Vector2 bossScreenPos = mainCamera.WorldToScreenPoint(bossCenterPosition);
         bossScreenPos.y = Screen.height - bossScreenPos.y; // UI 좌표계로 변환
-        
-        // 보스가 카메라 뒤에 있는지 확인 (z < 0)
-        bool isBossBehind = bossViewportPos.z < 0;
         
         Vector2 directionToIndicator;
         if (isBossBehind)
