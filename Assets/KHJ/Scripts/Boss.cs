@@ -116,6 +116,12 @@ public abstract class Boss : MonoBehaviour
 
     protected virtual void Update()
     {
+        // 삭제 예정
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+           TakeDamage(50);
+        }
+        
         // 사망 상태면 현재 상태만 업데이트 (DeathState)
         if (isDead)
         {
