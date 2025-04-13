@@ -53,6 +53,15 @@ public class ARPlacement : MonoBehaviour
                 Debug.LogWarning("오디오 소스가 할당되지 않았습니다. 소리가 재생되지 않을 수 있습니다.");
             }
         }
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetState(GameState.Intro);
+        }
+        else
+        {
+            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+        }
     }
     
     void Update()
