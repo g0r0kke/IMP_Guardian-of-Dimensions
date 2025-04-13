@@ -6,7 +6,7 @@ public class Hobgoblin : MonoBehaviour
     public Animator animator;
     public Transform player;
 
-    private IState currentState;
+    public IState currentState;
     public float rotationSpeed = 5f;
 
     public float walkSpeed = 2f;
@@ -23,6 +23,8 @@ public class Hobgoblin : MonoBehaviour
     public AudioClip goblinPunch;   // attack
     public AudioClip goblinDeath;   // damage/death
 
+    public int attackDamage = 5; // 플레이어 데미지 입히기
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -34,7 +36,23 @@ public class Hobgoblin : MonoBehaviour
 
     void Update()
     {
-        currentState?.Update();
+        if (currentState != null)
+        {
+            // 플레이어를 향해 회전
+            if (player != null && !(currentState is HobDeadState))
+            {
+                Vector3 direction = player.position - transform.position;
+                direction.y = 0; // Y축 회전만 적용
+
+                if (direction != Vector3.zero)
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+                }
+            }
+
+            currentState.Update();
+        }
     }
 
     public void ChangeState(IState newState)
@@ -75,6 +93,7 @@ public class Hobgoblin : MonoBehaviour
             return hob;
         }
 
+    
         public void PlayPunchSound()
         {
             if (audioSource != null && goblinPunch != null)
@@ -82,5 +101,5 @@ public class Hobgoblin : MonoBehaviour
                 audioSource.PlayOneShot(goblinPunch);
             }
         }
-
+    
 }
