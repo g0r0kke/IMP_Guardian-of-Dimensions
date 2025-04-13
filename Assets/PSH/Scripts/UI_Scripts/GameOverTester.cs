@@ -8,14 +8,14 @@ public class GameOverTester : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N)) // N키 누르면 승리
-        {
-            ShowVictoryUI();
-        }
-        if (Input.GetKeyDown(KeyCode.M)) // M키 누르면 패배
-        {
-            ShowDefeatUI();
-        }
+        // if (Input.GetKeyDown(KeyCode.N)) // N키 누르면 승리
+        // {
+        //     ShowVictoryUI();
+        // }
+        // if (Input.GetKeyDown(KeyCode.M)) // M키 누르면 패배
+        // {
+        //     ShowDefeatUI();
+        // }
     }
 
     void ShowVictoryUI()

@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 {
     // 싱글톤 패턴
     public static GameManager Instance { get; private set; }
-    private GameState state = GameState.Intro;
+    [SerializeField] private GameState state = GameState.Intro;
     public GameState State 
     { 
         get { return state; }
@@ -141,19 +141,21 @@ public class GameManager : MonoBehaviour
         
         
         // 먼저 부모 UI 컨테이너 찾기
-        GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat_UI");
-    
+        GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat UI");
+
         if (victoryDefeatContainer != null)
         {
-            // 자식 UI 요소들 찾기
-            Transform bgTransform = victoryDefeatContainer.transform.Find("Background_UI");
-            if (bgTransform != null) uiBackground = bgTransform.gameObject;
-        
-            Transform victoryTransform = victoryDefeatContainer.transform.Find("Victory_UI");
-            if (victoryTransform != null) victoryUI = victoryTransform.gameObject;
-        
-            Transform defeatTransform = victoryDefeatContainer.transform.Find("Defeat_UI");
-            if (defeatTransform != null) defeatUI = defeatTransform.gameObject;
+            // 인덱스로 직접 자식 UI 요소들 찾기
+            if (victoryDefeatContainer.transform.childCount >= 3)
+            {
+                uiBackground = victoryDefeatContainer.transform.GetChild(0).gameObject; // background Blur
+                defeatUI = victoryDefeatContainer.transform.GetChild(1).gameObject;     // Defeat_UI
+                victoryUI = victoryDefeatContainer.transform.GetChild(2).gameObject;    // Victory_UI
+            }
+            else
+            {
+                Debug.LogError("VictoryDefeat_UI 오브젝트에 필요한 자식 오브젝트가 없습니다.");
+            }
         }
     }
 
