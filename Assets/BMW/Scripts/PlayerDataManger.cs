@@ -8,7 +8,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public int playerHealthLimit = 50;
     public int originPlayerHealth = 50;
-    public int playerGaugeLimit = 10;
+    public int playerGaugeLimit = 3;
     public int originPlayerGauge = 0;
 
     public int playerLinkHealth;

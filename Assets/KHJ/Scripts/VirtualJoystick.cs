@@ -1,11 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // 키보드, 마우스, 터치를 이벤트로 오브젝트에 보낼 수 있는 기능을 지원
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField] private RectTransform lever;
     private RectTransform rectTransform;
-    [SerializeField, Range(10f, 150f)] private float leverRange;
+    [SerializeField, Range(10f, 150f)] private float leverRange = 50f;
     [SerializeField] private float distancePerFrame = 2.0f; // 이동 속도
 
     // 레이캐스트 관련 변수
@@ -16,7 +17,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool isInput;
     
     // XR Origin 참조
-    public Transform xrOrigin;
+    [HideInInspector] public Transform xrOrigin;
     
     // 카메라 참조 (방향 계산용)
     private Camera arCamera;
@@ -24,10 +25,27 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     // 플레이어 캡슐 콜라이더 참조
     private CapsuleCollider playerCollider;
     
+    // 조이스틱 visible 제어를 위한 이미지 컴포넌트
+    private Image joystickImage;
+    private Image leverImage;
+    
+    // 캔버스 스케일러 참조
+    private Canvas parentCanvas;
+    
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         arCamera = Camera.main;
+        
+        // 조이스틱 배경과 레버의 이미지 컴포넌트 가져오기
+        joystickImage = GetComponent<Image>();
+        if (lever != null)
+        {
+            leverImage = lever.GetComponent<Image>();
+        }
+        
+        // 부모 캔버스 찾기
+        parentCanvas = GetComponentInParent<Canvas>();
         
         // Player 태그를 가진 오브젝트에서 콜라이더 찾기
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
@@ -39,15 +57,6 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 // 직접적으로 연결된 콜라이더가 없으면 자식 오브젝트에서 찾기
                 playerCollider = playerObject.GetComponentInChildren<CapsuleCollider>();
             }
-            
-            if (playerCollider == null)
-            {
-                Debug.LogWarning("Player 태그를 가진 오브젝트에서 캡슐 콜라이더를 찾을 수 없습니다.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Player 태그를 가진 오브젝트를 찾을 수 없습니다.");
         }
         
         // Wall 레이어 설정
@@ -62,47 +71,46 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
     
-    public void OnBeginDrag(PointerEventData eventData)
-    {  
-        // Debug.Log("Begin");
-        // var inputDir = eventData.position - rectTransform.anchoredPosition;
-        // var clampedDir = inputDir.magnitude < leverRange ? inputDir 
-        //     : inputDir.normalized * leverRange;
-        // lever.anchoredPosition = clampedDir;
-        
-        ControlJoystickLever(eventData);
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // 레버 초기화
+        lever.anchoredPosition = Vector2.zero;
         isInput = true;
+        // Debug.Log("[조이스틱] 터치 시작");
     }
     
-    // 오브젝트를 클릭해서 드래그 하는 도중에 들어오는 이벤트
-    // 하지만 클릭을 유지한 상태로 마우스를 멈추면 이벤트가 들어오지 않음    
     public void OnDrag(PointerEventData eventData)
     {
-        // Debug.Log("Drag");
-        // var inputDir = eventData.position - rectTransform.anchoredPosition;
-        // // lever.anchoredPosition = inputDir;
-        // var clampedDir = inputDir.magnitude < leverRange ? 
-        //     inputDir : inputDir.normalized * leverRange;
-        // lever.anchoredPosition = clampedDir;
+        if (!isInput) return;
         
-        ControlJoystickLever(eventData);
+        // 스크린 좌표를 로컬 좌표로 변환
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectTransform,
+            eventData.position,
+            parentCanvas.worldCamera,
+            out Vector2 localPoint))
+        {
+            // 로컬 좌표계에서의 방향 계산
+            Vector2 inputDir = localPoint;
+            
+            // 최대 범위 제한
+            Vector2 clampedDir = inputDir.magnitude < leverRange ? inputDir 
+                : inputDir.normalized * leverRange;
+                
+            lever.anchoredPosition = clampedDir;
+            inputVector = clampedDir / leverRange;
+            
+            // Debug.Log("[조이스틱] 레버 위치: " + clampedDir);
+        }
     }
     
-    public void ControlJoystickLever(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
-        var inputDir = eventData.position - rectTransform.anchoredPosition;
-        var clampedDir = inputDir.magnitude < leverRange ? inputDir 
-            : inputDir.normalized * leverRange;
-        lever.anchoredPosition = clampedDir;
-        inputVector = clampedDir / leverRange;
-    }
-    
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        // Debug.Log("End");
+        // 값 초기화
         lever.anchoredPosition = Vector2.zero;
-        inputVector = Vector2.zero; // 입력 벡터 초기화
+        inputVector = Vector2.zero;
         isInput = false;
+        // Debug.Log("[조이스틱] 터치 종료");
     }
     
     private void InputControlVector()
