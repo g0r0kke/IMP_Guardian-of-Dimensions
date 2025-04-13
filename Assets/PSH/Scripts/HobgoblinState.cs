@@ -102,6 +102,9 @@ public class HobAttackState : IState
     private float attackDuration = 1.5f; // 공격 애니메이션  지속 시간
     private float attackCooldown = 0.7f; // 공격 사이의 간격
 
+    private bool damageDeal = false; // 데미지 적용 여부 체크 (민우)
+
+
     public HobAttackState(Hobgoblin hobgoblin)
     {
         this.hobgoblin = hobgoblin;
@@ -113,6 +116,7 @@ public class HobAttackState : IState
         hobgoblin.animator.Play("attack02", 0, 0f); // 애니메이션을 처음부터 시작하도록 강제
         attackTimer = 0f;
         soundPlayed = false;
+        damageDeal = false; // 데미지 초기화 (민우)
         animationCompleted = false;
     }
 
@@ -128,6 +132,14 @@ public class HobAttackState : IState
             soundPlayed = true;
             Debug.Log("공격 사운드 재생");
         }
+
+        // 데미지 적용 시점 (공격 타이밍에 맞게) (민우)
+        if (!damageDeal && attackTimer >= 0.4f) // 공격 사운드 직후 데미지 적용
+        {
+            hobgoblin.DealDamageToPlayer();
+            damageDeal = true;
+        }
+
 
         // 애니메이션 완료 여부 확인 (시간 또는 normalizedTime 기준)
         if (!animationCompleted &&

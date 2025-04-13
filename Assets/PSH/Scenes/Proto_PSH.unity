@@ -326,6 +326,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossPhase2
       objectReference: {fileID: 0}
+    - target: {fileID: 2891931738643171426, guid: 6adcedb771ae43a4b91950c5d6dfec70,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6474144909518151361, guid: 6adcedb771ae43a4b91950c5d6dfec70,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -432,6 +437,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &581285818 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3118617029866584703, guid: 5363fc1d36891ea469d9884eca385b49,
+    type: 3}
+  m_PrefabInstance: {fileID: 203863735}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1354824538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,6 +979,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SamplePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3041859138599805600, guid: 6fced7bba080de4439ac5f9f67970003,
+        type: 3}
+      propertyPath: targetLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3041859138599805600, guid: 6fced7bba080de4439ac5f9f67970003,
+        type: 3}
+      propertyPath: PlayerTakeDamageSound
+      value: 
+      objectReference: {fileID: 581285818}
     - target: {fileID: 6732551999982939358, guid: 6fced7bba080de4439ac5f9f67970003,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -105,5 +106,36 @@ public class AudioManager : MonoBehaviour
     public void PlayButtonSFX()
     {
         PlaySFX(buttonSFX);
+    }
+
+    // 4/13 추가
+    public void PlayBGMWithFade(AudioClip clip, float duration = 1f)
+    {
+        StartCoroutine(FadeInBGM(clip, duration));
+    }
+
+    
+    private IEnumerator FadeInBGM(AudioClip clip, float duration)
+    {
+        if (bgmSource.isPlaying && bgmSource.clip == clip)
+            yield break;
+
+        float currentVolume;
+        audioMixer.GetFloat("Music", out currentVolume);
+        float startVolume = Mathf.Pow(10, currentVolume / 20);
+
+        bgmSource.clip = clip;
+        bgmSource.volume = 0f;
+        bgmSource.loop = true;
+        bgmSource.Play();
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            float newVolume = Mathf.Lerp(0f, startVolume, t / duration);
+            bgmSource.volume = newVolume;
+            yield return null;
+        }
+
+        bgmSource.volume = startVolume;
     }
 }
