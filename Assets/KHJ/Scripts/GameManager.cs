@@ -31,9 +31,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
-    
+
     // 플레이어 관련 변수
-    public float playerHealth = 100f;
+    private PlayerDataManager playerDataManager;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        playerDataManager = PlayerDataManager.Instance;
 
     }
     
@@ -96,11 +98,12 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 // 인트로 시작 시 처리
+                playerDataManager.PlayerOriginSetting();
                 HideAllUI();
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                playerHealth = 100f;
+                playerDataManager.PlayerOriginSetting();
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 HideAllUI();
