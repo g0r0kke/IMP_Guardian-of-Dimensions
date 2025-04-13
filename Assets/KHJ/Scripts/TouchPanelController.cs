@@ -59,7 +59,7 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
             out localPoint))
         {
             joystickRectTransform.localPosition = localPoint;
-            Debug.Log("조이스틱 위치 설정: " + localPoint);
+            // Debug.Log("조이스틱 위치 설정: " + localPoint);
         }
         
         // 조이스틱 스크립트에 포인터 이벤트 전달
