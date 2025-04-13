@@ -98,7 +98,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 // 인트로 시작 시 처리
-                playerDataManager.PlayerOriginSetting();
                 HideAllUI();
                 break;
             case GameState.BossPhase1:
