@@ -15,7 +15,11 @@ public class VolumeSettings : MonoBehaviour
 
         musicSlider.onValueChanged.AddListener((v) => AudioManager.Instance.SetMusicVolume(v));
         sfxSlider.onValueChanged.AddListener((v) => AudioManager.Instance.SetSFXVolume(v));
-    
-    
+
+        // 4/13 추가 , 메인 메뉴 배경음악 재생 (부드럽게 페이드인)
+        AudioClip mainMenuBGM = Resources.Load<AudioClip>("Audio/MainMenuTheme");
+        AudioManager.Instance.PlayBGMWithFade(mainMenuBGM, 1.5f);
+
+
     }
 }

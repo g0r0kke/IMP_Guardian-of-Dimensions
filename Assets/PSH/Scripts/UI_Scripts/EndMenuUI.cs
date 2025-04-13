@@ -82,6 +82,7 @@ public class EndMenuUI : MonoBehaviour
         {
             // Replay 선택 시, 현재 씬을 다시 로드
             Debug.Log("Replay 선택됨");
+            //GameManager.Instance.playerHealth = 100f; //vv
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
