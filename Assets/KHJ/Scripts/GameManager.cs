@@ -1,28 +1,43 @@
-using Azmodan.Phase1;
-using Azmodan.Phase2;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 
+public enum GameState
+{
+    Intro,
+    BossPhase1,
+    BossPhase2,
+    Victory,
+    Defeat
+}
 public class GameManager : MonoBehaviour
 {
-    // 보스 관련 변수
-    [SerializeField] private BossPhase1 phase1Prefab;
-    [SerializeField] private BossPhase2 phase2Prefab;
+    // 싱글톤 패턴
+    public static GameManager Instance { get; private set; }
+    private GameState state = GameState.Intro;
+    public GameState State 
+    { 
+        get { return state; }
+        private set { state = value; }
+    }
     
+    // 보스 관련 변수
+    [Header("Boss References")]
     [SerializeField] private string phase1SceneName = "BossPhase1Scene";
     [SerializeField] private string phase2SceneName = "BossPhase2Scene";
-    
-    [SerializeField] private bool useSceneTransition = true;
     [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, 0f, -11.4f);
-    
     private Boss currentBoss;
+    
+    [Header("UI References")]
+    [SerializeField] private GameObject victoryUI;
+    [SerializeField] private GameObject defeatUI;
+    [SerializeField] private GameObject uiBackground;
     
     // 플레이어 관련 변수
     public float playerHealth = 100f;
-    
-    // 싱글톤 패턴
-    public static GameManager Instance { get; private set; }
+
+    [Header("References")]
+    [SerializeField] private GameObject bossPrefab;
+    [SerializeField] private GameObject virtualJoystick;
     
     private void Awake()
     {
@@ -34,33 +49,104 @@ public class GameManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
     }
     
-    public void StartPhase1()
+    private void Start()
     {
-        if (useSceneTransition)
-        {
-            // Load Phase 1 scene
-            SceneManager.LoadScene(phase1SceneName);
-            
-            // Set up callback for when scene is loaded
-            SceneManager.sceneLoaded += OnPhase1SceneLoaded;
-        }
-        else
-        {
-            // Original implementation - just replace the boss
-            if (currentBoss != null) Destroy(currentBoss.gameObject);
-            currentBoss = Instantiate(phase1Prefab, transform.position, Quaternion.identity);
-        }
+        // 게임 시작 시 필요한 레퍼런스 찾기
+        FindReferences();
+    
+        // 씬 전환 이벤트에도 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
-    private void OnPhase1SceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Remove the callback
-        SceneManager.sceneLoaded -= OnPhase1SceneLoaded;
+        FindReferences();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N)) // N키 누르면 승리
+        {
+            SetState(GameState.Victory);
+        }
+        if (Input.GetKeyDown(KeyCode.M)) // M키 누르면 패배
+        {
+            SetState(GameState.Defeat);
+        }
+    }
+
+    public void SetState(GameState newState)
+    {
+        // 같은 상태면 무시
+        if (state == newState)
+            return;
         
-        // Instantiate Phase 1 boss in the new scene
-        currentBoss = Instantiate(phase1Prefab, transform.position, Quaternion.identity);
+        // 상태 변경
+        state = newState;
+        Debug.Log($"게임 상태 변경: {typeof(GameState)} -> {newState}");
+        
+        FindReferences();
+        
+        // 새 상태 시작 처리
+        switch (newState)
+        {
+            case GameState.Intro:
+                // 인트로 시작 시 처리
+                playerHealth = 100f;
+                HideAllUI();
+                break;
+            case GameState.BossPhase1:
+                // 플레이 상태 시작 시 처리
+                bossPrefab.SetActive(true);
+                virtualJoystick.SetActive(true);
+                HideAllUI();
+                break;
+            case GameState.BossPhase2:
+                bossPrefab.SetActive(true);
+                virtualJoystick.SetActive(true);
+                HideAllUI();
+                break;
+            case GameState.Victory:
+                // 승리 상태 시작 시 처리
+                bossPrefab.SetActive(false);
+                virtualJoystick.SetActive(false);
+                ShowVictoryUI();
+                break;
+            case GameState.Defeat:
+                // 사망 상태 시작 시 처리
+                bossPrefab.SetActive(false);
+                virtualJoystick.SetActive(false);
+                ShowDefeatUI();
+                break;
+        }
+    }
+    
+    private void FindReferences()
+    {
+        // null인 레퍼런스만 찾기 (이미 있다면 재사용)
+        bossPrefab = GameObject.Find("BossPhase1");
+        if (bossPrefab == null) bossPrefab = GameObject.Find("BossPhase2");
+        
+        if (virtualJoystick == null) virtualJoystick = GameObject.Find("UI_JoyStick");
+        
+        // 먼저 부모 UI 컨테이너 찾기
+        GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat_UI");
+    
+        if (victoryDefeatContainer != null)
+        {
+            // 자식 UI 요소들 찾기
+            Transform bgTransform = victoryDefeatContainer.transform.Find("Background_UI");
+            if (bgTransform != null) uiBackground = bgTransform.gameObject;
+        
+            Transform victoryTransform = victoryDefeatContainer.transform.Find("Victory_UI");
+            if (victoryTransform != null) victoryUI = victoryTransform.gameObject;
+        
+            Transform defeatTransform = victoryDefeatContainer.transform.Find("Defeat_UI");
+            if (defeatTransform != null) defeatUI = defeatTransform.gameObject;
+        }
     }
     
     public void TransitionToPhase2()
@@ -68,32 +154,11 @@ public class GameManager : MonoBehaviour
         // Phase1 보스가 죽었을 때 호출됨
         Debug.Log("매니저: Phase 2로 전환 시작");
         
-        if (useSceneTransition)
-        {
-            // 씬 전환 사용 시 - 현재 씬을 Phase2 씬으로 교체
-            Debug.Log("매니저: Phase 2 씬으로 전환");
-            SceneManager.LoadScene(phase2SceneName);
+        // 현재 씬을 Phase2 씬으로 교체
+        Debug.Log("매니저: Phase 2 씬으로 전환");
+        SceneManager.LoadScene(phase2SceneName);
             
-            // Phase2 씬이 로드된 후 콜백 설정
-            SceneManager.sceneLoaded += OnPhase2SceneLoaded;
-        }
-        else
-        {
-            // 씬 전환 없이 보스만 교체
-            Vector3 position = currentBoss.transform.position;
-            Debug.Log("매니저: Phase 1 보스 제거 없이 Phase 2 보스 생성");
-            currentBoss = Instantiate(phase2Prefab, position, Quaternion.identity);
-        }
-    }
-    
-    private void OnPhase2SceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // Remove the callback
-        SceneManager.sceneLoaded -= OnPhase2SceneLoaded;
-        
-        // Instantiate Phase 2 boss in the new scene
-        Debug.Log("매니저: Phase 2 씬 로드 완료, 보스 생성");
-        currentBoss = Instantiate(phase2Prefab, transform.position, Quaternion.identity);
+        SetState(GameState.BossPhase2);
     }
     
     // 보스 위치 Getter
@@ -107,5 +172,27 @@ public class GameManager : MonoBehaviour
     {
         bossPosition = new Vector3(position.x, 0f, position.z);
         Debug.Log($"보스 위치가 설정되었습니다: {bossPosition}");
+    }
+    
+    // UI 표시 메서드
+    private void ShowVictoryUI()
+    {
+        if (uiBackground) uiBackground.SetActive(true);
+        if (victoryUI) victoryUI.SetActive(true);
+        if (defeatUI) defeatUI.SetActive(false);
+    }
+    
+    private void ShowDefeatUI()
+    {
+        if (uiBackground) uiBackground.SetActive(true);
+        if (defeatUI) defeatUI.SetActive(true);
+        if (victoryUI) victoryUI.SetActive(false);
+    }
+    
+    private void HideAllUI()
+    {
+        if (uiBackground) uiBackground.SetActive(false);
+        if (victoryUI) victoryUI.SetActive(false);
+        if (defeatUI) defeatUI.SetActive(false);
     }
 }

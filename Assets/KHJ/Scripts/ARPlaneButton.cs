@@ -50,6 +50,15 @@ public class ARPlaneButton : MonoBehaviour
                     {
                         Debug.Log($"씬 전환 시작: {targetSceneName}");
                         TransitionToScene();
+                        
+                        if (GameManager.Instance != null)
+                        {
+                            GameManager.Instance.SetState(GameState.BossPhase1);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+                        }
                     }
                 }
                 else
@@ -59,7 +68,14 @@ public class ARPlaneButton : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("큐브가 생성되지 않았습니다! AR 플레인을 터치하여 큐브를 먼저 배치해주세요.");
+                // Debug.LogWarning("큐브가 생성되지 않았습니다! AR 플레인을 터치하여 큐브를 먼저 배치해주세요.");
+                Debug.LogWarning("큐브 생성 없이 씬 전환");
+                // 즉시 씬 전환 옵션이 켜져 있으면 씬 전환
+                if (transitionImmediately && !string.IsNullOrEmpty(targetSceneName))
+                {
+                    Debug.Log($"씬 전환 시작: {targetSceneName}");
+                    TransitionToScene();
+                }
             }
         }
     }
