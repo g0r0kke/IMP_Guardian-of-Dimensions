@@ -96,11 +96,11 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 // 인트로 시작 시 처리
-                playerHealth = 100f;
                 HideAllUI();
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
+                playerHealth = 100f;
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 HideAllUI();
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
             if (defeatTransform != null) defeatUI = defeatTransform.gameObject;
         }
     }
-    
+
     public void TransitionToPhase2()
     {
         // 현재 씬을 Phase2 씬으로 교체
