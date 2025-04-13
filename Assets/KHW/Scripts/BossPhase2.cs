@@ -899,6 +899,15 @@ namespace Azmodan.Phase2
         public override void Enter()
         {
             if (boss.animator != null) boss.animator.SetTrigger("Death");
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetState(GameState.Victory);
+            }
+            else
+            {
+                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+            }
         }
 
     }
