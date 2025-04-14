@@ -271,7 +271,8 @@ MonoBehaviour:
   debugOffset: {x: 0, y: 2, z: 0}
   phase2DamageMultiplier: 0.8
   playSpawnEffect: 1
-  spawnEffectPrefab: {fileID: 0}
+  spawnEffectPrefab: {fileID: 4550076289710732121, guid: 6863ce4e345ba8947ad4e877ee1d1fc4,
+    type: 3}
   preAttackDelay: 0.5
   postAttackDelay: 2
   minionSummonCooldown: 15
@@ -284,11 +285,11 @@ MonoBehaviour:
     type: 3}
   minionPrefab: {fileID: 5532829715668445707, guid: 109381784dc2c66479874290f2382559,
     type: 3}
-  healthBarUI: {fileID: 0}
+  healthBarUI: {fileID: 257923611}
   maxHealth: 100
   minionSummonSound: {fileID: 8300000, guid: a2ae90e42daaf4723a539c25867d37fd, type: 3}
   missileSound: {fileID: 8300000, guid: 7743889c22ea9472a895ecd63b2bb221, type: 3}
-  closeCombatSound: {fileID: 8300000, guid: d89e3e730bce443569b30b593a273361, type: 3}
+  closeCombatSound: {fileID: 8300000, guid: 4253ea676060e49dd9488f73d692ea2a, type: 3}
   hitSound: {fileID: 8300000, guid: a7fdde9dbb81b4167a27a8aeb1e4ce58, type: 3}
   deathSound: {fileID: 8300000, guid: cc38b51f3704642d7ba01a8c899baad9, type: 3}
   audioSource: {fileID: 236952572}
@@ -514,6 +515,18 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &257923611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1081530381556129444, guid: 6b9f3b98164df2847a5babfd4019b19f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2501444647700176504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &264209360 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4457150525628659939, guid: 8a0b47f2b81faa549aa05fa51f52a875,

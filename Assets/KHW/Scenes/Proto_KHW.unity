@@ -302,7 +302,8 @@ MonoBehaviour:
   debugOffset: {x: 0, y: 2, z: 0}
   phase2DamageMultiplier: 0.8
   playSpawnEffect: 1
-  spawnEffectPrefab: {fileID: 0}
+  spawnEffectPrefab: {fileID: 4550076289710732121, guid: 6863ce4e345ba8947ad4e877ee1d1fc4,
+    type: 3}
   preAttackDelay: 0.5
   postAttackDelay: 2
   minionSummonCooldown: 15
