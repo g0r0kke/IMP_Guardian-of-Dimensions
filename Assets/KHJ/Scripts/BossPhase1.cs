@@ -535,7 +535,7 @@ namespace Azmodan.Phase1
             // 디버그 로그
             if (!isInAngle)
             {
-                Debug.Log($"보스: 플레이어가 공격 각도 밖에 있습니다. (각도: {angleToPlayer}°)");
+                // Debug.Log($"보스: 플레이어가 공격 각도 밖에 있습니다. (각도: {angleToPlayer}°)");
             }
 
             return isInAngle;
