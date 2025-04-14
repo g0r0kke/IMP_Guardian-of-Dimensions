@@ -11,14 +11,16 @@ public class PlayerDataManager : MonoBehaviour
     public int playerGaugeLimit = 3;
     public int originPlayerGauge = 0;
 
+    public bool isControlPlayer;
+
     public int playerLinkHealth;
     public int playerLinkGauge;
 
     private PlayerGUI playerGUI;
+    private GameManager gameManager;
 
     private void Awake()
     {
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -31,20 +33,25 @@ public class PlayerDataManager : MonoBehaviour
             PlayerOriginSetting();
         }
 
-        playerGUI = FindObjectOfType<PlayerGUI>();
-        if (playerGUI == null)
+        // Find the GameManager reference
+        gameManager = FindObjectOfType<GameManager>();
+        if (gameManager == null)
         {
-            Debug.LogError("PlayerGUI를 찾을 수 없습니다!");
-            return;
+            Debug.LogWarning("GameManager를 찾을 수 없습니다. PlayerDataManager가 제대로 작동하지 않을 수 있습니다.");
         }
 
-        LoadPlayerData();
+        // Only try to find PlayerGUI if we're in a valid game state
+        if (ShouldLoadPlayerGUI())
+        {
+            FindAndLoadPlayerGUI();
+        }
     }
 
     public void PlayerOriginSetting()
     {
         playerLinkHealth = originPlayerHealth;
         playerLinkGauge = originPlayerGauge;
+        isControlPlayer = true;
     }
 
     private void OnEnable()
@@ -66,29 +73,53 @@ public class PlayerDataManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        playerGUI = FindObjectOfType<PlayerGUI>();
-        if (playerGUI == null)
+        // Make sure we have a reference to GameManager
+        if (gameManager == null)
         {
-            Debug.LogError("새 씬에서 PlayerGUI를 찾을 수 없습니다!");
-            yield break;
+            gameManager = FindObjectOfType<GameManager>();
         }
 
-        LoadPlayerData();
+        // Only try to find PlayerGUI if we're in a valid game state
+        if (ShouldLoadPlayerGUI())
+        {
+            FindAndLoadPlayerGUI();
+
+        }
+    }
+
+    // Check if the current game state requires PlayerGUI
+    private bool ShouldLoadPlayerGUI()
+    {
+        if (gameManager == null) return false;
+
+        Debug.Log(gameManager.State);
+
+        // Only load PlayerGUI during active boss phases
+        return gameManager.State == GameState.BossPhase1 || gameManager.State == GameState.BossPhase2;
+    }
+
+    // Find PlayerGUI and load player data if it exists
+    private void FindAndLoadPlayerGUI()
+    {
+        playerGUI = FindObjectOfType<PlayerGUI>();
+        if (playerGUI != null)
+        {
+            LoadPlayerData();
+        }
     }
 
     public void LoadPlayerData()
     {
+        // Double-check that we have a valid PlayerGUI
         if (playerGUI == null)
         {
-            playerGUI = FindObjectOfType<PlayerGUI>();
-
-            if (playerGUI == null)
+            // Only log a warning if we're in a state where PlayerGUI should exist
+            if (ShouldLoadPlayerGUI())
             {
                 Debug.LogWarning("PlayerGUI가 존재하지 않아 데이터를 로드할 수 없습니다.");
-                return;
             }
+            return;
         }
-
         playerGUI.playerHealthLimit = playerHealthLimit;
         playerGUI.playerHealth = playerLinkHealth;
         UpdateHealthUI();
@@ -100,15 +131,19 @@ public class PlayerDataManager : MonoBehaviour
 
     private void UpdateHealthUI()
     {
-        playerGUI.PlayerHpBar.value = (float)playerLinkHealth / playerHealthLimit;
+        // Make sure we have a valid PlayerGUI
+        if (playerGUI == null) return;
+
+        playerGUI.PlayerHpBar.value = (float)playerLinkHealth / (float)playerHealthLimit;
         playerGUI.PlayerHpText.text = $"{playerLinkHealth}/{playerHealthLimit}";
     }
 
     private void UpdateGaugeUI()
     {
-        playerGUI.PlayerGaugeBar.value = (float)playerLinkGauge / playerGaugeLimit;
+        // Make sure we have a valid PlayerGUI
+        if (playerGUI == null) return;
+
+        playerGUI.PlayerGaugeBar.value = (float)playerLinkGauge / (float)playerGaugeLimit;
         playerGUI.PlayerGaugeText.text = $"{playerLinkGauge}/{playerGaugeLimit}";
     }
 }
-
-

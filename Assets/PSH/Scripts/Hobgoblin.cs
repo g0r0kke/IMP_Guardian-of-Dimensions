@@ -25,14 +25,36 @@ public class Hobgoblin : MonoBehaviour
 
     public int attackDamage = 5; // 플레이어 데미지 입히기
 
+    // 플레이어 데미지 컨트롤러 (민우)
+    public DamageController playerDamageController;
+
     void Start()
     {
         animator = GetComponent<Animator>();
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
+        // DamageController 찾기 (민우)
+        playerDamageController = FindObjectOfType<DamageController>();
+        if (playerDamageController == null)
+        {
+            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
+        }
+
         ChangeState(new HobIdleState(this)); // 초기 상태
     }
+
+
+    // 플레이어에게 데미지 입히는 함수 (민우)
+    public void DealDamageToPlayer()
+    {
+        if (playerDamageController != null)
+        {
+            playerDamageController.PlayerTakeDamage(attackDamage);
+            Debug.Log($"홉고블린이 플레이어에게 {attackDamage} 데미지를 입혔습니다!");
+        }
+    }
+
 
     void Update()
     {

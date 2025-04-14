@@ -20,6 +20,8 @@ public class HandGestureController : MonoBehaviour
     private DefenseController defenseController;
     private HealingController healingController;
 
+    private PlayerDataManager playerDataManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,11 +29,15 @@ public class HandGestureController : MonoBehaviour
         ultimateAttackController = GetComponent<UltimateAttackController>();
         defenseController = GetComponent<DefenseController>();
         healingController = GetComponent<HealingController>();
+
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
+
         if (ManoMotionManager.Instance == null || ManoMotionManager.Instance.HandInfos == null || ManoMotionManager.Instance.HandInfos.ToList().Count == 0)
         {
             ResetGrab();

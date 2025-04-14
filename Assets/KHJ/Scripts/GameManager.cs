@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 {
     // 싱글톤 패턴
     public static GameManager Instance { get; private set; }
-    private GameState state = GameState.Intro;
+    [SerializeField] private GameState state = GameState.Intro;
     public GameState State 
     { 
         get { return state; }
@@ -31,13 +31,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
+    [SerializeField] private GameObject BossIndicatorUI;
     
     // 플레이어 관련 변수
-    public float playerHealth = 100f;
+    private PlayerDataManager playerDataManager;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
     [SerializeField] private GameObject virtualJoystick;
+    [SerializeField] private GameObject hobgoblin;
     
     private void Awake()
     {
@@ -49,6 +51,8 @@ public class GameManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        playerDataManager = PlayerDataManager.Instance;
 
     }
     
@@ -95,30 +99,37 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 // 인트로 시작 시 처리
-                playerHealth = 100f;
                 HideAllUI();
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                bossPrefab.SetActive(true);
-                virtualJoystick.SetActive(true);
+                playerDataManager.PlayerOriginSetting();
+                if (bossPrefab) bossPrefab.SetActive(true);
+                if (virtualJoystick) virtualJoystick.SetActive(true);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.BossPhase2:
-                bossPrefab.SetActive(true);
-                virtualJoystick.SetActive(true);
+                if (bossPrefab) bossPrefab.SetActive(true);
+                if (virtualJoystick) virtualJoystick.SetActive(true);
+                if(hobgoblin) hobgoblin.SetActive(true);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.Victory:
                 // 승리 상태 시작 시 처리
-                bossPrefab.SetActive(false);
-                virtualJoystick.SetActive(false);
+                if (bossPrefab) bossPrefab.SetActive(false);
+                if (virtualJoystick) virtualJoystick.SetActive(false);
+                if (hobgoblin) hobgoblin.SetActive(false);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
                 ShowVictoryUI();
                 break;
             case GameState.Defeat:
                 // 사망 상태 시작 시 처리
-                bossPrefab.SetActive(false);
-                virtualJoystick.SetActive(false);
+                if (bossPrefab) bossPrefab.SetActive(false);
+                if (virtualJoystick) virtualJoystick.SetActive(false);
+                if (hobgoblin) hobgoblin.SetActive(false);
+                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
                 ShowDefeatUI();
                 break;
         }
@@ -128,32 +139,33 @@ public class GameManager : MonoBehaviour
     {
         // null인 레퍼런스만 찾기 (이미 있다면 재사용)
         bossPrefab = GameObject.Find("BossPhase1");
-        if (bossPrefab == null) bossPrefab = GameObject.Find("BossPhase2");
+        if (!bossPrefab) bossPrefab = GameObject.Find("BossPhase2");
+        if (!virtualJoystick) virtualJoystick = GameObject.Find("UI_JoyStick");
+        if (!hobgoblin) hobgoblin = GameObject.Find("Hobgoblin 1");
+        if (!BossIndicatorUI) BossIndicatorUI = GameObject.Find("BossIndicator");
         
-        if (virtualJoystick == null) virtualJoystick = GameObject.Find("UI_JoyStick");
         
         // 먼저 부모 UI 컨테이너 찾기
-        GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat_UI");
-    
+        GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat UI");
+
         if (victoryDefeatContainer != null)
         {
-            // 자식 UI 요소들 찾기
-            Transform bgTransform = victoryDefeatContainer.transform.Find("Background_UI");
-            if (bgTransform != null) uiBackground = bgTransform.gameObject;
-        
-            Transform victoryTransform = victoryDefeatContainer.transform.Find("Victory_UI");
-            if (victoryTransform != null) victoryUI = victoryTransform.gameObject;
-        
-            Transform defeatTransform = victoryDefeatContainer.transform.Find("Defeat_UI");
-            if (defeatTransform != null) defeatUI = defeatTransform.gameObject;
+            // 인덱스로 직접 자식 UI 요소들 찾기
+            if (victoryDefeatContainer.transform.childCount >= 3)
+            {
+                uiBackground = victoryDefeatContainer.transform.GetChild(0).gameObject; // background Blur
+                defeatUI = victoryDefeatContainer.transform.GetChild(1).gameObject;     // Defeat_UI
+                victoryUI = victoryDefeatContainer.transform.GetChild(2).gameObject;    // Victory_UI
+            }
+            else
+            {
+                Debug.LogError("VictoryDefeat_UI 오브젝트에 필요한 자식 오브젝트가 없습니다.");
+            }
         }
     }
-    
+
     public void TransitionToPhase2()
     {
-        // Phase1 보스가 죽었을 때 호출됨
-        Debug.Log("매니저: Phase 2로 전환 시작");
-        
         // 현재 씬을 Phase2 씬으로 교체
         Debug.Log("매니저: Phase 2 씬으로 전환");
         SceneManager.LoadScene(phase2SceneName);

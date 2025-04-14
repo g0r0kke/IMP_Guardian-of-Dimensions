@@ -26,16 +26,22 @@ public class UltimateAttackController : MonoBehaviour
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
+    private PlayerDataManager playerDataManager;
+
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
+
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
+
         bool isPressedUltimateAttack = Input.GetKeyDown(KeyCode.X);
 
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)

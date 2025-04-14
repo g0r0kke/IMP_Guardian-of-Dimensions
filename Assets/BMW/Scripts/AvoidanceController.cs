@@ -20,6 +20,8 @@ public class AvoidanceController : MonoBehaviour
     private PlayerGUI playerGUI;
     private DamageController damageController;
 
+    private PlayerDataManager playerDataManager;
+
     void Start()
     {
 
@@ -30,11 +32,14 @@ public class AvoidanceController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         playerGUI = GetComponent<PlayerGUI>();
         damageController = GetComponent<DamageController>();
+
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
 
         float currentRotationY = Camera.main.transform.eulerAngles.y;
         float deltaRotation = Mathf.DeltaAngle(previousRotationY, currentRotationY);

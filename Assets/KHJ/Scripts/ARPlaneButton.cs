@@ -34,6 +34,15 @@ public class ARPlaneButton : MonoBehaviour
 
     public void SaveBossPosition()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetState(GameState.BossPhase1);
+        }
+        else
+        {
+            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+        }
+        
         if (arPlacement != null)
         {
             Vector3 cubePosition = arPlacement.GetSpawnedObjectPosition();
@@ -50,15 +59,6 @@ public class ARPlaneButton : MonoBehaviour
                     {
                         Debug.Log($"씬 전환 시작: {targetSceneName}");
                         TransitionToScene();
-                        
-                        if (GameManager.Instance != null)
-                        {
-                            GameManager.Instance.SetState(GameState.BossPhase1);
-                        }
-                        else
-                        {
-                            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
-                        }
                     }
                 }
                 else

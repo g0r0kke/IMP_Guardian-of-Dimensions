@@ -17,16 +17,22 @@ public class HealingController : MonoBehaviour
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
+    private PlayerDataManager playerDataManager;
+
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
+
+        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!playerDataManager.isControlPlayer) return;
+
         bool isPressedHealing = Input.GetKeyDown(KeyCode.V);
 
         if ((isPressedHealing || handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)

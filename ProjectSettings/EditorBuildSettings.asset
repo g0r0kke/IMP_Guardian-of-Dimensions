@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/KHJ/Scenes/Alpha_KHJ.unity
     guid: e5f07c7bcbbce86498e1f6e14aa14f1b
+  - enabled: 1
+    path: Assets/Scenes/ARPlaneScene.unity
+    guid: efe3207f0a0f4514aad440387473b553
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: 4f69fc97e19c81245ba4ad4338eb60c8,
       type: 2}

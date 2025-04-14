@@ -63,8 +63,15 @@ public class UltimateAttackSphereController : MonoBehaviour
         
         if (transform.position.y <= targetPosition.y)
         {
+            GameObject collisionEffect = Instantiate(collisionEffectPrefab, transform.position, Quaternion.identity);
+            collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
+            Destroy(collisionEffect, 1f);
             Destroy(gameObject);
-            Debug.Log("적을 만나지 못하였지만 적의 위치까지와 삭제 되었습니다.");
+
+            ultimateAttackEndSound.Play();
+
+            bossTarget.TakeDamage(attackDamage);
+            Debug.Log($"플레이어가 간접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
         }
         
 
@@ -90,7 +97,7 @@ public class UltimateAttackSphereController : MonoBehaviour
             ultimateAttackEndSound.Play();
 
             bossTarget.TakeDamage(attackDamage);
-            Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            Debug.Log($"플레이어가 직접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
         }
     }
 
