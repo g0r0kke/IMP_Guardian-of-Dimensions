@@ -148,8 +148,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7479040308024492031, guid: 5a15c6e4212b0224dab1de42625fdf50,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1870855ad7b679049b8b6c7055543052, type: 3}
-  m_Resource: {fileID: 8300000, guid: 1870855ad7b679049b8b6c7055543052, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -268,6 +268,13 @@ MonoBehaviour:
   sfxGroup: {fileID: 1655845931190198451, guid: 5a15c6e4212b0224dab1de42625fdf50,
     type: 2}
   buttonSFX: {fileID: 8300000, guid: c442d9205118e2643a1540081ad9dafb, type: 3}
+  sceneBGMs:
+  - sceneName: MainMenuScene
+    bgmClip: {fileID: 8300000, guid: 1870855ad7b679049b8b6c7055543052, type: 3}
+  - sceneName: Boss1Scene
+    bgmClip: {fileID: 8300000, guid: ed92e7d9aa7a98d40925b1342431b1da, type: 3}
+  - sceneName: Boss2Scene
+    bgmClip: {fileID: 8300000, guid: 1e6f3e6ea1146a742a66a6acc8799037, type: 3}
 --- !u!1 &790939240
 GameObject:
   m_ObjectHideFlags: 0

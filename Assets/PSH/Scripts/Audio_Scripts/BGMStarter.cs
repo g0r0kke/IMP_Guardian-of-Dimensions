@@ -8,9 +8,11 @@ public class BGMStarter : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("[Boss1] BGMStarter 실행됨");
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayBGM(bgmClip);
+            AudioManager.Instance.StopBGM(); 
+            AudioManager.Instance.PlayBGMWithFade(bgmClip, 1f);
         }
     }
 }

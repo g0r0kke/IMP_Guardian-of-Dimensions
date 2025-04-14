@@ -646,7 +646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &570471126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2074,6 +2074,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4796967733036204975, guid: e8892ba98c7546040b97e0e7a759bc57,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 2654575746742538750, guid: e8892ba98c7546040b97e0e7a759bc57,
         type: 3}
       propertyPath: m_Name
@@ -2207,6 +2213,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2597261329923799738, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
+    - target: {fileID: 2651799542348585244, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 2652216780130495351, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: planeCollider
@@ -2222,6 +2240,12 @@ PrefabInstance:
       propertyPath: basicAttackStartSound
       value: 
       objectReference: {fileID: 1325685207}
+    - target: {fileID: 2846353322531038895, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 4439591891553361647, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: PlayerTakeDamageSound
@@ -2242,11 +2266,35 @@ PrefabInstance:
       propertyPath: ultimateAttackStartSound
       value: 
       objectReference: {fileID: 1325685205}
+    - target: {fileID: 5189019668468112837, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
+    - target: {fileID: 5534434664717015865, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
+    - target: {fileID: 5586872403785116716, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 5589778470852039940, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: ShieldSound
       value: 
       objectReference: {fileID: 1325685203}
+    - target: {fileID: 5665636970122807775, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 5888367504529806132, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: PlayerHpBar
@@ -2337,6 +2385,12 @@ PrefabInstance:
       propertyPath: PlayerUltimateAttackGlobe
       value: 
       objectReference: {fileID: 990558058}
+    - target: {fileID: 7582189971182168355, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -3962828188468603730, guid: 5a15c6e4212b0224dab1de42625fdf50,
+        type: 2}
     - target: {fileID: 7663121471199286818, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: heallingSound
