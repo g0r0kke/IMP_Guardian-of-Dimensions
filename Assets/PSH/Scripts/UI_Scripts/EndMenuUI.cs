@@ -8,7 +8,6 @@ public class EndMenuUI : MonoBehaviour
     public Button[] Buttons; // 0은 MainMenu, 1은 Replay
     public Button okayButton;
 
-
     public GameObject victoryUI;
     public GameObject defeatUI;
     public GameObject background;
@@ -50,12 +49,16 @@ public class EndMenuUI : MonoBehaviour
 
     public void SelectMainMenu()
     {
+        // 버튼 클릭 시 사운드 재생
+        AudioManager.Instance.PlayButtonSFX();
         currentSelection = 0;
         ArrowMoveButton(currentSelection);
     }
 
     public void SelectReplay()
     {
+        // 버튼 클릭 시 사운드 재생
+        AudioManager.Instance.PlayButtonSFX();
         currentSelection = 1;
         ArrowMoveButton(currentSelection);
     }
@@ -69,12 +72,15 @@ public class EndMenuUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ArrowMoveButton: 유효하지 않은 버튼 인덱스거나 버튼이 누락됨!");
+            Debug.LogWarning("ArrowMoveButton 누락");
         }
     }
 
     public void ExecuteCurrentSelection()
     {
+        // OK 버튼 클릭 시 사운드 재생
+        AudioManager.Instance.PlayButtonSFX();
+
         if (currentSelection == 0)
         {
             // Main Menu 선택 시, MainMenu 씬으로 이동
@@ -83,7 +89,6 @@ public class EndMenuUI : MonoBehaviour
         }
         else if (currentSelection == 1)
         {
-
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.SetState(GameState.BossPhase1);
@@ -95,9 +100,7 @@ public class EndMenuUI : MonoBehaviour
 
             // Replay 선택 시, 현재 씬을 다시 로드
             Debug.Log("Replay 선택됨");
-
-
             SceneManager.LoadScene("ARPlaneScene");
         }
-        }
     }
+}
