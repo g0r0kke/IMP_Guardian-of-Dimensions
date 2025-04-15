@@ -17,6 +17,7 @@ public class UltimateAttackSphereController : MonoBehaviour
 
     [Header("보스 타겟")]
     private Boss bossTarget;
+    private Hobgoblin summonTarget;
 
     public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
     {
@@ -40,12 +41,19 @@ public class UltimateAttackSphereController : MonoBehaviour
     private void Start()
     {
         GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemyObject != null)
+        if (enemyObject)
         {
+            // 먼저 Boss 컴포넌트 찾기
             bossTarget = enemyObject.GetComponent<Boss>();
-            if (bossTarget == null)
+
+            // Boss 컴포넌트가 없으면 Hobgoblin 컴포넌트 찾기
+            if (!bossTarget)
             {
-                Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss 컴포넌트를 찾을 수 없습니다.");
+                summonTarget = enemyObject.GetComponent<Hobgoblin>();
+                if (!summonTarget)
+                {
+                    Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss나 Hobgoblin 컴포넌트를 찾을 수 없습니다.");
+                }
             }
         }
         else
@@ -70,8 +78,16 @@ public class UltimateAttackSphereController : MonoBehaviour
 
             ultimateAttackEndSound.Play();
 
-            bossTarget.TakeDamage(attackDamage);
-            Debug.Log($"플레이어가 간접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            if (bossTarget)
+            {
+                bossTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 간접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            }
+            else if (summonTarget)
+            {
+                summonTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 간접 타격으로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+            }
         }
         
 
@@ -96,8 +112,16 @@ public class UltimateAttackSphereController : MonoBehaviour
 
             ultimateAttackEndSound.Play();
 
-            bossTarget.TakeDamage(attackDamage);
-            Debug.Log($"플레이어가 직접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            if (bossTarget)
+            {
+                bossTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 직접 타격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            }
+            else if (summonTarget)
+            {
+                summonTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 직접 타격으로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+            }
         }
     }
 
