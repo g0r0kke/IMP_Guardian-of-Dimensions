@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: d6b26fff05ca9674b9f66e99bf0b4cbc
+  - enabled: 1
     path: Assets/Scenes/ARPlaneScene.unity
     guid: efe3207f0a0f4514aad440387473b553
   - enabled: 1
@@ -14,9 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Boss2Scene.unity
     guid: 2d6ae0bf4d5c75e4da8b9460600cb34f
-  - enabled: 1
-    path: Assets/Scenes/MainMenuScene.unity
-    guid: d6b26fff05ca9674b9f66e99bf0b4cbc
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 4755b35b590504809a7525fd2109c2e2
