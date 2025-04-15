@@ -1143,6 +1143,16 @@ PrefabInstance:
       propertyPath: playerGaugeLimit
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3901847629489426729, guid: b36ec6ac928d1924ab0c7344fffe94fc,
+        type: 3}
+      propertyPath: playerHealthLimit
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3901847629489426729, guid: b36ec6ac928d1924ab0c7344fffe94fc,
+        type: 3}
+      propertyPath: originPlayerHealth
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

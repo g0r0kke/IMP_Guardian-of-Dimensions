@@ -19,6 +19,7 @@ public class BasicAttackSphereController : MonoBehaviour
 
     [Header("보스 타겟")]
     private Boss bossTarget;
+    private Hobgoblin summonTarget;
 
     public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider, AudioSource audioSource)
     {
@@ -38,12 +39,19 @@ public class BasicAttackSphereController : MonoBehaviour
     private void Start()
     {
         GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemyObject != null)
+        if (enemyObject)
         {
+            // 먼저 Boss 컴포넌트 찾기
             bossTarget = enemyObject.GetComponent<Boss>();
-            if (bossTarget == null)
+
+            // Boss 컴포넌트가 없으면 Hobgoblin 컴포넌트 찾기
+            if (!bossTarget)
             {
-                Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss 컴포넌트를 찾을 수 없습니다.");
+                summonTarget = enemyObject.GetComponent<Hobgoblin>();
+                if (!summonTarget)
+                {
+                    Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss나 Hobgoblin 컴포넌트를 찾을 수 없습니다.");
+                }
             }
         }
         else
@@ -93,8 +101,17 @@ public class BasicAttackSphereController : MonoBehaviour
             Destroy(gameObject);
             playerGUI.IncreaseGauge(basicAttackController.GaugeIncreaseAmount);
 
-            bossTarget.TakeDamage(attackDamage);
-            Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            if (bossTarget)
+            {
+                bossTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+            }
+            else if (summonTarget)
+            {
+                summonTarget.TakeDamage(attackDamage);
+                Debug.Log($"플레이어가 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+            }
+
             basicAttackEndSound.Play();
         }
     }
