@@ -38,12 +38,16 @@ public class AudioManager : MonoBehaviour
             bgmSource.outputAudioMixerGroup = musicGroup;
             sfxSource.outputAudioMixerGroup = sfxGroup;
 
+            LoadVolume();
+
+
             // 씬 변경 이벤트 리스너 추가
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
 
@@ -85,10 +89,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-        LoadVolume();
-    }
+ 
 
     public void SetMusicVolume(float volume)
     {
@@ -148,14 +149,23 @@ public class AudioManager : MonoBehaviour
     {
         if (clip != null)
         {
+            Debug.Log("Playing SFX: " + clip.name);
             sfxSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogWarning("SFX clip is null!");
         }
     }
 
     public void PlayButtonSFX()
     {
+        Debug.Log("PlayButtonSFX called");
         PlaySFX(buttonSFX);
     }
+
+   
+
 
     public void PlayBGMWithFade(AudioClip clip, float duration = 0.4f)
     {
@@ -216,4 +226,8 @@ public class AudioManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
+
+
+
 }
