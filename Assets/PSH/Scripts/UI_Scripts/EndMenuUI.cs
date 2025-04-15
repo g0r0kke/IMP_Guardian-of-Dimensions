@@ -15,6 +15,9 @@ public class EndMenuUI : MonoBehaviour
 
     private int currentSelection = 0;
 
+    // 이전 씬 저장 변수
+    private string previousScene;
+
     void Start()
     {
         // 초기화: 화살표를 기본 선택 (Main Menu)으로 설정
@@ -80,10 +83,21 @@ public class EndMenuUI : MonoBehaviour
         }
         else if (currentSelection == 1)
         {
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetState(GameState.BossPhase1);
+            }
+            else
+            {
+                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+            }
+
             // Replay 선택 시, 현재 씬을 다시 로드
             Debug.Log("Replay 선택됨");
-            //GameManager.Instance.playerHealth = 100f; //vv
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+
+            SceneManager.LoadScene("ARPlaneScene");
+        }
         }
     }
-}
