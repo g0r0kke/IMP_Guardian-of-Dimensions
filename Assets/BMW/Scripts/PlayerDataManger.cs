@@ -6,8 +6,8 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance;
 
-    public int playerHealthLimit = 50;
-    public int originPlayerHealth = 50;
+    public int playerHealthLimit = 100;
+    public int originPlayerHealth = 100;
     public int playerGaugeLimit = 3;
     public int originPlayerGauge = 0;
 
