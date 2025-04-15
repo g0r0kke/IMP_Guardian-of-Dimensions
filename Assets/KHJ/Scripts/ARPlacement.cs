@@ -93,23 +93,22 @@ public class ARPlacement : MonoBehaviour
                     // Ray가 AR 플레인과 충돌한 위치
                     Pose hitPose = hits[0].pose;
                     
-                    // Y축 회전에 180도 추가
-                    // Quaternion rotationWithYFlip = hitPose.rotation * Quaternion.Euler(0, 180, 0);
+                    // 카메라를 향하도록 회전 계산
+                    Vector3 directionToCamera = Camera.main.transform.position - hitPose.position;
+                    directionToCamera.y = 0; // y축 회전만 적용하기 위해 y값은 0으로 설정
                     
-                    Quaternion zeroRotation = Quaternion.Euler(0, 180, 0);
+                    Quaternion lookAtCamera = Quaternion.LookRotation(directionToCamera);
                     
                     // 큐브가 아직 없으면 생성, 있으면 위치 업데이트
                     if (spawnedObject == null)
                     {
-                        // spawnedObject = Instantiate(markerPrefab, hitPose.position, rotationWithYFlip);
-                        spawnedObject = Instantiate(markerPrefab, hitPose.position, zeroRotation);
+                        spawnedObject = Instantiate(markerPrefab, hitPose.position, lookAtCamera);
                         PlayPlacementAudio();
                     }
                     else
                     {
                         spawnedObject.transform.position = hitPose.position;
-                        spawnedObject.transform.rotation = zeroRotation;
-                        // spawnedObject.transform.rotation = rotationWithYFlip;
+                        spawnedObject.transform.rotation = lookAtCamera;
                         PlayPlacementAudio();
                     }
                 }
