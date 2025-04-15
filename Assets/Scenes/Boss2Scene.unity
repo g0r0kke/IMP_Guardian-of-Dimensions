@@ -3329,6 +3329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
+      propertyPath: planeCollider
+      value: 
+      objectReference: {fileID: 1225320183}
+    - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
       propertyPath: basicAttackPos
       value: 
       objectReference: {fileID: 1790647944}
@@ -3356,6 +3361,11 @@ PrefabInstance:
       objectReference: {fileID: -5385396238309883189, guid: 5a15c6e4212b0224dab1de42625fdf50,
         type: 2}
     - target: {fileID: 4641375784037552862, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: planeCollider
+      value: 
+      objectReference: {fileID: 1225320183}
+    - target: {fileID: 4906869048668116429, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: planeCollider
       value: 
