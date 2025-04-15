@@ -31,7 +31,6 @@ public class ARPlaneButton : MonoBehaviour
         // 버튼 사운드 재생
         AudioManager.Instance.PlayButtonSFX();
 
-
         // GameManager 상태 설정
         if (GameManager.Instance != null)
         {

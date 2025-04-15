@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         bossPrefab = GameObject.Find("BossPhase1");
         if (!bossPrefab) bossPrefab = GameObject.Find("BossPhase2");
         if (!virtualJoystick) virtualJoystick = GameObject.Find("UI_JoyStick");
-        if (!hobgoblin) hobgoblin = GameObject.Find("Hobgoblin 1");
+        if (!hobgoblin) hobgoblin = GameObject.Find("Hobgoblin");
         if (!BossIndicatorUI) BossIndicatorUI = GameObject.Find("BossIndicator");
         
         
