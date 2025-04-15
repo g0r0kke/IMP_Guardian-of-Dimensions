@@ -66,7 +66,7 @@ public class TestPlayer : MonoBehaviour
             }
 
             // Hobgoblin 공격 (범위 내)
-            GameObject[] hobgoblins = GameObject.FindGameObjectsWithTag("Hobgoblin");
+            GameObject[] hobgoblins = GameObject.FindGameObjectsWithTag("Enemy");
             Debug.Log($"Hobgoblin 감지 수: {hobgoblins.Length}");
 
 
@@ -80,7 +80,7 @@ public class TestPlayer : MonoBehaviour
                     Hobgoblin hobScript = hob.GetComponent<Hobgoblin>();
                     if (hobScript != null)
                     {
-                        hobScript.TakeHit();
+                        hobScript.TakeDamage(attackDamage );
                         Debug.Log($"플레이어가 Hobgoblin을 공격했습니다!");
                     }
                     else
@@ -92,7 +92,7 @@ public class TestPlayer : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeTakeDamage(int damage)
     {
         currentHealth -= damage;
         Debug.Log($"플레이어 체력: {currentHealth}/{maxHealth}");

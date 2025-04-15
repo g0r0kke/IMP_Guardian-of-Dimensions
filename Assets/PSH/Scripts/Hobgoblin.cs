@@ -85,11 +85,13 @@ public class Hobgoblin : MonoBehaviour
         currentState.Enter();
     }
 
-    public void TakeHit()
+    public void TakeDamage(int damage)
     {
+       
         if (hp <= 0) return;
 
-        hp--;
+
+        hp-= damage;
         ChangeState(new HobDamageState(this));
 
 

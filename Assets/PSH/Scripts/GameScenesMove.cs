@@ -8,7 +8,16 @@ public class GameScenesMove : MonoBehaviour
     
     public void GameSceneCtrl()
     {
-        SceneManager.LoadScene("Boss1Scene"); // 어떤씬으로 이동할지
+        SceneManager.LoadScene("ARPlaneScene"); // 어떤씬으로 이동할지
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetState(GameState.BossPhase1);
+        }
+        else
+        {
+            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+        }
     }
 
     void Start()

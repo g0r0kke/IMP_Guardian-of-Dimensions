@@ -30522,7 +30522,7 @@ GameObject:
   - component: {fileID: 3118617029866584703}
   m_Layer: 7
   m_Name: Hobgoblin 1
-  m_TagString: Hobgoblin
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
