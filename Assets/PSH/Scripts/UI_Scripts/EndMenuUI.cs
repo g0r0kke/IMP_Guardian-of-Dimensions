@@ -91,7 +91,7 @@ public class EndMenuUI : MonoBehaviour
         {
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.SetState(GameState.BossPhase1);
+                GameManager.Instance.SetState(GameState.Intro);
             }
             else
             {
