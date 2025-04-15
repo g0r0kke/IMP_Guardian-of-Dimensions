@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     [Header("Boss References")]
     [SerializeField] private string phase1SceneName = "BossPhase1Scene";
     [SerializeField] private string phase2SceneName = "BossPhase2Scene";
-    [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, 0f, -11.4f);
+    [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, -1f, -11.4f);
     private Boss currentBoss;
     
     [Header("UI References")]
@@ -205,7 +205,7 @@ public class GameManager : MonoBehaviour
     // 보스 위치 Setter
     public void SetBossPosition(Vector3 position)
     {
-        bossPosition = new Vector3(position.x, 0f, position.z);
+        bossPosition = new Vector3(position.x, -1f, position.z);
         Debug.Log($"보스 위치가 설정되었습니다: {bossPosition}");
     }
     
