@@ -77,6 +77,7 @@ public class PlayerDataManager : MonoBehaviour
         if (gameManager == null)
         {
             gameManager = FindObjectOfType<GameManager>();
+            
         }
 
         // Only try to find PlayerGUI if we're in a valid game state

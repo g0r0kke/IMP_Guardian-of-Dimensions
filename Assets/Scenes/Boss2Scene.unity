@@ -264,7 +264,7 @@ MonoBehaviour:
   moveSpeed: 3
   rotateSpeed: 5
   animator: {fileID: 236952577}
-  targetPlayer: {fileID: 1350204308}
+  targetPlayer: {fileID: 0}
   enableDebug: 1
   stateDebugColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   subStateDebugColor: {r: 0, g: 1, b: 0, a: 1}
@@ -2571,12 +2571,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1350204308 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4398136918708322778, guid: 53759bb5db7cc804a8ef48a872fc3a12,
-    type: 3}
-  m_PrefabInstance: {fileID: 1790647942}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395747798
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,6 +2858,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: basicAttackPos
+      value: 
+      objectReference: {fileID: 1790647944}
     - target: {fileID: 2597261329923799738, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: OutputAudioMixerGroup
@@ -2996,6 +2995,71 @@ PrefabInstance:
       propertyPath: PlayerUltimateAttackGlobe
       value: 
       objectReference: {fileID: 1017959023}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerHpBar
+      value: 
+      objectReference: {fileID: 198756182}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerHpText
+      value: 
+      objectReference: {fileID: 684529638}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: playerHealth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerGaugeBar
+      value: 
+      objectReference: {fileID: 1120137225}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerGaugeText
+      value: 
+      objectReference: {fileID: 1891586952}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerShildText
+      value: 
+      objectReference: {fileID: 438924617}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerShildGlobe
+      value: 
+      objectReference: {fileID: 1091234834}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerHealingText
+      value: 
+      objectReference: {fileID: 1210619083}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerHealingGlobe
+      value: 
+      objectReference: {fileID: 13803070}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerBasicAttackText
+      value: 
+      objectReference: {fileID: 1577363213}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerBasicAttackGlobe
+      value: 
+      objectReference: {fileID: 506662951}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerUltimateAttackText
+      value: 
+      objectReference: {fileID: 264209360}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: PlayerUltimateAttackGlobe
+      value: 
+      objectReference: {fileID: 1017959023}
     - target: {fileID: 7582189971182168355, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: OutputAudioMixerGroup
@@ -3010,6 +3074,12 @@ PrefabInstance:
 --- !u!4 &1790647943 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+    type: 3}
+  m_PrefabInstance: {fileID: 1790647942}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1790647944 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4137757480630466455, guid: 53759bb5db7cc804a8ef48a872fc3a12,
     type: 3}
   m_PrefabInstance: {fileID: 1790647942}
   m_PrefabAsset: {fileID: 0}
