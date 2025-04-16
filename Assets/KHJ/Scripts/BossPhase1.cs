@@ -69,17 +69,6 @@ namespace Azmodan.Phase1
 
         protected override void Start()
         {
-            if (GameManager.Instance != null)
-            {
-                Vector3 bossPosition = GameManager.Instance.GetBossPosition();
-                transform.position = bossPosition;
-                Debug.Log($"GameManager에서 가져온 보스 위치로 설정됨: {bossPosition}");
-            }
-            else
-            {
-                Debug.LogWarning("GameManager를 찾을 수 없습니다. 기본 위치를 사용합니다.");
-            }
-            
             base.Start();
 
             // 초기 체력 로그 출력

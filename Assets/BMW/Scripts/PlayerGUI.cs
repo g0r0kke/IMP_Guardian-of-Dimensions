@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,6 +51,10 @@ public class PlayerGUI : MonoBehaviour
     private float defenseSkillDelayTime;
     private float healingSkillDelayTime;
 
+    [Header("보스 타겟")]
+    private Boss bossTarget;
+    private List<Hobgoblin> summonTargets = new List<Hobgoblin>();
+
     void Start()
     {
         basicAttackController = GetComponent<BasicAttackController>();
@@ -69,6 +74,20 @@ public class PlayerGUI : MonoBehaviour
         }
         playerHealth = playerDataManager.playerLinkHealth;
         ultimateAttackGauge = playerDataManager.playerLinkGauge;
+
+        // 모든 Enemy 태그 오브젝트 찾기
+        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemyObject in allEnemies)
+        {
+            // Boss 컴포넌트 가진 적 찾기
+            Boss boss = enemyObject.GetComponent<Boss>();
+            if (boss)
+            {
+                bossTarget = boss;
+                break; // 보스 찾으면 중단
+            }
+        }
     }
 
     // Update is called once per frame
@@ -199,5 +218,25 @@ public class PlayerGUI : MonoBehaviour
                   "avoidanceSkillDelay:" + avoidanceSkillDelayTime + "\n" +
                   "defenseSkillDelay:" + defenseSkillDelayTime + "\n" +
                   "healingSkillDelay:" + healingSkillDelayTime);
+    }
+
+    // 홉고블린을 리스트에서 제거하는 메서드
+    public void RemoveHobgoblinTarget(Hobgoblin hobgoblin)
+    {
+        if (hobgoblin && summonTargets.Contains(hobgoblin))
+        {
+            summonTargets.Remove(hobgoblin);
+            Debug.Log($"홉고블린 '{hobgoblin.gameObject.name}'이(가) 타겟 리스트에서 제거되었습니다. 남은 수: {summonTargets.Count}개");
+        }
+    }
+
+    // 홉고블린을 플레이어의 타겟 리스트에 추가하는 public 메서드
+    public void AddHobgoblinTarget(Hobgoblin hobgoblin)
+    {
+        if (hobgoblin && !summonTargets.Contains(hobgoblin))
+        {
+            summonTargets.Add(hobgoblin);
+            Debug.Log($"홉고블린 '{hobgoblin.gameObject.name}'이(가) 타겟 리스트에 추가되었습니다. 현재 총 {summonTargets.Count}개");
+        }
     }
 }

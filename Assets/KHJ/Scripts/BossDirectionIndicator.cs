@@ -52,15 +52,22 @@ public class BossDirectionIndicator : MonoBehaviour
             Debug.LogError("BossDirectionIndicator: 부모 캔버스를 찾을 수 없습니다!");
         }
         
-        // Enemy 태그를 가진 게임 오브젝트 찾기 (한 번만 실행)
-        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemy != null)
+        // Enemy 태그를 가진 게임 오브젝트 중 Boss 컴포넌트가 있는 것만 찾기
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
         {
-            targetBoss = enemy.transform;
+            // Boss 컴포넌트가 있는지 확인 (어떤 Boss 파생 클래스든 상관없음)
+            Boss bossComponent = enemy.GetComponent<Boss>();
+            if (bossComponent != null)
+            {
+                targetBoss = enemy.transform;
+                break; // 첫 번째 보스를 찾으면 루프 종료
+            }
         }
-        else
+    
+        if (targetBoss == null)
         {
-            Debug.LogWarning("BossDirectionIndicator: Enemy 태그를 가진 게임 오브젝트를 찾을 수 없습니다!");
+            Debug.LogWarning("BossDirectionIndicator: Boss 컴포넌트를 가진 적을 찾을 수 없습니다!");
             indicatorImage.enabled = false;
         }
         
