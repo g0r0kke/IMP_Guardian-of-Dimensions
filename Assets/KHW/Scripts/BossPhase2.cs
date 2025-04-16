@@ -45,6 +45,8 @@ namespace Azmodan.Phase2
         [SerializeField] public AudioClip hitSound;
         [SerializeField] public AudioClip deathSound;
         public AudioSource audioSource;
+        [SerializeField] public AudioClip teleportInSound;
+        [SerializeField] public AudioClip teleportOutSound;
 
         // 내부 상태 관리
         private BossStateType selectedAttackType;
@@ -55,6 +57,9 @@ namespace Azmodan.Phase2
         public bool isTakingDamage = false;
          private float damageCooldown = 0.4f; // 연속 피격 방지 시간
         private float lastDamageTime = -999f;
+
+        private float teleportInterval = 15f;
+        private float lastTeleportCheckTime = -999f;
 
         protected override void Start()
         {
@@ -126,6 +131,13 @@ namespace Azmodan.Phase2
             Vector3 pos = transform.position;
             pos.y = 1.5f;
             transform.position = pos;
+
+            if (Time.time - lastTeleportCheckTime >= teleportInterval && TeleportState.CanTeleport())
+            {
+                lastTeleportCheckTime = Time.time;
+                Debug.Log("보스: 순간이동 시도");
+                ChangeState<TeleportState>();
+            }
         }
 
         protected override void InitializeStates()
@@ -370,13 +382,13 @@ namespace Azmodan.Phase2
             float forwardOffset = 4f;
             float sideOffset = 1.5f;
 
-            // [앞 + 오른쪽] / [앞 + 왼쪽]
+            GameObject[] existing = GameObject.FindGameObjectsWithTag("Enemy");
+            if (existing.Length >= 4) return;
+
             Vector3[] offsets = new Vector3[]
             {
                 forwardDir * forwardOffset + rightDir * sideOffset,
-                forwardDir * forwardOffset - rightDir * sideOffset,
-                forwardDir * (forwardOffset + 1.5f), // 약간 더 전방
-                forwardDir * (forwardOffset - 1.5f)  // 약간 더 가까이
+                forwardDir * forwardOffset - rightDir * sideOffset
             };
 
             foreach (Vector3 offset in offsets)
@@ -787,16 +799,17 @@ namespace Azmodan.Phase2
         }
     }
 
-    // TeleportState: 순간이동 (투명도 점진적 변화 예시)
+        // TeleportState: 순간이동 (투명도 점진적 변화 예시)
     public class TeleportState : BossState
     {
         private BossPhase2 phase2Boss;
         private Renderer[] renderers;
+
         private float fadeOutDuration = 0.5f;
         private float fadeInDuration = 0.5f;
-        private float fadeTimer = 0f;
-        private bool hasTeleported = false;
-        private float teleportDistance = 3f;
+
+        private static float teleportCooldown = 10f;
+        private static float lastTeleportTime = -9999f;
 
         public TeleportState(Boss boss) : base(boss)
         {
@@ -806,68 +819,102 @@ namespace Azmodan.Phase2
         public override void Enter()
         {
             renderers = phase2Boss.GetComponentsInChildren<Renderer>();
-            // 순간이동 초기화
-            fadeTimer = 0f;
-            hasTeleported = false;
-            Debug.Log("보스: 순간이동 시작 (FadeOut)");
+            phase2Boss.StartCoroutine(DramaticTeleportRoutine());
         }
 
-        public override void Update()
+        public static bool CanTeleport()
         {
-            fadeTimer += Time.deltaTime;
-
-            // 1) FadeOut 구간
-            if (!hasTeleported && fadeTimer <= fadeOutDuration)
-            {
-                float t = fadeTimer / fadeOutDuration;
-                SetOpacity(1f - t);
-                return;
-            }
-
-            // 2) 아직 순간이동 안 했다면: 위치 이동 후 fadeTimer 리셋
-            if (!hasTeleported)
-            {
-                DoTeleport();
-                hasTeleported = true;
-                fadeTimer = 0f;
-                Debug.Log("보스: 순간이동 완료 → FadeIn 시작");
-                return;
-            }
-
-            // 3) FadeIn 구간
-            if (hasTeleported && fadeTimer <= fadeInDuration)
-            {
-                float t = fadeTimer / fadeInDuration;
-                SetOpacity(t);
-            }
-            else
-            {
-                // 페이드인 끝나면 Idle로
-                boss.TransitionToIdle();
-            }
+            return Time.time - lastTeleportTime >= teleportCooldown;
         }
 
-        private void DoTeleport()
+        private IEnumerator DramaticTeleportRoutine()
         {
+            lastTeleportTime = Time.time;
+
+            float t = 0f;
+            if (phase2Boss.audioSource != null && phase2Boss.teleportOutSound != null)
+                phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportOutSound);
+
+            while (t < fadeOutDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = 1f - (t / fadeOutDuration);
+                ApplyOpacity(alpha);
+                yield return null;
+            }
+
+            Vector3 backPos = phase2Boss.transform.position - phase2Boss.transform.forward * 5f;
+            backPos.y = 1.5f;
+            phase2Boss.transform.position = backPos;
+
+            t = 0f;
+            while (t < fadeInDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = (t / fadeInDuration);
+                ApplyOpacity(alpha);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.5f);
+
+            t = 0f;
+            if (phase2Boss.audioSource != null && phase2Boss.teleportOutSound != null)
+                phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportOutSound);
+
+            while (t < fadeOutDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = 1f - (t / fadeOutDuration);
+                ApplyOpacity(alpha);
+                yield return null;
+            }
+
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) return;
+            if (player != null)
+            {
+                Vector3 direction = (player.transform.position - phase2Boss.transform.position).normalized;
+                direction.y = 0;
+                Vector3 frontPos = player.transform.position - direction * 3.5f;
+                frontPos.y = 1.5f;
+                phase2Boss.transform.position = frontPos;
 
-            Vector3 direction = (player.transform.position - phase2Boss.transform.position).normalized;
-            direction.y = 0;
+                Quaternion targetRot = Quaternion.LookRotation(direction);
+                phase2Boss.transform.rotation = targetRot;
+            }
 
-            Vector3 teleportPosition = player.transform.position - direction * teleportDistance;
-            teleportPosition.y = 1.5f;
-            phase2Boss.transform.position = teleportPosition;
-            Debug.Log("보스 순간이동 완료");
+            t = 0f;
+            if (phase2Boss.audioSource != null && phase2Boss.teleportInSound != null)
+                phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportInSound);
+
+            while (t < fadeInDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = (t / fadeInDuration);
+                ApplyOpacity(alpha);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.3f);
+            boss.TransitionToIdle();
         }
 
-        private void SetOpacity(float alpha)
+        private void ApplyOpacity(float alpha)
         {
             if (renderers == null) return;
             foreach (Renderer r in renderers)
             {
                 foreach (Material mat in r.materials)
                 {
+                    mat.SetFloat("_Mode", 3);
+                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    mat.SetInt("_ZWrite", 0);
+                    mat.DisableKeyword("_ALPHATEST_ON");
+                    mat.EnableKeyword("_ALPHABLEND_ON");
+                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    mat.renderQueue = 3000;
+
                     Color c = mat.color;
                     c.a = alpha;
                     mat.color = c;
@@ -875,7 +922,6 @@ namespace Azmodan.Phase2
             }
         }
     }
-
     // DeathState: 사망 처리
     public class DeathState : BossState
     {
