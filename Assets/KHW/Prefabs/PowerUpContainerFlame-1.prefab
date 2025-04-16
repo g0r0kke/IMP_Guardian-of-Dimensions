@@ -73,9 +73,10 @@ MonoBehaviour:
   rotationSpeed: 5
   damage: 15
   lifetime: 5
-  impactEffectPrefab: {fileID: 0}
+  impactEffectPrefab: {fileID: 8172394614802003838, guid: 7d3425a96b729534e9e11b2591f8fd20,
+    type: 3}
   flightSound: {fileID: 0}
-  explosionSound: {fileID: 0}
+  explosionSound: {fileID: 8300000, guid: d89e3e730bce443569b30b593a273361, type: 3}
 --- !u!1 &3331981033700084409
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ public class MissileController : MonoBehaviour
     [SerializeField] private float damage = 15f;
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private GameObject impactEffectPrefab;
-    [SerializeField] private AudioClip flightSound;
     [SerializeField] private AudioClip explosionSound;
     private AudioSource audioSource;
 
@@ -25,13 +24,6 @@ public class MissileController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         audioSource = gameObject.AddComponent<AudioSource>();
-
-        if (flightSound != null)
-        {
-            audioSource.clip = flightSound;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
 
         // 일정 시간 후 미사일 자동 제거
         Destroy(gameObject, lifetime);
@@ -54,7 +46,7 @@ public class MissileController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (flightSound != null && audioSource != null)
+        if (audioSource != null)
         audioSource.Stop(); // 날아가는 소리 멈추기
 
         if (explosionSound != null)
