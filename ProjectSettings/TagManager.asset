@@ -9,6 +9,7 @@ TagManager:
   - Missile
   - baseSDK
   - Hobgoblin
+  - UI_Black
   layers:
   - Default
   - TransparentFX
