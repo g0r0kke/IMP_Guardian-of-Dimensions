@@ -132,11 +132,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hobgoblin 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6401476781236801905, guid: 5363fc1d36891ea469d9884eca385b49,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 2139770064}
     - target: {fileID: 8499027964384251715, guid: 5363fc1d36891ea469d9884eca385b49,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -415,13 +410,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602d1f9082037c946a565919426471e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phase1Prefab: {fileID: 0}
-  phase2Prefab: {fileID: 0}
+  state: 0
   phase1SceneName: BossPhase1Scene
   phase2SceneName: BossPhase2Scene
-  useSceneTransition: 1
   bossPosition: {x: -1.8, y: 0, z: -11.4}
-  playerHealth: 100
+  victoryUI: {fileID: 0}
+  defeatUI: {fileID: 0}
+  uiBackground: {fileID: 0}
+  BossIndicatorUI: {fileID: 0}
+  bossPrefab: {fileID: 0}
+  virtualJoystick: {fileID: 0}
+  hobgoblins: []
 --- !u!4 &540752651
 Transform:
   m_ObjectHideFlags: 0
@@ -842,12 +841,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2139770064 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6732551999982939358, guid: 6fced7bba080de4439ac5f9f67970003,
-    type: 3}
-  m_PrefabInstance: {fileID: 1192324102805840446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &137624360281896493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -978,6 +971,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SamplePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176675905370972718, guid: 6fced7bba080de4439ac5f9f67970003,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3041859138599805600, guid: 6fced7bba080de4439ac5f9f67970003,
         type: 3}

@@ -12,7 +12,7 @@ public class Hobgoblin : MonoBehaviour
     public float walkSpeed = 2f;
    // public float walkRange = 3f;  
     public float detectionRange = 10f;
-    public float attackRange = 1.5f; // 공격 거리
+    public float attackRange = 2.7f; // 공격 거리
     //public float runSpeed = 3.5f;
     public int hp = 1;
 
@@ -25,8 +25,13 @@ public class Hobgoblin : MonoBehaviour
 
     public int attackDamage = 5; // 플레이어 데미지 입히기
 
-    // 플레이어 데미지 컨트롤러 (민우)
+
+    // 플레이어 관련 변수
     public DamageController playerDamageController;
+    private PlayerGUI playerGUI;
+
+
+ 
 
     void Start()
     {
@@ -40,6 +45,19 @@ public class Hobgoblin : MonoBehaviour
         {
             Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
         }
+
+        // 플레이어 타겟 리스트에 자신 추가
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject)
+        {
+            playerGUI = FindObjectOfType<PlayerGUI>(); 
+            if (playerGUI != null)
+            {
+                playerGUI.AddHobgoblinTarget(this);
+            }
+        }
+
+
 
         ChangeState(new HobIdleState(this)); // 초기 상태
     }
@@ -97,6 +115,18 @@ public class Hobgoblin : MonoBehaviour
 
         if (hp <= 0)
         {
+            //플레이어 타겟 리스트에서 홉고블린 제거
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject)
+            {
+                playerGUI.GetComponent<PlayerGUI>(); 
+                if (playerGUI != null)
+                {
+                    playerGUI.RemoveHobgoblinTarget(this);
+                }
+            }
+
+
             ChangeState(new HobDeadState(this));
         }
     }
