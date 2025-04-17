@@ -30525,7 +30525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8499027964384251715
 Transform:
   m_ObjectHideFlags: 0
@@ -30620,7 +30620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4282436039518921563}
-  player: {fileID: 0}
+  player: {fileID: 7190237968939362295, guid: 7a07abdcf91a57047866270ba12e2487, type: 3}
   rotationSpeed: 5
   walkSpeed: 2
   detectionRange: 10
@@ -30632,7 +30632,8 @@ MonoBehaviour:
   goblinPunch: {fileID: 8300000, guid: ae4af0295657cfd4c8013c8c1688dfd4, type: 3}
   goblinDeath: {fileID: 8300000, guid: 7afe5c0c7e629574ebf95c1f178644db, type: 3}
   attackDamage: 5
-  playerDamageController: {fileID: 0}
+  playerDamageController: {fileID: 7158089206835094234, guid: 7a07abdcf91a57047866270ba12e2487,
+    type: 3}
 --- !u!82 &3118617029866584703
 AudioSource:
   m_ObjectHideFlags: 0
