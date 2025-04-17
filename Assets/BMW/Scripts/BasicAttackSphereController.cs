@@ -64,11 +64,11 @@ public class BasicAttackSphereController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {       
 
-        if (IsInTargetLayer(collision.gameObject) || collision.gameObject.CompareTag("Enemy"))
+        if (IsInTargetLayer(collision.gameObject) || collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Hobgoblin"))
         {
 
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
-            // 수정 필요
+            // 적의 크기에 따라 조정
             Vector3 effectCircleScale = collisionEffect.transform.Find("Circle").localScale;
             effectCircleScale = new Vector3(effectCircleScale.x * 10, effectCircleScale.y * 10, effectCircleScale.z * 10);
             Vector3 effectFireScale = collisionEffect.transform.Find("Fire").localScale;

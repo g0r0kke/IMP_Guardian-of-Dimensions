@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class UltimateAttackSphereController : MonoBehaviour
 {
-    private Vector3 targetPosition;
+    private Transform targetTransform;
     private LayerMask targetLayer;
     [SerializeField] private GameObject collisionEffectPrefab;
 
@@ -17,9 +18,9 @@ public class UltimateAttackSphereController : MonoBehaviour
     private AudioSource ultimateAttackEndSound;
 
 
-    public void Initialize(Vector3 enemyPositions, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
+    public void Initialize(Transform target, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
     {
-        targetPosition = enemyPositions;
+        targetTransform = target;
         speed = ultimateAttackSpeed;
         lifeTime = lifetime;
         targetLayer = tarLayer;
@@ -45,10 +46,19 @@ public class UltimateAttackSphereController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        if (targetTransform == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        
-        if (transform.position.y <= targetPosition.y)
+        // 방향 계산 및 이동
+        transform.LookAt(targetTransform);
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, step);
+
+
+        if (transform.position.y <= targetTransform.position.y)
         {
             
             /*
@@ -94,7 +104,7 @@ public class UltimateAttackSphereController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (IsInTargetLayer(collision.gameObject) || collision.gameObject.CompareTag("Enemy"))
+        if (IsInTargetLayer(collision.gameObject) || collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Hobgoblin"))
         {
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
             collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
@@ -107,7 +117,7 @@ public class UltimateAttackSphereController : MonoBehaviour
             if (hitBoss)
             {
                 hitBoss.TakeDamage(attackDamage);
-                Debug.Log($"플레이어가 직접공격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+                Debug.Log($"플레이어가 궁극기의 직접 데미지로 보스에게 {attackDamage} 데미지를 입혔습니다!");
             }
             else
             {
@@ -115,7 +125,7 @@ public class UltimateAttackSphereController : MonoBehaviour
                 if (hitHobgoblin)
                 {
                     hitHobgoblin.TakeDamage(attackDamage);
-                    Debug.Log($"플레이어가 직접공격으로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+                    Debug.Log($"플레이어가 궁극기의 직접 데미지로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
                 }
             }
         }
