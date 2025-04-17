@@ -78,13 +78,13 @@ public class UltimateAttackController : MonoBehaviour
         playerGUI.ultimateAttackGauge = 0;
         delayTime = playerGUI.ultimateAttackDelay;
 
-        List<Vector3> enemyPositions = new List<Vector3>();
+        List<Transform> enemyTransforms = new List<Transform>();
         List<Vector3> spawnPositions = new List<Vector3>();
         List<Vector3> enemyGroundPositions = new List<Vector3>();
 
         foreach (Collider col in hits)
         {
-            enemyPositions.Add(col.transform.position);
+            enemyTransforms.Add(col.transform);
             spawnPositions.Add(col.transform.position + new Vector3(Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange),ultimateAttackStartHeight,Random.Range(-ultimateAttackStartRange, ultimateAttackStartRange)));
 
             Ray ray = new Ray(col.transform.position + Vector3.up * 0.1f, Vector3.down);
@@ -110,7 +110,7 @@ public class UltimateAttackController : MonoBehaviour
             {
                 attackController = ultimateAttackSphere.AddComponent<UltimateAttackSphereController>();
             }
-            attackController.Initialize(enemyPositions[enemyPositions.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, attackDamage, targetLayer, planeCollider, ultimateAttackEndSound);
+            attackController.Initialize(enemyTransforms[enemyTransforms.Count - 1], ultimateAttackDelTime, ultimateAttackSpeed, ultimateAttackStartScale, ultimateAttackScaleRate, attackDamage, targetLayer, planeCollider, ultimateAttackEndSound);
 
         }
     }
