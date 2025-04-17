@@ -10,6 +10,7 @@ namespace Azmodan.Phase2
         [SerializeField] private float phase2DamageMultiplier = 0.8f; // 2페이즈 데미지 배율
         [SerializeField] private bool playSpawnEffect = true;        // 스폰 이펙트 재생 여부
         [SerializeField] private GameObject spawnEffectPrefab;       // 스폰 이펙트 프리팹
+        [SerializeField] private LayerMask minionLayerMask;          // 미니언 레이어 설정
 
         [Header("Attack Common Settings")]
         [SerializeField] private float preAttackDelay = 1.0f;   // 공격 전 대기 (선딜)
@@ -391,13 +392,31 @@ namespace Azmodan.Phase2
                 forwardDir * forwardOffset - rightDir * sideOffset
             };
 
+            int minionLayer = GetLayerFromMask(minionLayerMask);
+            if (minionLayer == -1)
+            {
+                Debug.LogError("enemyLayerMask에 유효한 레이어가 없습니다!");
+                return;
+            }
+
             foreach (Vector3 offset in offsets)
             {
                 Vector3 spawnPos = bossPos + offset;
                 spawnPos.y = GetGroundY(spawnPos); // 바닥 고정
-                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform);
+                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform, minionLayer);
             }
 
+        }
+
+        int GetLayerFromMask(LayerMask mask)
+        {
+            int maskValue = mask.value;
+            for (int i = 0; i < 32; i++)
+            {
+                if ((maskValue & (1 << i)) != 0)
+                    return i;
+            }
+            return -1;
         }
 
         private float GetGroundY(Vector3 position)

@@ -89,7 +89,7 @@ public class UltimateAttackController : MonoBehaviour
 
             Ray ray = new Ray(col.transform.position + Vector3.up * 0.1f, Vector3.down);
             if (Physics.Raycast(ray, out RaycastHit hit, 1000) && hit.collider == planeCollider) enemyGroundPositions.Add(new Vector3(col.transform.position.x, hit.point.y, col.transform.position.z));
-        
+            else enemyGroundPositions.Add(col.transform.position);
 
             GameObject ultimateAttackSphere = Instantiate(ultimateAttackPrefab, spawnPositions[spawnPositions.Count - 1], Quaternion.identity);
             Rigidbody rb = ultimateAttackSphere.GetComponent<Rigidbody>();

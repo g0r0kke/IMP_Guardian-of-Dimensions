@@ -50,6 +50,8 @@ public class UltimateAttackSphereController : MonoBehaviour
         
         if (transform.position.y <= targetPosition.y)
         {
+            
+            /*
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, transform.position, Quaternion.identity);
             collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
             Destroy(collisionEffect, 1f);
@@ -72,6 +74,11 @@ public class UltimateAttackSphereController : MonoBehaviour
                     Debug.Log($"플레이어가 간접공격으로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
                 }
             }
+            */
+            Destroy(gameObject);
+            Debug.Log("구체가 적의 위치까지 도달하였지만 적을 타격하지 못하고 삭제되었습니다.");
+            return;
+            
         }
         
 

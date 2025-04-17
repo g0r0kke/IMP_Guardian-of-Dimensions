@@ -4,6 +4,7 @@ public class Boss2Test : MonoBehaviour
 {
     public GameObject hobgoblinPrefab;
     public Transform player;
+    public LayerMask minionLayerMask;
 
     public int minHobgoblins = 1;
     public int maxHobgoblins = 3;
@@ -40,7 +41,25 @@ public class Boss2Test : MonoBehaviour
             Vector3 dir = rotation * forward;
             Vector3 spawnPos = transform.position + dir.normalized * summonRadius;
 
-            Hobgoblin.Spawner(hobgoblinPrefab, spawnPos, player);
+            int minionLayer = GetLayerFromMask(minionLayerMask);
+            if (minionLayer == -1)
+            {
+                Debug.LogError("enemyLayerMask에 유효한 레이어가 없습니다!");
+                return;
+            }
+
+            Hobgoblin.Spawner(hobgoblinPrefab, spawnPos, player,minionLayerMask);
         }
+    }
+
+    int GetLayerFromMask(LayerMask mask)
+    {
+        int maskValue = mask.value;
+        for (int i = 0; i < 32; i++)
+        {
+            if ((maskValue & (1 << i)) != 0)
+                return i;
+        }
+        return -1;
     }
 }

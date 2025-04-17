@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class PlayerGUI : MonoBehaviour
 {
     public int playerHealthLimit = 1;
-    public int playerHealth;
+    public int playerHealth = 1;
     private int previousHealth;
     public Slider PlayerHpBar;
     public TextMeshProUGUI PlayerHpText;
 
     public int ultimateAttackGaugeLimit = 1;
-    public int ultimateAttackGauge;
+    public int ultimateAttackGauge = 0;
     private int previousGauge;
     public Slider PlayerGaugeBar;
     public TextMeshProUGUI PlayerGaugeText;
@@ -146,8 +146,11 @@ public class PlayerGUI : MonoBehaviour
 
         avoidanceSkillDelayTime = avoidanceController.delayTime;
 
-        playerDataManager.playerLinkHealth = playerHealth;
-        playerDataManager.playerLinkGauge = ultimateAttackGauge;
+        if (playerDataManager != null)
+        {
+            playerDataManager.playerLinkHealth = playerHealth;
+            playerDataManager.playerLinkGauge = ultimateAttackGauge;
+        }
     }
 
     public void IncreaseGauge(int GaugeIncreaseAmount)

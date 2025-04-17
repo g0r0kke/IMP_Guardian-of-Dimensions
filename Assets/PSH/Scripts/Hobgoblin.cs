@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 public class Hobgoblin : MonoBehaviour
@@ -132,7 +133,7 @@ public class Hobgoblin : MonoBehaviour
     }
 
     // 외부에서 Hobgoblin 소환활 수 있도록 Spawn 하는 함수
-        public static Hobgoblin Spawner(GameObject prefab, Vector3 spawnPosition, Transform targetPlayer)
+        public static Hobgoblin Spawner(GameObject prefab, Vector3 spawnPosition, Transform targetPlayer, int minionLayer)
         {
         
             if (prefab == null)
@@ -142,9 +143,11 @@ public class Hobgoblin : MonoBehaviour
             }
 
             GameObject hobgoblinObj = GameObject.Instantiate(prefab, spawnPosition, Quaternion.identity);
+            hobgoblinObj.layer = minionLayer;
             Hobgoblin hob = hobgoblinObj.GetComponent<Hobgoblin>();
             hob.player = targetPlayer;
-            return hob;
+            
+        return hob;
         }
 
     
@@ -155,5 +158,5 @@ public class Hobgoblin : MonoBehaviour
                 audioSource.PlayOneShot(goblinPunch);
             }
         }
-    
+
 }
