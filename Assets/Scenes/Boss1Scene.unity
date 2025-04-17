@@ -2579,7 +2579,7 @@ PrefabInstance:
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2589,7 +2589,7 @@ PrefabInstance:
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2599,7 +2599,7 @@ PrefabInstance:
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2614,7 +2614,7 @@ PrefabInstance:
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1821105414057608902, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2631,6 +2631,11 @@ PrefabInstance:
       propertyPath: basicAttackPos
       value: 
       objectReference: {fileID: 1860862817}
+    - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: targetLayer.m_Bits
+      value: 1073741840
+      objectReference: {fileID: 0}
     - target: {fileID: 2597261329923799738, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: OutputAudioMixerGroup
