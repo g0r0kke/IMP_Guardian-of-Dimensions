@@ -65,7 +65,7 @@ public class BossProjectile : MonoBehaviour
             
             // 플레이어에게 데미지 적용
             playerDamageController.PlayerTakeDamage(attack2Damage);
-            Debug.Log($"보스1 근접 공격: 플레이어에게 {attack2Damage} 데미지를 입혔습니다!");
+            Debug.Log($"보스1 원거리 공격: 플레이어에게 {attack2Damage} 데미지를 입혔습니다!");
             
             // SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
             // if (player != null)
