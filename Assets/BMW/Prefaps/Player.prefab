@@ -1412,8 +1412,10 @@ MonoBehaviour:
   PlayerTakeDamageSound: {fileID: 0}
   collisionDamage: 2
   playerDamage: 0
+  damageTime: 0
   isDefense: 0
   isAvoid: 0
+  isConstantContact: 0
 --- !u!114 &8798609962390256437
 MonoBehaviour:
   m_ObjectHideFlags: 0

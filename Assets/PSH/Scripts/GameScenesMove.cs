@@ -30,6 +30,14 @@ public class GameScenesMove : MonoBehaviour
                     fadeController.PlayFadeAnimation(false);
                 });
             }
+            else
+            {
+                Debug.Log("FadeAnimationController component not found on fadeObject");
+            }
+        }
+        else
+        {
+            Debug.Log("fadeObject is null");
         }
     }
 

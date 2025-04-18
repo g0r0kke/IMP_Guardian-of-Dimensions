@@ -97,7 +97,7 @@ public class FadeAnimationController : MonoBehaviour
         }
         
         // 이미 재생 중인 애니메이션 중지
-        imageAnimation.Stop();
+        // imageAnimation.Stop();
         
         // 선택한 애니메이션 재생
         string clipName = fadeIn ? "FadeIn" : "FadeOut";

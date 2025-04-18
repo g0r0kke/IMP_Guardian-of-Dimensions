@@ -477,7 +477,9 @@ namespace Azmodan.Phase1
                 Rigidbody rb = projectile.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    // 플레이어 방향으로 투사체 발사
+                    // 중력 영향 제거
+                    rb.useGravity = false;
+            
                     rb.linearVelocity = directionToPlayer * projectileSpeed;
                 }
                 else

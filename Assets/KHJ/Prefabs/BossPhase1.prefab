@@ -843,7 +843,7 @@ MonoBehaviour:
   preAttackDelay: 0.5
   projectilePrefab: {fileID: 6259453625854727909, guid: 370a8dd117f329c4c9713dad40674770,
     type: 3}
-  projectileSpeed: 5
+  projectileSpeed: 10
   projectileOffset: 1.5
   projectileHeight: 5
   attack1EffectPrefab: {fileID: 4186470608034871016, guid: 9ac1036c7e0fc6948a0247563c692b3c,

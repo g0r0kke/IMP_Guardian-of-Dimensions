@@ -3,11 +3,11 @@ using UnityEngine;
 public class DamageController : MonoBehaviour
 {
 
-    [Header("µ¥¹ÌÁö ÃÊ±â ¿ä¼Ò ¿¬°á")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private AudioSource PlayerTakeDamageSound;
 
-    [Header("µ¥¹ÌÁö ÃÊ±â ¼¼ÆÃ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private int collisionDamage = 2;
     [SerializeField] private int playerDamage = 0;
     [SerializeField] private float damageTime = 0.0f;
@@ -16,12 +16,14 @@ public class DamageController : MonoBehaviour
                      public bool isAvoid = false;
     [SerializeField] private bool isConstantContact = false;
 
-    // ¿ÜºÎ ½ºÅ©¸³Æ® ¿¬°á ¼¼ÆÃ
+    // ï¿½Üºï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private PlayerGUI playerGUI;
+    private GameObject hitUI;
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
+        hitUI = GameObject.FindWithTag("UI_Red");
     }
 
     // Update is called once per frame
@@ -41,6 +43,16 @@ public class DamageController : MonoBehaviour
             playerDamage += damageIntensity;
             PlayerTakeDamageSound.Play();
 
+        }
+
+        if (hitUI)
+        {
+            HitAnimationController hitAnimationController = hitUI.GetComponent<HitAnimationController>();
+
+            if (hitAnimationController)
+            {
+                hitAnimationController.PlayHitAnimation();
+            }
         }
     }
 
@@ -67,7 +79,7 @@ public class DamageController : MonoBehaviour
             if (damageTime >= 1.0f)
             {
                 playerDamage += (collisionDamage - 1);
-                Debug.Log("º¸½º¿Í Á¢ÃËÇÏ¿© Áö¼ÓÀûÀÎ µ¥ÀÌ¹ÌÁö¸¦ ¹Þ°íÀÖ½À´Ï´Ù.");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
                 damageTime = 0.0f;
             }
         }
