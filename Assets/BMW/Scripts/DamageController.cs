@@ -3,16 +3,20 @@ using UnityEngine;
 public class DamageController : MonoBehaviour
 {
 
-    public LayerMask targetLayer;
-    public AudioSource PlayerTakeDamageSound;
-    public int collisionDamage = 2;
-    public int playerDamage = 0;
+    [Header("데미지 초기 요소 연결")]
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private AudioSource PlayerTakeDamageSound;
 
-    private float damageTime = 0.0f;
-    private bool isConstantContact = false;
-    public bool isDefense = false;
-    public bool isAvoid = false;
+    [Header("데미지 초기 세팅")]
+    [SerializeField] private int collisionDamage = 2;
+    [SerializeField] private int playerDamage = 0;
+    [SerializeField] private float damageTime = 0.0f;
 
+                     public bool isDefense = false;
+                     public bool isAvoid = false;
+    [SerializeField] private bool isConstantContact = false;
+
+    // 외부 스크립트 연결 세팅
     private PlayerGUI playerGUI;
 
     void Start()

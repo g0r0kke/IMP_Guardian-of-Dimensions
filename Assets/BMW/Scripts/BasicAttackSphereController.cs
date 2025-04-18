@@ -4,19 +4,19 @@ using UnityEngine;
 public class BasicAttackSphereController : MonoBehaviour
 {
 
-    private Transform player;
-    [SerializeField]
-    private GameObject collisionEffectPrefab;
-    private float maxDistance = 10.0f;
-    private float lifeTime = 10.0f;
-    private float timer = 0f;
-    private AudioSource basicAttackEndSound;
-    public int attackDamage;
-    private LayerMask targetLayer;
-    private bool isInitialized = false;
+                     private Transform player;
+    [SerializeField] private GameObject collisionEffectPrefab;
+                     private float maxDistance = 10.0f;
+                     private float lifeTime = 10.0f;
+                     private float timer = 0f;
 
-    private PlayerGUI playerGUI;
-    private BasicAttackController basicAttackController;
+                     private AudioSource basicAttackEndSound;
+                     public int attackDamage;
+                     private LayerMask targetLayer;
+                     private bool isInitialized = false;
+
+                        private PlayerGUI playerGUI;
+                     private BasicAttackController basicAttackController;
 
     public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider, AudioSource audioSource)
     {

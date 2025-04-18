@@ -6,16 +6,20 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance;
 
+    [Header("플레이어 체력 요소")]
     public int playerHealthLimit = 100;
     public int originPlayerHealth = 100;
+    public int playerLinkHealth;
+
+    [Header("플레이어 궁극기 게이지 요소")]
     public int playerGaugeLimit = 3;
     public int originPlayerGauge = 0;
-
-    public bool isControlPlayer;
-
-    public int playerLinkHealth;
     public int playerLinkGauge;
 
+    [Header("플레이어 조작 가능 상태 체커")]
+    public bool isControlPlayer;
+
+    // 외부 스크립트 연결 세팅
     private PlayerGUI playerGUI;
     private GameManager gameManager;
 

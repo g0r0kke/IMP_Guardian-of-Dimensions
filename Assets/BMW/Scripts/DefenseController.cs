@@ -4,28 +4,32 @@ using System.Collections;
 public class DefenseController : MonoBehaviour
 {
 
-    public GameObject ShieldPrefab;
-    public AudioSource ShieldSound;
-    public Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
-    public float shieldDuration = 4.0f;
-    public float shieldDistance = 1.0f;
+    [Header("방어스킬 초기 요소 연결")]
+    [SerializeField] private GameObject ShieldPrefab;
+    [SerializeField] private AudioSource ShieldSound;
+                     private GameObject shieldSphere;
 
-    private GameObject shieldSphere;
-    public float delayTime = 0f;
-    private PlayerGUI playerGUI;
-    private DamageController damageController;
-    private HandGestureController handGestureController;
-    private AnimationController animationController;
+    [Header("방어스킬 초기 세팅")]
+    [SerializeField] private Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
+    [SerializeField] private float shieldDuration = 4.0f;
+    [SerializeField] private float shieldDistance = 1.0f;
+                     public float delayTime = 0f;
 
+    // 외부 스크립트 연결 세팅
     private PlayerDataManager playerDataManager;
+    private PlayerGUI playerGUI;
+    private HandGestureController handGestureController;
+    private DamageController damageController;
+    private AnimationController animationController;
 
     void Start()
     {
-        playerGUI = GetComponent<PlayerGUI>();
-        damageController = GetComponent<DamageController>();
-        handGestureController = GetComponent<HandGestureController>();
-        animationController = GetComponent<AnimationController>();
         playerDataManager = PlayerDataManager.Instance;
+        playerGUI = GetComponent<PlayerGUI>();
+        handGestureController = GetComponent<HandGestureController>();
+        damageController = GetComponent<DamageController>();
+        animationController = GetComponent<AnimationController>();
+        
     }
 
     // Update is called once per frame

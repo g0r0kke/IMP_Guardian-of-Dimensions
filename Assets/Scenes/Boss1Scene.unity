@@ -2633,8 +2633,13 @@ PrefabInstance:
       objectReference: {fileID: 1860862817}
     - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
+      propertyPath: basicAttackMaxDist
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359702405216627812, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
       propertyPath: targetLayer.m_Bits
-      value: 1073741840
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 2597261329923799738, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
@@ -2754,6 +2759,11 @@ PrefabInstance:
       propertyPath: planeCollider
       value: 
       objectReference: {fileID: 1225320183}
+    - target: {fileID: 4906869048668116429, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: ultimateAttackRange
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5189019668468112837, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: OutputAudioMixerGroup

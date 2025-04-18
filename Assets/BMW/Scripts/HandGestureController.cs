@@ -5,31 +5,27 @@ using UnityEngine;
 
 public class HandGestureController : MonoBehaviour
 {
+
+    [Header("핸드제스쳐 상태 체커")]
     public bool isBasicAttackGesture = false;
     public bool isUltimateAttackGesture = false;
     public bool isDefenseGesture = false;
     public bool isHealingGesture = false;
 
-    public bool isGrabbing = false;
-    public float grabTime = 0;
-    public bool isPinching = false;
-    public float pinchTime = 0;
+    [Header("궁극기 스킬 - 핸드제스쳐 상태 유지 체거")]
+    [SerializeField] private bool isGrabbing = false;
+    [SerializeField] private float grabTime = 0;
 
-    private BasicAttackController basicAttackController;
-    private UltimateAttackController ultimateAttackController;
-    private DefenseController defenseController;
-    private HealingController healingController;
+    [Header("힐 스킬 - 핸드제스쳐 상태 유지 체거")]
+    [SerializeField] private bool isPinching = false;
+    [SerializeField] private float pinchTime = 0;
 
+    // 외부 스크립트 연결 세팅
     private PlayerDataManager playerDataManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        basicAttackController = GetComponent<BasicAttackController>();
-        ultimateAttackController = GetComponent<UltimateAttackController>();
-        defenseController = GetComponent<DefenseController>();
-        healingController = GetComponent<HealingController>();
-
         playerDataManager = PlayerDataManager.Instance;
     }
 
