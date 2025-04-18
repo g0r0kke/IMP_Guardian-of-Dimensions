@@ -30,16 +30,6 @@ public class GameScenesMove : MonoBehaviour
                     fadeController.PlayFadeAnimation(false);
                 });
             }
-            else
-            {
-                Debug.LogWarning("UI_Black 오브젝트에 FadeAnimationController 컴포넌트가 없습니다.");
-                SceneManager.LoadScene("ARPlaneScene");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("UI_Black 태그를 가진 오브젝트를 찾을 수 없습니다.");
-            SceneManager.LoadScene("ARPlaneScene");
         }
     }
 

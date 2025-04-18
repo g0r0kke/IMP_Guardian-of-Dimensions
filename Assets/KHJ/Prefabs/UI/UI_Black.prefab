@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 3133430733090067876}
   - component: {fileID: 5499648533302858196}
   - component: {fileID: 3116730965408577461}
-  - component: {fileID: 5084256031039246788}
+  - component: {fileID: 56106923026954292}
   m_Layer: 5
   m_Name: UI_Black
   m_TagString: UI_Black
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &5084256031039246788
+--- !u!114 &56106923026954292
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

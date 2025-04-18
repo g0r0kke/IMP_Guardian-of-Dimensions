@@ -16,6 +16,7 @@ public class EndMenuUI : MonoBehaviour
 
     // 이전 씬 저장 변수
     private string previousScene;
+    private GameObject fadeObject;
 
     void Start()
     {
@@ -26,6 +27,8 @@ public class EndMenuUI : MonoBehaviour
         // 버튼 클릭 이벤트 추가
         Buttons[0].onClick.AddListener(() => SelectMainMenu());
         Buttons[1].onClick.AddListener(() => SelectReplay());
+        
+        fadeObject = GameObject.FindWithTag("UI_Black");
     }
 
     // 이겼는지 졌는지 bool
@@ -37,13 +40,13 @@ public class EndMenuUI : MonoBehaviour
         // 승리 UI 또는 패배 UI 활성화
         if (isVictory)
         {
-            victoryUI.SetActive(true);  // 승리 UI 활성화
-            defeatUI.SetActive(false);  // 패배 UI 비활성화
+            victoryUI.SetActive(true); // 승리 UI 활성화
+            defeatUI.SetActive(false); // 패배 UI 비활성화
         }
         else
         {
             victoryUI.SetActive(false); // 승리 UI 비활성화
-            defeatUI.SetActive(true);   // 패배 UI 활성화
+            defeatUI.SetActive(true); // 패배 UI 활성화
         }
     }
 
@@ -81,26 +84,43 @@ public class EndMenuUI : MonoBehaviour
         // OK 버튼 클릭 시 사운드 재생
         AudioManager.Instance.PlayButtonSFX();
 
-        if (currentSelection == 0)
+        if (fadeObject)
         {
-            // Main Menu 선택 시, MainMenu 씬으로 이동
-            Debug.Log("Main Menu 선택됨");
-            SceneManager.LoadScene("MainMenuScene");
-        }
-        else if (currentSelection == 1)
-        {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.SetState(GameState.Intro);
-            }
-            else
-            {
-                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
-            }
+            FadeAnimationController fadeController = fadeObject.GetComponent<FadeAnimationController>();
 
-            // Replay 선택 시, 현재 씬을 다시 로드
-            Debug.Log("Replay 선택됨");
-            SceneManager.LoadScene("ARPlaneScene");
+            if (fadeController)
+            {
+                // 페이드인 애니메이션 실행 (화면이 검게)
+                fadeController.PlayFadeAnimation(true, () =>
+                {
+                    // 페이드인 완료 후 씬 전환
+                    switch (currentSelection)
+                    {
+                        case 0:
+                            // Main Menu 선택 시, MainMenu 씬으로 이동
+                            Debug.Log("Main Menu 선택됨");
+                            SceneManager.LoadScene("MainMenuScene");
+                            break;
+                        case 1:
+                            if (GameManager.Instance != null)
+                            {
+                                GameManager.Instance.SetState(GameState.Intro);
+                            }
+                            else
+                            {
+                                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+                            }
+
+                            // Replay 선택 시, 현재 씬을 다시 로드
+                            Debug.Log("Replay 선택됨");
+                            SceneManager.LoadScene("ARPlaneScene");
+                            break;
+                    }
+
+                    // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                    fadeController.PlayFadeAnimation(false);
+                });
+            }
         }
     }
 }
