@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     
     // 보스 관련 변수
     [Header("Boss References")]
-    [SerializeField] private string phase1SceneName = "BossPhase1Scene";
+    // [SerializeField] private string phase1SceneName = "BossPhase1Scene";
     [SerializeField] private string phase2SceneName = "BossPhase2Scene";
     [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, -1f, -11.4f);
     private Boss currentBoss;
@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject bossPrefab;
     [SerializeField] private GameObject virtualJoystick;
     [SerializeField] private List<GameObject> hobgoblins = new List<GameObject>();
+    public GameObject fadeObject;
+    public FadeAnimationController fadeController;
     
     private void Awake()
     {
@@ -104,7 +106,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                playerDataManager.PlayerOriginSetting();
+                if (playerDataManager) playerDataManager.PlayerOriginSetting();
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 if (BossIndicatorUI) BossIndicatorUI.SetActive(true);

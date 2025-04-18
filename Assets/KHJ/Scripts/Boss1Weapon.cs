@@ -32,7 +32,7 @@ public class WeaponCollision : MonoBehaviour
         // 초기에는 콜라이더 비활성화
         weaponCollider.enabled = false;
         
-        playerDamageController = FindObjectOfType<DamageController>();
+        playerDamageController = FindFirstObjectByType<DamageController>();
         if (playerDamageController == null)
         {
 

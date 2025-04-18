@@ -18,7 +18,7 @@ public class ARPlacement : MonoBehaviour
         // 컴포넌트 참조 확인
         if (raycastManager == null)
         {
-            raycastManager = FindObjectOfType<ARRaycastManager>();
+            raycastManager = FindFirstObjectByType<ARRaycastManager>();
             if (raycastManager == null)
             {
                 Debug.LogError("AR Raycast Manager를 찾을 수 없습니다!");
@@ -29,7 +29,7 @@ public class ARPlacement : MonoBehaviour
 
         if (planeManager == null)
         {
-            planeManager = FindObjectOfType<ARPlaneManager>();
+            planeManager = FindFirstObjectByType<ARPlaneManager>();
             if (planeManager == null)
             {
                 Debug.LogError("AR Plane Manager를 찾을 수 없습니다!");

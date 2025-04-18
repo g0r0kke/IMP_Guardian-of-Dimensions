@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,20 +7,20 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance;
 
-    [Header("ÇÃ·¹ÀÌ¾î Ã¼·Â ¿ä¼Ò")]
+    [Header("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½")]
     public int playerHealthLimit = 100;
     public int originPlayerHealth = 100;
     public int playerLinkHealth;
 
-    [Header("ÇÃ·¹ÀÌ¾î ±Ã±Ø±â °ÔÀÌÁö ¿ä¼Ò")]
+    [Header("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ã±Ø±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")]
     public int playerGaugeLimit = 3;
     public int originPlayerGauge = 0;
     public int playerLinkGauge;
 
-    [Header("ÇÃ·¹ÀÌ¾î Á¶ÀÛ °¡´É »óÅÂ Ã¼Ä¿")]
+    [Header("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Ä¿")]
     public bool isControlPlayer;
 
-    // ¿ÜºÎ ½ºÅ©¸³Æ® ¿¬°á ¼¼ÆÃ
+    // ï¿½Üºï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private PlayerGUI playerGUI;
     private GameManager gameManager;
 
@@ -41,7 +42,7 @@ public class PlayerDataManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         if (gameManager == null)
         {
-            Debug.LogWarning("GameManager¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù. PlayerDataManager°¡ Á¦´ë·Î ÀÛµ¿ÇÏÁö ¾ÊÀ» ¼ö ÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("GameManagerï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. PlayerDataManagerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
         }
 
         // Only try to find PlayerGUI if we're in a valid game state
@@ -121,7 +122,7 @@ public class PlayerDataManager : MonoBehaviour
             // Only log a warning if we're in a state where PlayerGUI should exist
             if (ShouldLoadPlayerGUI())
             {
-                Debug.LogWarning("PlayerGUI°¡ Á¸ÀçÇÏÁö ¾Ê¾Æ µ¥ÀÌÅÍ¸¦ ·ÎµåÇÒ ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogWarning("PlayerGUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             }
             return;
         }

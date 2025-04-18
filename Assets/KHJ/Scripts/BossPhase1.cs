@@ -73,7 +73,7 @@ namespace Azmodan.Phase1
 
             // 초기 체력 로그 출력
             Debug.Log($"보스 초기 체력: {health}");
-
+            
             // 초기 체력바 설정
             if (healthBarUI != null)
             {

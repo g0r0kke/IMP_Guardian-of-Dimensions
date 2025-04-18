@@ -31,7 +31,7 @@ public class BossProjectile : MonoBehaviour
             sphereCol.isTrigger = false;
         }
         
-        playerDamageController = FindObjectOfType<DamageController>();
+        playerDamageController = FindFirstObjectByType<DamageController>();
         if (playerDamageController == null)
         {
 

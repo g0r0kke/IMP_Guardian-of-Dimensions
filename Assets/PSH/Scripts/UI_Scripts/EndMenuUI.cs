@@ -17,6 +17,7 @@ public class EndMenuUI : MonoBehaviour
     // 이전 씬 저장 변수
     private string previousScene;
     private GameObject fadeObject;
+    private FadeAnimationController fadeController;
 
     void Start()
     {
@@ -28,7 +29,8 @@ public class EndMenuUI : MonoBehaviour
         Buttons[0].onClick.AddListener(() => SelectMainMenu());
         Buttons[1].onClick.AddListener(() => SelectReplay());
         
-        fadeObject = GameObject.FindWithTag("UI_Black");
+        fadeObject = GameManager.Instance.fadeObject;
+        fadeController = GameManager.Instance.fadeController;
     }
 
     // 이겼는지 졌는지 bool
@@ -84,51 +86,43 @@ public class EndMenuUI : MonoBehaviour
         // OK 버튼 클릭 시 사운드 재생
         AudioManager.Instance.PlayButtonSFX();
 
-        if (fadeObject)
+        if (fadeObject && fadeController)
         {
-            FadeAnimationController fadeController = fadeObject.GetComponent<FadeAnimationController>();
-
-            if (fadeController)
+            // 페이드인 애니메이션 실행 (화면이 검게)
+            fadeController.PlayFadeAnimation(true, () =>
             {
-                // 페이드인 애니메이션 실행 (화면이 검게)
-                fadeController.PlayFadeAnimation(true, () =>
+                // 페이드인 완료 후 씬 전환
+                switch (currentSelection)
                 {
-                    // 페이드인 완료 후 씬 전환
-                    switch (currentSelection)
-                    {
-                        case 0:
-                            // Main Menu 선택 시, MainMenu 씬으로 이동
-                            Debug.Log("Main Menu 선택됨");
-                            SceneManager.LoadScene("MainMenuScene");
-                            break;
-                        case 1:
-                            if (GameManager.Instance != null)
-                            {
-                                GameManager.Instance.SetState(GameState.Intro);
-                            }
-                            else
-                            {
-                                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
-                            }
+                    case 0:
+                        // Main Menu 선택 시, MainMenu 씬으로 이동
+                        Debug.Log("Main Menu 선택됨");
+                        if (GameManager.Instance)
+                        {
+                            GameManager.Instance.SetState(GameState.Intro);
+                        }
+                        
+                        SceneManager.LoadScene("MainMenuScene");
+                        break;
+                    case 1:
+                        if (GameManager.Instance)
+                        {
+                            GameManager.Instance.SetState(GameState.Intro);
+                        }
 
-                            // Replay 선택 시, 현재 씬을 다시 로드
-                            Debug.Log("Replay 선택됨");
-                            SceneManager.LoadScene("ARPlaneScene");
-                            break;
-                    }
+                        // Replay 선택 시, 현재 씬을 다시 로드
+                        Debug.Log("Replay 선택됨");
+                        SceneManager.LoadScene("ARPlaneScene");
+                        break;
+                }
 
-                    // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
-                    fadeController.PlayFadeAnimation(false);
-                });
-            }
-            else
-            {
-                Debug.Log("FadeAnimationController component not found on fadeObject");
-            }
+                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                fadeController.PlayFadeAnimation(false);
+            });
         }
         else
         {
-            Debug.Log("fadeObject is null");
+            Debug.Log("FadeAnimationController component not found on fadeObject");
         }
     }
 }

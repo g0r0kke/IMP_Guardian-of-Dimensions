@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,38 +7,31 @@ using UnityEngine.SceneManagement;
 public class GameScenesMove : MonoBehaviour
 {
     private GameObject fadeObject;
+    private FadeAnimationController fadeController;
 
-    void Start()
+    private void Start()
     {
-        fadeObject = GameObject.FindWithTag("UI_Black");
+        fadeObject = GameManager.Instance.fadeObject;
+        fadeController = GameManager.Instance.fadeController;
     }
 
     public void GameSceneCtrl()
     {
-        if (fadeObject)
+        if (fadeObject && fadeController)
         {
-            FadeAnimationController fadeController = fadeObject.GetComponent<FadeAnimationController>();
-
-            if (fadeController)
+            // 페이드인 애니메이션 실행
+            fadeController.PlayFadeAnimation(true, () =>
             {
-                // 페이드인 애니메이션 실행 (화면이 검게)
-                fadeController.PlayFadeAnimation(true, () =>
-                {
-                    // 페이드인 완료 후 씬 전환
-                    SceneManager.LoadScene("ARPlaneScene");
+                // 페이드인 완료 후 씬 전환
+                SceneManager.LoadScene("ARPlaneScene");
 
-                    // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
-                    fadeController.PlayFadeAnimation(false);
-                });
-            }
-            else
-            {
-                Debug.Log("FadeAnimationController component not found on fadeObject");
-            }
+                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                fadeController.PlayFadeAnimation(false);
+            });
         }
         else
         {
-            Debug.Log("fadeObject is null");
+            Debug.Log("FadeAnimationController component not found on fadeObject");
         }
     }
 

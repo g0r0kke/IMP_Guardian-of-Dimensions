@@ -9,6 +9,7 @@ public class ARPlaneButton : MonoBehaviour
 
     private Button button;
     private GameObject fadeObject;
+    private FadeAnimationController fadeController;
 
     private void Start()
     {
@@ -17,26 +18,23 @@ public class ARPlaneButton : MonoBehaviour
 
         if (!arPlacement)
         {
-            arPlacement = FindObjectOfType<ARPlacement>();
+            arPlacement = FindFirstObjectByType<ARPlacement>();
         }
 
         // 버튼 클릭 이벤트에 메서드 연결
         button.onClick.AddListener(SaveBossPosition);
 
-        fadeObject = GameObject.FindWithTag("UI_Black");
-        if (!fadeObject) return;
+        if (GameManager.Instance)
+        {
+            fadeObject = GameManager.Instance.fadeObject;
+            fadeController = GameManager.Instance.fadeController;
+        }
     }
 
     public void SaveBossPosition()
     {
         // 버튼 사운드 재생
         AudioManager.Instance.PlayButtonSFX();
-
-        // GameManager 상태 설정
-        if (GameManager.Instance)
-        {
-            GameManager.Instance.SetState(GameState.BossPhase1);
-        }
 
         // AR 배치 오브젝트 위치 저장
         if (arPlacement && GameManager.Instance)
@@ -50,28 +48,27 @@ public class ARPlaneButton : MonoBehaviour
             }
         }
 
-        if (fadeObject)
+        if (fadeObject && fadeController)
         {
-            FadeAnimationController fadeController = fadeObject.GetComponent<FadeAnimationController>();
-
-            if (fadeController)
+            // 페이드인 애니메이션 실행 (화면이 검게)
+            fadeController.PlayFadeAnimation(true, () =>
             {
-                // 페이드인 애니메이션 실행 (화면이 검게)
-                fadeController.PlayFadeAnimation(true, () =>
+                // 씬 전환
+                SceneManager.LoadScene(targetSceneName);
+                
+                // GameManager 상태 설정
+                if (GameManager.Instance)
                 {
-                    // 씬 전환
-                    SceneManager.LoadScene(targetSceneName);
+                    GameManager.Instance.SetState(GameState.BossPhase1);
+                }
 
-                    // GameManager 상태 설정
-                    if (GameManager.Instance)
-                    {
-                        GameManager.Instance.SetState(GameState.BossPhase1);
-                    }
-
-                    // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
-                    fadeController.PlayFadeAnimation(false);
-                });
-            }
+                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                fadeController.PlayFadeAnimation(false);
+            });
+        }
+        else
+        {
+            Debug.Log("FadeAnimationController component not found on fadeObject");
         }
     }
 }
