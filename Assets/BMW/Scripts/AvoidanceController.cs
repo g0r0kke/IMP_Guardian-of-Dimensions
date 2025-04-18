@@ -4,36 +4,40 @@ using System.Collections;
 public class AvoidanceController : MonoBehaviour
 {
 
-    public LayerMask originLayer;
-    public LayerMask avoidanceLayer;
-    public AudioSource AvoidSound;
-    public float avoidanceDuration = 3.0f;
-    public float rotationThreshold = 5000.0f;
+    [Header("회피 초기 요소 연결")]
+    [SerializeField] private LayerMask originLayer;
+    [SerializeField] private LayerMask avoidanceLayer;
+    [SerializeField] private AudioSource AvoidSound;
+    
 
-    private float previousRotationY;
-    private Collider[] playerColliders;
-    private MeshRenderer[] playerMeshRenderers;
-    private bool isAvoiding = false;
-
-    private CharacterController characterController;
-    public float delayTime = 0f;
+    [Header("회피 초기 세팅")]
+    [SerializeField] private float avoidanceDuration = 3.0f;
+    [SerializeField] private float rotationThreshold = 5000.0f;
+                     public float delayTime = 0f;
+                     private bool isAvoiding = false;
+                     private float previousRotationY;
+    
+    // 외부 스크립트 연결 세팅
+    private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private DamageController damageController;
+    private CharacterController characterController;
 
-    private PlayerDataManager playerDataManager;
+    private Collider[] playerColliders;
+    private MeshRenderer[] playerMeshRenderers;
+
 
     void Start()
     {
+        playerDataManager = PlayerDataManager.Instance;
+        playerGUI = GetComponent<PlayerGUI>();
+        damageController = GetComponent<DamageController>();
+        characterController = GetComponent<CharacterController>();
 
-        previousRotationY = Camera.main.transform.eulerAngles.y;
         playerColliders = GetComponentsInChildren<Collider>();
         playerMeshRenderers = GetComponentsInChildren<MeshRenderer>();
 
-        characterController = GetComponent<CharacterController>();
-        playerGUI = GetComponent<PlayerGUI>();
-        damageController = GetComponent<DamageController>();
-
-        playerDataManager = PlayerDataManager.Instance;
+        previousRotationY = Camera.main.transform.eulerAngles.y;
     }
 
     // Update is called once per frame

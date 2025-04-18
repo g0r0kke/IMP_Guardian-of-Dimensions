@@ -5,27 +5,30 @@ using UnityEngine.UIElements.Experimental;
 public class HealingController : MonoBehaviour
 {
 
-    public GameObject heallingEffectPrefab;
-    public AudioSource heallingSound;
-    public int HealingAmount = 5;
-    public Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
-    public float heallingEffectDuration = 4.0f;
+    [Header("힐스킬 초기 요소 연결")]
+    [SerializeField] private GameObject heallingEffectPrefab;
+    [SerializeField] private AudioSource heallingSound;
+                     private GameObject heallingEffectCircle;
 
-    public float delayTime = 0f;
-    private GameObject heallingEffectCircle;
+    [Header("힐스킬 초기 세팅")]
+    [SerializeField] private int HealingAmount = 5;
+    [SerializeField] private Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
+    [SerializeField] private float heallingEffectDuration = 4.0f;
+                     public float delayTime = 0f;
+
+    // 외부 스크립트 연결 세팅
+    private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
-    private PlayerDataManager playerDataManager;
-
     void Start()
     {
+        playerDataManager = PlayerDataManager.Instance;
+
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
-
-        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame

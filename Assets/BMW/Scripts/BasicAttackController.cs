@@ -4,32 +4,35 @@ using UnityEngine;
 
 public class BasicAttackController: MonoBehaviour
 {
-    public Transform basicAttackPos;
-    public GameObject basicAttackPrefab;
-    public Collider planeCollider;
-    public LayerMask targetLayer;
-    public AudioSource basicAttackStartSound;
-    public AudioSource basicAttackEndSound;
-    public float basicAttackStartScale = 1.0f;
-    public float basicAttackForce = 1000.0f;
-    public float basicAttackDelTime = 2.0f;
-    public float basicAttackMaxDist = 30.0f;
-    public int GaugeIncreaseAmount = 1;
-    public int attackDamage = 10;
 
-    public float delayTime = 0f;
+    [Header("기본 공격기 초기 요소 연결")]
+    [SerializeField] private Transform basicAttackPos;
+    [SerializeField] private GameObject basicAttackPrefab;
+    [SerializeField] private Collider planeCollider;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private AudioSource basicAttackStartSound;
+    [SerializeField] private AudioSource basicAttackEndSound;
+
+    [Header("기본 공격기 초기 세팅")]
+    [SerializeField] private float basicAttackStartScale = 1.0f;
+    [SerializeField] private float basicAttackForce = 1000.0f;
+    [SerializeField] private float basicAttackDelTime = 2.0f;
+    [SerializeField] private float basicAttackMaxDist = 25.0f;
+                     public int GaugeIncreaseAmount = 1;
+    [SerializeField] private int attackDamage = 10;
+                     public float delayTime = 0f;
+
+    // 외부 스크립트 연결 세팅
+    private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
-    private BasicAttackController basicAttackController;
     private AnimationController animationController;
-
-    private PlayerDataManager playerDataManager;
+    
 
     void Start()
     {
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
-        basicAttackController = GetComponent<BasicAttackController>();
         animationController = GetComponent<AnimationController>();
 
         playerDataManager = PlayerDataManager.Instance;

@@ -4,18 +4,18 @@ using static UnityEngine.GraphicsBuffer;
 
 public class UltimateAttackSphereController : MonoBehaviour
 {
-    private Transform targetTransform;
-    private LayerMask targetLayer;
+                     private Transform targetTransform;
+                     private LayerMask targetLayer;
     [SerializeField] private GameObject collisionEffectPrefab;
 
-    private float speed = 15.0f;
-    public float startScale = 0.5f;
-    public float scaleRate = 0.5f;
-    public int attackDamage;
-    private float lifeTime = 10.0f;
-    private float timer = 0f;
-    private bool isInitialized = false;
-    private AudioSource ultimateAttackEndSound;
+                     private float speed = 15.0f;
+                     public float startScale = 0.5f;
+                     public float scaleRate = 0.5f;
+                     public int attackDamage;
+                     private float lifeTime = 10.0f;
+                     private float timer = 0f;
+                     private bool isInitialized = false;
+                     private AudioSource ultimateAttackEndSound;
 
 
     public void Initialize(Transform target, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)

@@ -4,37 +4,38 @@ using UnityEngine.UIElements;
 
 public class UltimateAttackController : MonoBehaviour
 {
-    public GameObject ultimateAttackPrefab;
-    public GameObject ultimateAttackBeforeEffectPrefab;
-    public Collider planeCollider;
-    public LayerMask targetLayer;
-    public AudioSource ultimateAttackStartSound;
-    public AudioSource ultimateAttackEndSound;
+    
+    [Header("궁극기 초기 요소 연결")]
+    [SerializeField] private GameObject ultimateAttackPrefab;
+    [SerializeField] private GameObject ultimateAttackBeforeEffectPrefab;
+    [SerializeField] private Collider planeCollider;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private AudioSource ultimateAttackStartSound;
+    [SerializeField] private AudioSource ultimateAttackEndSound;
 
-    public float ultimateAttackStartScale = 0.03f;
-    public float ultimateAttackRange = 10.0f;
-    public float ultimateAttackStartHeight = 10.0f;
-    public float ultimateAttackStartRange = 10.0f;
-    public float ultimateAttackScaleRate = 0.5f;
-    public float ultimateAttackSpeed = 8.0f;
-    public float ultimateAttackDelTime = 10.0f;
-    public int attackDamage = 30;
+    [Header("궁극기 초기 세팅")]
+    [SerializeField] private float ultimateAttackStartScale = 0.03f;
+    [SerializeField] private float ultimateAttackRange = 10.0f;
+    [SerializeField] private float ultimateAttackStartHeight = 10.0f;
+    [SerializeField] private float ultimateAttackStartRange = 50.0f;
+    [SerializeField] private float ultimateAttackScaleRate = 0.5f;
+    [SerializeField] private float ultimateAttackSpeed = 8.0f;
+    [SerializeField] private float ultimateAttackDelTime = 10.0f;
+    [SerializeField] private int attackDamage = 30;
+                     public float delayTime = 0f;
 
-    public float delayTime = 0f;
-
+    // 외부 스크립트 연결 세팅
+    private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
     private AnimationController animationController;
 
-    private PlayerDataManager playerDataManager;
-
     void Start()
     {
+        playerDataManager = PlayerDataManager.Instance;
         playerGUI = GetComponent<PlayerGUI>();
         handGestureController = GetComponent<HandGestureController>();
         animationController = GetComponent<AnimationController>();
-
-        playerDataManager = PlayerDataManager.Instance;
     }
 
     // Update is called once per frame

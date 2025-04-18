@@ -5,67 +5,79 @@ using UnityEngine.UI;
 
 public class PlayerGUI : MonoBehaviour
 {
-    public int playerHealthLimit = 1;
-    public int playerHealth = 1;
-    private int previousHealth;
-    public Slider PlayerHpBar;
-    public TextMeshProUGUI PlayerHpText;
+    
+    [Header("Player 체력 세팅")]
+                     public int playerHealthLimit = 1;
+                     public int playerHealth = 1;
+                     private int previousHealth;
+                     public Slider PlayerHpBar;
+                     public TextMeshProUGUI PlayerHpText;
 
-    public int ultimateAttackGaugeLimit = 1;
-    public int ultimateAttackGauge = 0;
-    private int previousGauge;
-    public Slider PlayerGaugeBar;
-    public TextMeshProUGUI PlayerGaugeText;
+    [Header("Player 궁극기 게이지 세팅")]
+                     public int ultimateAttackGaugeLimit = 1;
+                     public int ultimateAttackGauge = 0;
+                     private int previousGauge;
+                     public Slider PlayerGaugeBar;
+                     public TextMeshProUGUI PlayerGaugeText;
 
-    public float basicAttackDelay = 0.6f;
-    public Slider PlayerBasicAttackGlobe;
-    public TextMeshProUGUI PlayerBasicAttackText;
+    [Header("Player 기본 공격 세팅")]
+                     public float basicAttackDelay = 0.6f;
+    [SerializeField] private Slider PlayerBasicAttackGlobe;
+    [SerializeField] private TextMeshProUGUI PlayerBasicAttackText;
 
-    public float ultimateAttackDelay = 6.0f;
-    public Slider PlayerUltimateAttackGlobe;
-    public TextMeshProUGUI PlayerUltimateAttackText;
+    [Header("Player 궁극기 스킬 세팅")]
+                     public float ultimateAttackDelay = 6.0f;
+    [SerializeField] private Slider PlayerUltimateAttackGlobe;
+    [SerializeField] private TextMeshProUGUI PlayerUltimateAttackText;
 
-    public float defenseSkillDelay = 4.0f;
-    public Slider PlayerShildGlobe;
-    public TextMeshProUGUI PlayerShildText;
+    [Header("Player 방어 스킬 세팅")]
+                    public float defenseSkillDelay = 4.0f;
+    [SerializeField] private Slider PlayerShildGlobe;
+    [SerializeField] private TextMeshProUGUI PlayerShildText;
 
-    public float healingSkillDelay = 10.0f;
-    public Slider PlayerHealingGlobe;
-    public TextMeshProUGUI PlayerHealingText;
+    [Header("Player 힐 스킬 세팅")]
+                     public float healingSkillDelay = 10.0f;
+    [SerializeField] private Slider PlayerHealingGlobe;
+    [SerializeField] private TextMeshProUGUI PlayerHealingText;
 
-    public float avoidanceSkillDelay = 10.0f;
-    public bool debug = true;
+    [Header("Player 회피 무빙 세팅")]
+                    public float avoidanceSkillDelay = 10.0f;
 
+    [Header("Player 디버그 출력 세팅")]
+    [SerializeField] private bool debug = true;
+
+    // 외부 스크립트 연결 세팅
+    private PlayerDataManager playerDataManager;
     private BasicAttackController basicAttackController;
     private UltimateAttackController ultimateAttackController;
     private DefenseController defenseController;
-    private AvoidanceController avoidanceController;
     private HealingController healingController;
+    private AvoidanceController avoidanceController;
     private DamageController damageController;
     private AnimationController animationController;
-    private PlayerDataManager playerDataManager;
-
+    
+    // 스킬 딜레이 세팅
     private float basicAttackDelayTime;
     private float ultimateAttackDelayTime;
     private float avoidanceSkillDelayTime;
     private float defenseSkillDelayTime;
     private float healingSkillDelayTime;
 
-    [Header("보스 타겟")]
+    // 보스 타겟
     private Boss bossTarget;
     private List<Hobgoblin> summonTargets = new List<Hobgoblin>();
 
     void Start()
     {
+        playerDataManager = PlayerDataManager.Instance;
+
         basicAttackController = GetComponent<BasicAttackController>();
         ultimateAttackController = GetComponent<UltimateAttackController>();
         defenseController = GetComponent<DefenseController>();
         healingController = GetComponent<HealingController>();
-        damageController = GetComponent<DamageController>();
         avoidanceController = GetComponent<AvoidanceController>();
+        damageController = GetComponent<DamageController>();
         animationController = GetComponent<AnimationController>();
-
-        playerDataManager = PlayerDataManager.Instance;
 
         if (playerDataManager == null)
         {
