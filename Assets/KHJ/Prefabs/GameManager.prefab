@@ -45,12 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602d1f9082037c946a565919426471e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phase1Prefab: {fileID: 0}
-  phase2Prefab: {fileID: 0}
+  state: 0
   phase1SceneName: Boss1Scene
   phase2SceneName: Boss2Scene
-  useSceneTransition: 1
-  playerHealth: 100
+  bossPosition: {x: -1.8, y: -1, z: -11.4}
+  victoryUI: {fileID: 0}
+  defeatUI: {fileID: 0}
+  uiBackground: {fileID: 0}
+  BossIndicatorUI: {fileID: 0}
+  bossPrefab: {fileID: 0}
+  virtualJoystick: {fileID: 0}
+  hobgoblins: []
 --- !u!114 &3901847629489426729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,9 +68,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fae9090c5afafa4c8309ce5d5684d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealthLimit: 50
-  originPlayerHealth: 50
-  playerGaugeLimit: 10
-  originPlayerGauge: 0
+  playerHealthLimit: 100
+  originPlayerHealth: 100
   playerLinkHealth: 0
+  playerGaugeLimit: 3
+  originPlayerGauge: 0
   playerLinkGauge: 0
+  isControlPlayer: 0

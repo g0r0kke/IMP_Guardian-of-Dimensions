@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 509716369834470608}
   - component: {fileID: 6007168677109201925}
   - component: {fileID: 3526925566218902335}
-  - component: {fileID: 6672587490999873393}
   - component: {fileID: 165770404960257290}
   m_Layer: 5
   m_Name: Image
@@ -77,20 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6672587490999873393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660086547811955201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d9330b05ddae64d8207ee4ed3b59eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInClip: {fileID: 7400000, guid: 9b1baa8b5266bf647831ac71b522bc36, type: 2}
-  fadeOutClip: {fileID: 7400000, guid: 9ecaa309273a85947a431c026f15e8b7, type: 2}
 --- !u!111 &165770404960257290
 Animation:
   m_ObjectHideFlags: 0
@@ -118,10 +103,10 @@ GameObject:
   - component: {fileID: 3133430733090067876}
   - component: {fileID: 5499648533302858196}
   - component: {fileID: 3116730965408577461}
-  - component: {fileID: 2072043987932515898}
+  - component: {fileID: 5084256031039246788}
   m_Layer: 5
   m_Name: UI_Black
-  m_TagString: Untagged
+  m_TagString: UI_Black
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,7 +177,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &2072043987932515898
+--- !u!114 &5084256031039246788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,11 +186,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7816513058611116404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: e0d9330b05ddae64d8207ee4ed3b59eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  fadeInClip: {fileID: 7400000, guid: 9b1baa8b5266bf647831ac71b522bc36, type: 2}
+  fadeOutClip: {fileID: 7400000, guid: 9ecaa309273a85947a431c026f15e8b7, type: 2}
+  fadeImage: {fileID: 3526925566218902335}
