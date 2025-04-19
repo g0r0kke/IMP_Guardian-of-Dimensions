@@ -40,7 +40,7 @@ public class Hobgoblin : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         // DamageController 찾기 (민우)
-        playerDamageController = FindObjectOfType<DamageController>();
+        playerDamageController = FindFirstObjectByType<DamageController>();
         if (playerDamageController == null)
         {
             Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
@@ -50,7 +50,7 @@ public class Hobgoblin : MonoBehaviour
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject)
         {
-            playerGUI = FindObjectOfType<PlayerGUI>(); 
+            playerGUI = FindFirstObjectByType<PlayerGUI>(); 
             if (playerGUI != null)
             {
                 playerGUI.AddHobgoblinTarget(this);
