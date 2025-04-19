@@ -411,7 +411,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  phase1SceneName: BossPhase1Scene
   phase2SceneName: BossPhase2Scene
   bossPosition: {x: -1.8, y: 0, z: -11.4}
   victoryUI: {fileID: 0}
@@ -421,6 +420,8 @@ MonoBehaviour:
   bossPrefab: {fileID: 0}
   virtualJoystick: {fileID: 0}
   hobgoblins: []
+  fadeObject: {fileID: 0}
+  fadeController: {fileID: 0}
 --- !u!4 &540752651
 Transform:
   m_ObjectHideFlags: 0

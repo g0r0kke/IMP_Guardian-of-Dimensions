@@ -2647,30 +2647,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 536086878342154561, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859937546}
-    - target: {fileID: 536086878342154561, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectMainMenu
-      objectReference: {fileID: 0}
     - target: {fileID: 897468952261933463, guid: 0452c830594dcc046b2c6da508208cbb,
         type: 3}
       propertyPath: m_Name
       value: VictoryDefeat UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 1623990080576769631, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859937545}
-    - target: {fileID: 1623990080576769631, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectReplay
       objectReference: {fileID: 0}
     - target: {fileID: 3500867513437341700, guid: 0452c830594dcc046b2c6da508208cbb,
         type: 3}
@@ -2772,26 +2752,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5664756854132979021, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859937546}
-    - target: {fileID: 5664756854132979021, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectReplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 8231837765004016027, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859937545}
-    - target: {fileID: 8231837765004016027, guid: 0452c830594dcc046b2c6da508208cbb,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectReplay
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2815,30 +2775,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 859937541}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &859937545 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3297918532830737277, guid: 0452c830594dcc046b2c6da508208cbb,
-    type: 3}
-  m_PrefabInstance: {fileID: 859937541}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859937544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 104801aac331a73418c068ebd875cb0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &859937546 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7173242182948033759, guid: 0452c830594dcc046b2c6da508208cbb,
-    type: 3}
-  m_PrefabInstance: {fileID: 859937541}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859937543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 104801aac331a73418c068ebd875cb0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1004239771
 PrefabInstance:
   m_ObjectHideFlags: 0
