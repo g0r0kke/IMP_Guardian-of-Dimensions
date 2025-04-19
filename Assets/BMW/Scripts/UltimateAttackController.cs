@@ -23,6 +23,7 @@ public class UltimateAttackController : MonoBehaviour
     [SerializeField] private float ultimateAttackDelTime = 10.0f;
     [SerializeField] private int attackDamage = 30;
                      public float delayTime = 0f;
+                     private bool isEnemyCheck = false;
 
     // 외부 스크립트 연결 세팅
     private PlayerDataManager playerDataManager;
@@ -47,11 +48,19 @@ public class UltimateAttackController : MonoBehaviour
 
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)
         {
-            animationController.UltimateAttackAnimation();
-            Invoke("UltimateAttack", 0.7f);
+            handGestureController.isUltimateAttackGesture = false;
+            isPressedUltimateAttack = false;
+
+            if (!isEnemyCheck)
+            {
+                isEnemyCheck = true;
+                animationController.UltimateAttackAnimation();
+                Invoke("UltimateAttack", 0.7f);
+            }
         }
-        
-        handGestureController.isUltimateAttackGesture = false;
+        else {
+            handGestureController.isUltimateAttackGesture = false;
+        }
 
         if (delayTime > 0)
         {
@@ -78,6 +87,7 @@ public class UltimateAttackController : MonoBehaviour
 
         playerGUI.ultimateAttackGauge = 0;
         delayTime = playerGUI.ultimateAttackDelay;
+        isEnemyCheck = false;
 
         List<Transform> enemyTransforms = new List<Transform>();
         List<Vector3> spawnPositions = new List<Vector3>();
