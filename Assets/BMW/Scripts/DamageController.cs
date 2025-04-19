@@ -3,11 +3,11 @@ using UnityEngine;
 public class DamageController : MonoBehaviour
 {
 
-    [Header("������ �ʱ� ��� ����")]
+    [Header("플레이어 데미지 초기 요소 연결")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private AudioSource PlayerTakeDamageSound;
 
-    [Header("������ �ʱ� ����")]
+    [Header("플레이어 데미지 초기 세팅")]
     [SerializeField] private int collisionDamage = 2;
     [SerializeField] private int playerDamage = 0;
     [SerializeField] private float damageTime = 0.0f;
@@ -16,7 +16,7 @@ public class DamageController : MonoBehaviour
                      public bool isAvoid = false;
     [SerializeField] private bool isConstantContact = false;
 
-    // �ܺ� ��ũ��Ʈ ���� ����
+    // 외부 스크립트 연결 세팅
     private PlayerGUI playerGUI;
     private GameObject hitUI;
 

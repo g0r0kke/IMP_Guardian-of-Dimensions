@@ -5,22 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    public static PlayerDataManager Instance;
-
-    [Header("�÷��̾� ü�� ���")]
+    [Header("플레이어 체력 세팅")]
     public int playerHealthLimit = 100;
-    public int originPlayerHealth = 100;
+    private int originPlayerHealth = 100;
     public int playerLinkHealth;
 
-    [Header("�÷��̾� �ñر� ������ ���")]
+    [Header("플레이어 궁극기게이지 세팅")]
     public int playerGaugeLimit = 3;
-    public int originPlayerGauge = 0;
+    private int originPlayerGauge = 0;
     public int playerLinkGauge;
 
-    [Header("�÷��̾� ���� ���� ���� üĿ")]
+    [Header("플레이어 조작 상태 세팅")]
     public bool isControlPlayer;
 
-    // �ܺ� ��ũ��Ʈ ���� ����
+    // 외부 스크립트 연결 세팅
+    public static PlayerDataManager Instance;
     private PlayerGUI playerGUI;
     private GameManager gameManager;
 
@@ -39,10 +38,10 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         // Find the GameManager reference
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
         if (gameManager == null)
         {
-            Debug.LogWarning("GameManager�� ã�� �� �����ϴ�. PlayerDataManager�� ����� �۵����� ���� �� �ֽ��ϴ�.");
+            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
         }
 
         // Only try to find PlayerGUI if we're in a valid game state
@@ -81,7 +80,7 @@ public class PlayerDataManager : MonoBehaviour
         // Make sure we have a reference to GameManager
         if (gameManager == null)
         {
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = FindAnyObjectByType<GameManager>();
             
         }
 
@@ -107,7 +106,7 @@ public class PlayerDataManager : MonoBehaviour
     // Find PlayerGUI and load player data if it exists
     private void FindAndLoadPlayerGUI()
     {
-        playerGUI = FindObjectOfType<PlayerGUI>();
+        playerGUI = FindAnyObjectByType<PlayerGUI>();
         if (playerGUI != null)
         {
             LoadPlayerData();
@@ -122,7 +121,7 @@ public class PlayerDataManager : MonoBehaviour
             // Only log a warning if we're in a state where PlayerGUI should exist
             if (ShouldLoadPlayerGUI())
             {
-                Debug.LogWarning("PlayerGUI�� �������� �ʾ� �����͸� �ε��� �� �����ϴ�.");
+                Debug.LogWarning("PlayerGUI를 찾을 수 없습니다.");
             }
             return;
         }

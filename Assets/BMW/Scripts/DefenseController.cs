@@ -12,7 +12,7 @@ public class DefenseController : MonoBehaviour
     [Header("방어스킬 초기 세팅")]
     [SerializeField] private Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
     [SerializeField] private float shieldDuration = 4.0f;
-    [SerializeField] private float shieldDistance = 1.0f;
+    //[SerializeField] private float shieldDistance = 1.0f;
                      public float delayTime = 0f;
 
     // 외부 스크립트 연결 세팅
