@@ -60,25 +60,15 @@ public class BossProjectile : MonoBehaviour
         // 충돌한 대상이 플레이어인지 확인
         if (collision.gameObject.CompareTag("Player"))
         {
-            // "원거리 공격!!" 메시지 출력
-            // Debug.Log("원거리 공격!!");
-            
             // 플레이어에게 데미지 적용
             playerDamageController.PlayerTakeDamage(attack2Damage);
             Debug.Log($"보스1 원거리 공격: 플레이어에게 {attack2Damage} 데미지를 입혔습니다!");
             
-            // SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
-            // if (player != null)
-            // {
-            //     player.TakeDamage((int)damage);
-            //     Debug.Log($"보스 투사체가 플레이어에게 {damage} 데미지를 입혔습니다!");
-            // }
-        }
-        
-        // 충돌 이펙트 생성
-        if (impactEffectPrefab != null)
-        {
-            Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+            // 충돌 이펙트 생성
+            if (impactEffectPrefab)
+            {
+                Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
+            }
         }
         
         // 투사체 제거

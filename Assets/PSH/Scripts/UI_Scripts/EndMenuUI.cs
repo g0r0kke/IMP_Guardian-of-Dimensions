@@ -103,6 +103,9 @@ public class EndMenuUI : MonoBehaviour
                         }
                         
                         SceneManager.LoadScene("MainMenuScene");
+
+                        //AudioManager.Instance.InitializeSFX(); // 버튼 사운드 초기화
+
                         break;
                     case 1:
                         if (GameManager.Instance)
