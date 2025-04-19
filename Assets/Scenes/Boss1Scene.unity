@@ -2780,6 +2780,11 @@ PrefabInstance:
       objectReference: {fileID: 6534703531086688925}
     - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
+      propertyPath: isDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
       propertyPath: PlayerHpBar
       value: 
       objectReference: {fileID: 4089772342438025508}

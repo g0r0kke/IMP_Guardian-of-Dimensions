@@ -4,18 +4,18 @@ using System.Collections;
 public class DefenseController : MonoBehaviour
 {
 
-    [Header("방어스킬 초기 요소 연결")]
+    [Header("Defense skill Initial Element Connection Settings")]
     [SerializeField] private GameObject ShieldPrefab;
     [SerializeField] private AudioSource ShieldSound;
                      private GameObject shieldSphere;
 
-    [Header("방어스킬 초기 세팅")]
+    [Header("Defense skill Initial Settings")]
     [SerializeField] private Vector3 shieldScale = new Vector3(1.0f, 1.0f, 1.0f);
     [SerializeField] private float shieldDuration = 4.0f;
     //[SerializeField] private float shieldDistance = 1.0f;
                      public float delayTime = 0f;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;

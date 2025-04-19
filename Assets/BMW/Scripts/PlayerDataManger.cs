@@ -5,20 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    [Header("플레이어 체력 세팅")]
+    [Header("Player Health Settings")]
     public int playerHealthLimit = 100;
     private int originPlayerHealth = 100;
     public int playerLinkHealth;
 
-    [Header("플레이어 궁극기게이지 세팅")]
+    [Header("Player Ultimate Attack Gauge Settings")]
     public int playerGaugeLimit = 3;
     private int originPlayerGauge = 0;
     public int playerLinkGauge;
 
-    [Header("플레이어 조작 상태 세팅")]
+    [Header("Setting Player Manipulation Status")]
     public bool isControlPlayer;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     public static PlayerDataManager Instance;
     private PlayerGUI playerGUI;
     private GameManager gameManager;
@@ -41,7 +41,7 @@ public class PlayerDataManager : MonoBehaviour
         gameManager = FindAnyObjectByType<GameManager>();
         if (gameManager == null)
         {
-            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+            Debug.LogWarning("GameManager not found.");
         }
 
         // Only try to find PlayerGUI if we're in a valid game state
@@ -121,7 +121,7 @@ public class PlayerDataManager : MonoBehaviour
             // Only log a warning if we're in a state where PlayerGUI should exist
             if (ShouldLoadPlayerGUI())
             {
-                Debug.LogWarning("PlayerGUI를 찾을 수 없습니다.");
+                Debug.LogWarning("PlayerGUI not found.");
             }
             return;
         }
