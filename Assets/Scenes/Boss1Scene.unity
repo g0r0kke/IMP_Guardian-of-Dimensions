@@ -1054,6 +1054,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606394167 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5982905322364040987, guid: 359f523db42550949b0c04deee9a42e5,
+    type: 3}
+  m_PrefabInstance: {fileID: 6769085637962347942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &607597303 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1964915585875829313, guid: 0452c830594dcc046b2c6da508208cbb,
@@ -2820,7 +2832,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PlayerUltimateAttackText
       value: 
-      objectReference: {fileID: 5934092573513374625}
+      objectReference: {fileID: 606394167}
     - target: {fileID: 6180740539066061863, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: PlayerUltimateAttackGlobe
