@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: bbb823d717bf5b8419eb0811b16c1d7f
+labels:
+- Cliff
+- Frost
+- Ground
+- Ice
+- Rock
+- Snow
+- Stone
+- Terrain
+- Frozen
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 12962
+  packageName: Stone Textures Pack
+  packageVersion: 1.00
+  assetPath: Assets/Stone textures pack/Stone 13/Stone pattern 13.mat
+  uploadId: 29421
