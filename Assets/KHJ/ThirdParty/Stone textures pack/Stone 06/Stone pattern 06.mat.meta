@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 3e6e6c10544e77e40911224d4e09d5ac
+labels:
+- Cliff
+- Grass
+- Ground
+- Nature
+- Pattern
+- Stone
+- Terrain
+- Algae
+- Moss
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 12962
+  packageName: Stone Textures Pack
+  packageVersion: 1.00
+  assetPath: Assets/Stone textures pack/Stone 06/Stone pattern 06.mat
+  uploadId: 29421

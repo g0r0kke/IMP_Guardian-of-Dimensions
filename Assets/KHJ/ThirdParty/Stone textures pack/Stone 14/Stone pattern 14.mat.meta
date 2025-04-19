@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 9e66d158d139bf044b9b85667b295490
+labels:
+- Ground
+- Nature
+- Pattern
+- Rock
+- Terrain
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 12962
+  packageName: Stone Textures Pack
+  packageVersion: 1.00
+  assetPath: Assets/Stone textures pack/Stone 14/Stone pattern 14.mat
+  uploadId: 29421
