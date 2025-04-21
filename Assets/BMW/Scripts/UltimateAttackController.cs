@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class UltimateAttackController : MonoBehaviour
@@ -44,7 +45,7 @@ public class UltimateAttackController : MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
 
-        bool isPressedUltimateAttack = Input.GetKeyDown(KeyCode.X);
+        bool isPressedUltimateAttack = Keyboard.current.xKey.wasPressedThisFrame;
 
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)
         {

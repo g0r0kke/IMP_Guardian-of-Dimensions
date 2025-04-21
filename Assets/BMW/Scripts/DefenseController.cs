@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class DefenseController : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class DefenseController : MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
 
-        bool isPressedDefense = Input.GetKeyDown(KeyCode.C);
+        bool isPressedDefense = Keyboard.current.cKey.wasPressedThisFrame;
 
         if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
         {

@@ -1,7 +1,8 @@
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum BossStateType
 {
@@ -131,7 +132,7 @@ public abstract class Boss : MonoBehaviour
     protected virtual void Update()
     {
         // 삭제 예정
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
            TakeDamage(50);
         }
