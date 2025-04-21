@@ -11,7 +11,7 @@ public class HealingController : MonoBehaviour
                      private GameObject heallingEffectCircle;
 
     [Header("Healing Skill Initial Settings")]
-    [SerializeField] private int HealingAmount = 5;
+    [SerializeField] private int HealingAmount = 30;
     [SerializeField] private Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
     [SerializeField] private float heallingEffectDuration = 4.0f;
                      public float delayTime = 0f;
