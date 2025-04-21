@@ -34,9 +34,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
     [SerializeField] private GameObject BossIndicatorUI;
-    
-    // 플레이어 관련 변수
-    private PlayerDataManager playerDataManager;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
@@ -55,9 +52,6 @@ public class GameManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        playerDataManager = PlayerDataManager.Instance;
-
     }
     
     private void Start()
@@ -107,7 +101,16 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                if (playerDataManager) playerDataManager.PlayerOriginSetting();
+                if (PlayerDataManager.Instance)
+                {
+                    PlayerDataManager.Instance.PlayerOriginSetting();
+                    Debug.Log("Player status reset completed");
+                }
+                else
+                {
+                    Debug.LogError("PlayerDataManager.Instance is NULL!");
+                }
+                
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 if (BossIndicatorUI) BossIndicatorUI.SetActive(true);

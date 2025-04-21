@@ -33,7 +33,7 @@ public class PlayerDataManager : MonoBehaviour
         else
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
             PlayerOriginSetting();
         }
 
