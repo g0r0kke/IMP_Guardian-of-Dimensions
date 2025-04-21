@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace MasterStylizedProjectile
@@ -27,7 +28,7 @@ namespace MasterStylizedProjectile
         }
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.A))
+            if(Keyboard.current.aKey.wasPressedThisFrame)
             {
                 dropdown.value -= 1;
                 OnSelect(dropdown.value);
@@ -37,7 +38,7 @@ namespace MasterStylizedProjectile
                     audio.Play();
                 }
             }
-            if(Input.GetKeyDown(KeyCode.D))
+            if(Keyboard.current.dKey.wasPressedThisFrame)
             {
                 dropdown.value += 1;
                 OnSelect(dropdown.value);

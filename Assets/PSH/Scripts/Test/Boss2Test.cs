@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Boss2Test : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class Boss2Test : MonoBehaviour
     void Update()
     {
         // 테스트용: S 키 누르면 소환
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Keyboard.current.sKey.wasPressedThisFrame)
         {
             SummonHobgoblins();
         }

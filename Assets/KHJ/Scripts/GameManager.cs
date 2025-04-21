@@ -1,6 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public enum GameState
 {
@@ -75,11 +76,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N)) // N키 누르면 승리
+        if (Keyboard.current.nKey.wasPressedThisFrame) // N키 누르면 승리
         {
             SetState(GameState.Victory);
         }
-        if (Input.GetKeyDown(KeyCode.M)) // M키 누르면 패배
+        if (Keyboard.current.mKey.wasPressedThisFrame) // M키 누르면 패배
         {
             SetState(GameState.Defeat);
         }

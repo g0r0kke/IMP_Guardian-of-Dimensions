@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
@@ -36,7 +37,7 @@ public class HealingController : MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
 
-        bool isPressedHealing = Input.GetKeyDown(KeyCode.V);
+        bool isPressedHealing = Keyboard.current.vKey.wasPressedThisFrame;
 
         if ((isPressedHealing || handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)
         {

@@ -1,6 +1,7 @@
 using ManoMotion;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BasicAttackController: MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class BasicAttackController: MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
         
-        bool isPressedBasicAttack = Input.GetKeyDown(KeyCode.Z);
+        bool isPressedBasicAttack = Keyboard.current.zKey.wasPressedThisFrame;
 
         if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)
         {
