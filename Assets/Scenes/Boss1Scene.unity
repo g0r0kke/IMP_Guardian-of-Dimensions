@@ -2530,6 +2530,11 @@ PrefabInstance:
       propertyPath: heallingSound
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7937921625520918833, guid: 53759bb5db7cc804a8ef48a872fc3a12,
+        type: 3}
+      propertyPath: HealingAmount
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8244825301201614628, guid: 53759bb5db7cc804a8ef48a872fc3a12,
         type: 3}
       propertyPath: AvoidSound
