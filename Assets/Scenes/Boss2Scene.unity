@@ -365,8 +365,8 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: a7fdde9dbb81b4167a27a8aeb1e4ce58, type: 3}
   deathSound: {fileID: 8300000, guid: cc38b51f3704642d7ba01a8c899baad9, type: 3}
   audioSource: {fileID: 236952572}
-  teleportInSound: {fileID: 0}
-  teleportOutSound: {fileID: 0}
+  teleportInSound: {fileID: 8300000, guid: 12ecd433c4f801b41a1564a6ab089d5f, type: 3}
+  teleportOutSound: {fileID: 8300000, guid: 2df49f6bb18bd3247bd788e26695f4ff, type: 3}
   isAttacking: 0
   isTakingDamage: 0
 --- !u!23 &236952574
