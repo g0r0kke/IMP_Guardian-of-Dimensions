@@ -361,7 +361,7 @@ MonoBehaviour:
   maxHealth: 100
   minionSummonSound: {fileID: 8300000, guid: a2ae90e42daaf4723a539c25867d37fd, type: 3}
   missileSound: {fileID: 8300000, guid: 7743889c22ea9472a895ecd63b2bb221, type: 3}
-  closeCombatSound: {fileID: 8300000, guid: 4253ea676060e49dd9488f73d692ea2a, type: 3}
+  closeCombatSound: {fileID: 8300000, guid: 800842637f2653b4496dad04fb2ec8f0, type: 3}
   hitSound: {fileID: 8300000, guid: a7fdde9dbb81b4167a27a8aeb1e4ce58, type: 3}
   deathSound: {fileID: 8300000, guid: cc38b51f3704642d7ba01a8c899baad9, type: 3}
   audioSource: {fileID: 236952572}

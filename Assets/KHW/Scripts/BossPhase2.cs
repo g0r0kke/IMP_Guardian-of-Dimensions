@@ -393,7 +393,7 @@ namespace Azmodan.Phase2
             {
                 Vector3 spawnPos = bossPos + offset;
                 spawnPos.y = GetGroundY(spawnPos); // Fixing the floor
-                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform);
+                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform, minionLayer);
             }
         }
 
