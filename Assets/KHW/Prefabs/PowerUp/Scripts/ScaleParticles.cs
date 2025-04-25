@@ -3,7 +3,9 @@ using System.Collections;
 
 [ExecuteInEditMode]
 public class ScaleParticles : MonoBehaviour {
-	void Update () {
-		GetComponent<ParticleSystem>().startSize = transform.lossyScale.magnitude;
-	}
+    void Update () {
+        var ps = GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.startSize = transform.lossyScale.magnitude;
+    }
 }
