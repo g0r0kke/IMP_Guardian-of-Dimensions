@@ -4,20 +4,20 @@ using System.Collections;
 public class AvoidanceController : MonoBehaviour
 {
 
-    [Header("회피 초기 요소 연결")]
+    [Header("Avoidance Initial Element Connection Settings")]
     [SerializeField] private LayerMask originLayer;
     [SerializeField] private LayerMask avoidanceLayer;
     [SerializeField] private AudioSource AvoidSound;
     
 
-    [Header("회피 초기 세팅")]
+    [Header("Avoidance Initial Settings")]
     [SerializeField] private float avoidanceDuration = 3.0f;
     [SerializeField] private float rotationThreshold = 5000.0f;
                      public float delayTime = 0f;
                      private bool isAvoiding = false;
                      private float previousRotationY;
-    
-    // 외부 스크립트 연결 세팅
+
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private DamageController damageController;
@@ -71,13 +71,13 @@ public class AvoidanceController : MonoBehaviour
 
         isAvoiding = true;
 
-        // 방안 1 : 데미지 컨트롤러 일시적 비활성화
+        // Method 1: Temporary disablement of damage controller
         //damageController.enabled = false;
 
-        // 방안 2 :
+        // Method 2 :
         damageController.isAvoid =true;
 
-        // 예외 방법
+        // exception Method
         // ToggleComponents(false);
         // characterController.enabled = true;
         // gameObject.layer = avoidanceLayer;
@@ -88,13 +88,13 @@ public class AvoidanceController : MonoBehaviour
 
         SetTransparency(1f);
 
-        // 예외방법
+        // xception Method
         // gameObject.layer = originLayer;
 
-        // 방안 2
+        // Method 2
         damageController.isAvoid = false;
 
-        // 방안 1
+        // Method 1
         //damageController.enabled = true;
 
         ToggleComponents(true);

@@ -1221,6 +1221,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4483378895753917273, guid: 0cfe299cf7b22d14ab4234ef710eb7ae,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -248
+      objectReference: {fileID: 0}
     - target: {fileID: 5202813798445265989, guid: 0cfe299cf7b22d14ab4234ef710eb7ae,
         type: 3}
       propertyPath: arCameraManager

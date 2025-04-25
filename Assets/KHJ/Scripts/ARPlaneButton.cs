@@ -53,14 +53,14 @@ public class ARPlaneButton : MonoBehaviour
             // 페이드인 애니메이션 실행 (화면이 검게)
             fadeController.PlayFadeAnimation(true, () =>
             {
-                // 씬 전환
-                SceneManager.LoadScene(targetSceneName);
-                
                 // GameManager 상태 설정
                 if (GameManager.Instance)
                 {
                     GameManager.Instance.SetState(GameState.BossPhase1);
                 }
+                
+                // 씬 전환
+                SceneManager.LoadScene(targetSceneName);
 
                 // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
                 fadeController.PlayFadeAnimation(false);

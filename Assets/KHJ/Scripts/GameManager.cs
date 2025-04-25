@@ -1,6 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public enum GameState
 {
@@ -33,9 +34,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
     [SerializeField] private GameObject BossIndicatorUI;
-    
-    // 플레이어 관련 변수
-    private PlayerDataManager playerDataManager;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
@@ -54,9 +52,6 @@ public class GameManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        playerDataManager = PlayerDataManager.Instance;
-
     }
     
     private void Start()
@@ -75,11 +70,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N)) // N키 누르면 승리
+        if (Keyboard.current.nKey.wasPressedThisFrame) // N키 누르면 승리
         {
             SetState(GameState.Victory);
         }
-        if (Input.GetKeyDown(KeyCode.M)) // M키 누르면 패배
+        if (Keyboard.current.mKey.wasPressedThisFrame) // M키 누르면 패배
         {
             SetState(GameState.Defeat);
         }
@@ -106,7 +101,16 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BossPhase1:
                 // 플레이 상태 시작 시 처리
-                if (playerDataManager) playerDataManager.PlayerOriginSetting();
+                if (PlayerDataManager.Instance)
+                {
+                    PlayerDataManager.Instance.PlayerOriginSetting();
+                    Debug.Log("Player status reset completed");
+                }
+                else
+                {
+                    Debug.LogError("PlayerDataManager.Instance is NULL!");
+                }
+                
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
                 if (BossIndicatorUI) BossIndicatorUI.SetActive(true);

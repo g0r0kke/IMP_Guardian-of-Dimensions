@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class ARPlacement : MonoBehaviour
 {
@@ -12,6 +14,26 @@ public class ARPlacement : MonoBehaviour
     
     private GameObject spawnedObject;
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+    private void Awake()
+    {
+        // New Input System의 Enhanced Touch Support 활성화
+        EnhancedTouchSupport.Enable();
+    }
+
+    private void OnEnable()
+    {
+        // Touch 이벤트 등록
+        TouchSimulation.Enable();
+        Touch.onFingerDown += OnFingerDown;
+    }
+
+    private void OnDisable()
+    {
+        // Touch 이벤트 해제
+        TouchSimulation.Disable();
+        Touch.onFingerDown -= OnFingerDown;
+    }
 
     void Start()
     {
@@ -64,7 +86,7 @@ public class ARPlacement : MonoBehaviour
         }
     }
     
-    void Update()
+    private void OnFingerDown(Finger finger)
     {
         // AR 플레인이 하나 이상 감지되었는지 확인
         if (planeManager.trackables.count == 0)
@@ -73,44 +95,40 @@ public class ARPlacement : MonoBehaviour
             return;
         }
         
-        // 터치 입력 확인
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        // UI 요소 터치 확인 - UI 요소를 터치한 경우 처리하지 않음
+        if (IsPointerOverUI(finger.currentTouch.screenPosition))
         {
-            // UI 요소 터치 확인 - UI 요소를 터치한 경우 처리하지 않음
-            if (IsPointerOverUI(Input.GetTouch(0).position))
+            return;  // UI 요소를 터치했으면 레이캐스트 처리하지 않음
+        }
+        
+        // 터치한 화면 위치로부터 Ray 생성
+        Ray ray = Camera.main.ScreenPointToRay(finger.currentTouch.screenPosition);
+        
+        // AR 플레인과의 충돌 확인
+        if (raycastManager != null && raycastManager.Raycast(finger.currentTouch.screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+        {
+            if (hits.Count > 0)
             {
-                return;  // UI 요소를 터치했으면 레이캐스트 처리하지 않음
-            }
-            
-            // 터치한 화면 위치로부터 Ray 생성
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            
-            // AR 플레인과의 충돌 확인
-            if (raycastManager != null && raycastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
-            {
-                if (hits.Count > 0)
+                // Ray가 AR 플레인과 충돌한 위치
+                Pose hitPose = hits[0].pose;
+                
+                // 카메라를 향하도록 회전 계산
+                Vector3 directionToCamera = Camera.main.transform.position - hitPose.position;
+                directionToCamera.y = 0; // y축 회전만 적용하기 위해 y값은 0으로 설정
+                
+                Quaternion lookAtCamera = Quaternion.LookRotation(directionToCamera);
+                
+                // 큐브가 아직 없으면 생성, 있으면 위치 업데이트
+                if (spawnedObject == null)
                 {
-                    // Ray가 AR 플레인과 충돌한 위치
-                    Pose hitPose = hits[0].pose;
-                    
-                    // 카메라를 향하도록 회전 계산
-                    Vector3 directionToCamera = Camera.main.transform.position - hitPose.position;
-                    directionToCamera.y = 0; // y축 회전만 적용하기 위해 y값은 0으로 설정
-                    
-                    Quaternion lookAtCamera = Quaternion.LookRotation(directionToCamera);
-                    
-                    // 큐브가 아직 없으면 생성, 있으면 위치 업데이트
-                    if (spawnedObject == null)
-                    {
-                        spawnedObject = Instantiate(markerPrefab, hitPose.position, lookAtCamera);
-                        PlayPlacementAudio();
-                    }
-                    else
-                    {
-                        spawnedObject.transform.position = hitPose.position;
-                        spawnedObject.transform.rotation = lookAtCamera;
-                        PlayPlacementAudio();
-                    }
+                    spawnedObject = Instantiate(markerPrefab, hitPose.position, lookAtCamera);
+                    PlayPlacementAudio();
+                }
+                else
+                {
+                    spawnedObject.transform.position = hitPose.position;
+                    spawnedObject.transform.rotation = lookAtCamera;
+                    PlayPlacementAudio();
                 }
             }
         }

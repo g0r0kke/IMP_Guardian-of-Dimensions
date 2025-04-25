@@ -1,11 +1,12 @@
 using ManoMotion;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BasicAttackController: MonoBehaviour
 {
 
-    [Header("기본 공격기 초기 요소 연결")]
+    [Header("Basic Attack Initial Element Connection Settings")]
     [SerializeField] private Transform basicAttackPos;
     [SerializeField] private GameObject basicAttackPrefab;
     [SerializeField] private Collider planeCollider;
@@ -13,7 +14,7 @@ public class BasicAttackController: MonoBehaviour
     [SerializeField] private AudioSource basicAttackStartSound;
     [SerializeField] private AudioSource basicAttackEndSound;
 
-    [Header("기본 공격기 초기 세팅")]
+    [Header("Basic Attack Initial Settings")]
     [SerializeField] private float basicAttackStartScale = 1.0f;
     [SerializeField] private float basicAttackForce = 1000.0f;
     [SerializeField] private float basicAttackDelTime = 2.0f;
@@ -22,7 +23,7 @@ public class BasicAttackController: MonoBehaviour
     [SerializeField] private int attackDamage = 10;
                      public float delayTime = 0f;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
@@ -43,7 +44,7 @@ public class BasicAttackController: MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
         
-        bool isPressedBasicAttack = Input.GetKeyDown(KeyCode.Z);
+        bool isPressedBasicAttack = Keyboard.current.zKey.wasPressedThisFrame;
 
         if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)
         {
@@ -90,7 +91,7 @@ public class BasicAttackController: MonoBehaviour
         {
             attackController = basicAttackSphere.AddComponent<BasicAttackSphereController>();
         }
-        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, attackDamage, targetLayer, GetComponent<PlayerGUI>(), GetComponent<BasicAttackController>(), planeCollider, basicAttackEndSound);
+        attackController.Initialize(transform, basicAttackMaxDist, basicAttackDelTime, attackDamage, targetLayer, planeCollider, basicAttackEndSound);
 
     }
 

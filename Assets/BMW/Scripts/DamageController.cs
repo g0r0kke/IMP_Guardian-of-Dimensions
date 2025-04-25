@@ -3,11 +3,11 @@ using UnityEngine;
 public class DamageController : MonoBehaviour
 {
 
-    [Header("������ �ʱ� ��� ����")]
+    [Header("Player Damage Initial Element Connection Settings")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private AudioSource PlayerTakeDamageSound;
 
-    [Header("������ �ʱ� ����")]
+    [Header("Player Damage Initial Settings")]
     [SerializeField] private int collisionDamage = 2;
     [SerializeField] private int playerDamage = 0;
     [SerializeField] private float damageTime = 0.0f;
@@ -16,7 +16,7 @@ public class DamageController : MonoBehaviour
                      public bool isAvoid = false;
     [SerializeField] private bool isConstantContact = false;
 
-    // �ܺ� ��ũ��Ʈ ���� ����
+    // Setting up an external script connection
     private PlayerGUI playerGUI;
     private GameObject hitUI;
 
@@ -79,7 +79,7 @@ public class DamageController : MonoBehaviour
             if (damageTime >= 1.0f)
             {
                 playerDamage += (collisionDamage - 1);
-                Debug.Log("������ �����Ͽ� �������� ���̹����� �ް��ֽ��ϴ�.");
+                if (playerGUI.isDebug) Debug.Log("The player is in contact with the enemy, which is causing constant damage.");
                 damageTime = 0.0f;
             }
         }

@@ -4,19 +4,24 @@ using static UnityEngine.GraphicsBuffer;
 
 public class UltimateAttackSphereController : MonoBehaviour
 {
+
+    [Header("Ultimate Attack sphere Initial Element Connection Settings")]
+    [SerializeField] private GameObject collisionEffectPrefab;
                      private Transform targetTransform;
                      private LayerMask targetLayer;
-    [SerializeField] private GameObject collisionEffectPrefab;
+                     private AudioSource ultimateAttackEndSound;
 
-                     private float speed = 15.0f;
-                     public float startScale = 0.5f;
-                     public float scaleRate = 0.5f;
+    [Header("Ultimate Attack sphere Initial Settings")]
                      public int attackDamage;
+                     private float speed = 15.0f;
+                     private float startScale = 0.5f;
+                     private float scaleRate = 0.5f;
                      private float lifeTime = 10.0f;
                      private float timer = 0f;
                      private bool isInitialized = false;
-                     private AudioSource ultimateAttackEndSound;
 
+    // Setting up an external script connection
+    private PlayerGUI playerGUI;
 
     public void Initialize(Transform target, float lifetime, float ultimateAttackSpeed, float StarScale, float scaleRat, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
     {
@@ -35,6 +40,8 @@ public class UltimateAttackSphereController : MonoBehaviour
 
         Collider AttackCollider = GetComponent<Collider>();
         Physics.IgnoreCollision(AttackCollider, planeCollider);
+
+        playerGUI = FindAnyObjectByType<PlayerGUI>();
     }
 
     private void Start()
@@ -61,32 +68,8 @@ public class UltimateAttackSphereController : MonoBehaviour
         if (transform.position.y <= targetTransform.position.y)
         {
             
-            /*
-            GameObject collisionEffect = Instantiate(collisionEffectPrefab, transform.position, Quaternion.identity);
-            collisionEffect.transform.localScale = new Vector3(transform.localScale.x * 3, transform.localScale.y * 3, transform.localScale.z * 3);
-            Destroy(collisionEffect, 1f);
             Destroy(gameObject);
-
-            ultimateAttackEndSound.Play();
-
-            Boss hitBoss = gameObject.GetComponent<Boss>();
-            if (hitBoss)
-            {
-                hitBoss.TakeDamage(attackDamage);
-                Debug.Log($"플레이어가 간접공격으로 보스에게 {attackDamage} 데미지를 입혔습니다!");
-            }
-            else
-            {
-                Hobgoblin hitHobgoblin = gameObject.GetComponent<Hobgoblin>();
-                if (hitHobgoblin)
-                {
-                    hitHobgoblin.TakeDamage(attackDamage);
-                    Debug.Log($"플레이어가 간접공격으로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
-                }
-            }
-            */
-            Destroy(gameObject);
-            Debug.Log("구체가 적의 위치까지 도달하였지만 적을 타격하지 못하고 삭제되었습니다.");
+            if (playerGUI.isDebug) Debug.Log("The sphere reached the enemy position but was deleted without colliding with the enemy.");
             return;
             
         }
@@ -96,7 +79,7 @@ public class UltimateAttackSphereController : MonoBehaviour
         if (timer >= lifeTime)
         {
             Destroy(gameObject);
-            Debug.Log("구체지속시간이 초과하여 삭제되었습니다.");
+            if (playerGUI.isDebug) Debug.Log("Deleted sphere because the Maintenance duration exceeded.");
             return;
         }
     }
@@ -117,7 +100,7 @@ public class UltimateAttackSphereController : MonoBehaviour
             if (hitBoss)
             {
                 hitBoss.TakeDamage(attackDamage);
-                Debug.Log($"플레이어가 궁극기의 직접 데미지로 보스에게 {attackDamage} 데미지를 입혔습니다!");
+                if (playerGUI.isDebug) Debug.Log($"Player has done {attackDamage} damage to boss with Ultimate Attack!");
             }
             else
             {
@@ -125,7 +108,7 @@ public class UltimateAttackSphereController : MonoBehaviour
                 if (hitHobgoblin)
                 {
                     hitHobgoblin.TakeDamage(attackDamage);
-                    Debug.Log($"플레이어가 궁극기의 직접 데미지로 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+                    if (playerGUI.isDebug) Debug.Log($"Player has done {attackDamage} damage to minion with Ultimate Attack!");
                 }
             }
         }

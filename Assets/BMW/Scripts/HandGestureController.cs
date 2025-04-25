@@ -6,21 +6,21 @@ using UnityEngine;
 public class HandGestureController : MonoBehaviour
 {
 
-    [Header("핸드제스쳐 상태 체커")]
+    [Header("Hand gesture status checker")]
     public bool isBasicAttackGesture = false;
     public bool isUltimateAttackGesture = false;
     public bool isDefenseGesture = false;
     public bool isHealingGesture = false;
 
-    [Header("궁극기 스킬 - 핸드제스쳐 상태 유지 체거")]
+    [Header("Ultimate Attack Skill - Hand Gesture Status checker")]
     [SerializeField] private bool isGrabbing = false;
     [SerializeField] private float grabTime = 0;
 
-    [Header("힐 스킬 - 핸드제스쳐 상태 유지 체거")]
+    [Header("Heal Skill - Hand Gesture Status checker")]
     [SerializeField] private bool isPinching = false;
     [SerializeField] private float pinchTime = 0;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

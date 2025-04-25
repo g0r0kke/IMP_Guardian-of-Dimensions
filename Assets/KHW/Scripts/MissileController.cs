@@ -1,19 +1,18 @@
 using UnityEngine;
 
-
+// Controls the behavior of a homing missile targeting the player
 public class MissileController : MonoBehaviour
 {
-    private Transform target;
-    public float moveSpeed = 5f; 
-    public float rotationSpeed = 5f;
-    [SerializeField] private float damage = 15f;
-    [SerializeField] private float lifetime = 5f;
-    [SerializeField] private GameObject impactEffectPrefab;
-    [SerializeField] private AudioClip explosionSound;
+    private Transform target;   // Target to follow
+    public float moveSpeed = 5f;    // Movement speed
+    public float rotationSpeed = 5f;   // Rotation smoothing speed
+    [SerializeField] private float damage = 15f;  // Damage dealt to player
+    [SerializeField] private float lifetime = 5f;  // Missile lifetime before self-destruct
+    [SerializeField] private GameObject impactEffectPrefab;  // Visual effect on impact
+    [SerializeField] private AudioClip explosionSound;  // Sound to play on explosion
     private AudioSource audioSource;
 
-
-    //플레이어 타겟 지정 메서드
+    // Assign the target player for the missile to follow
     public void SetTarget(Transform targetTransform)
     {
         target = targetTransform;
@@ -25,7 +24,7 @@ public class MissileController : MonoBehaviour
         if (audioSource == null)
         audioSource = gameObject.AddComponent<AudioSource>();
 
-        // 일정 시간 후 미사일 자동 제거
+        // Automatically destroy missile after a set lifetime
         Destroy(gameObject, lifetime);
     }
 
@@ -33,13 +32,14 @@ public class MissileController : MonoBehaviour
     {
         if (target != null)
         {
+            // Calculate the direction to the target
             Vector3 direction = (target.position - transform.position).normalized;
 
-            // 현재 방향과 타겟 방향 사이를 부드럽게 보간
+            // Smoothly rotate the missile toward the target
             Quaternion toRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 
-            // 전방으로 이동
+            // Move forward
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
     }
@@ -47,30 +47,28 @@ public class MissileController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (audioSource != null)
-        audioSource.Stop(); // 날아가는 소리 멈추기
+        audioSource.Stop(); // Stop missile sound
 
         if (explosionSound != null)
-        AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position);  // Play explosion sound
 
-        // 충돌한 대상이 플레이어인지 확인
+        // If the missile hits the player, apply damage
         if (collision.gameObject.CompareTag("Player"))
         {
-            // 플레이어에게 데미지 적용
             SamplePlayer player = collision.gameObject.GetComponent<SamplePlayer>();
             if (player != null)
             {
                 player.TakeDamage((int)damage);
-                Debug.Log($"어둠유도탄이 플레이어에게 {damage} 데미지를 입혔습니다!");
             }
         }
         
-        // 충돌 이펙트 생성
+        // Spawn impact effect if assigned
         if (impactEffectPrefab != null)
         {
             Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
         }
         
-        // 투사체 제거
+        // Destroy the missile on impact
         Destroy(gameObject);
     }
 }

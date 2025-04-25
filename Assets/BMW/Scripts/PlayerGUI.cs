@@ -6,47 +6,47 @@ using UnityEngine.UI;
 public class PlayerGUI : MonoBehaviour
 {
     
-    [Header("Player 체력 세팅")]
+    [Header("Player Health Settings")]
                      public int playerHealthLimit = 1;
                      public int playerHealth = 1;
                      private int previousHealth;
                      public Slider PlayerHpBar;
                      public TextMeshProUGUI PlayerHpText;
 
-    [Header("Player 궁극기 게이지 세팅")]
+    [Header("Player Ultimate Attack Gauge Settings")]
                      public int ultimateAttackGaugeLimit = 1;
                      public int ultimateAttackGauge = 0;
                      private int previousGauge;
                      public Slider PlayerGaugeBar;
                      public TextMeshProUGUI PlayerGaugeText;
 
-    [Header("Player 기본 공격 세팅")]
+    [Header("Player Basic Attack Settings")]
                      public float basicAttackDelay = 0.6f;
     [SerializeField] private Slider PlayerBasicAttackGlobe;
     [SerializeField] private TextMeshProUGUI PlayerBasicAttackText;
 
-    [Header("Player 궁극기 스킬 세팅")]
+    [Header("Player Ultimate Attack Skill Settings")]
                      public float ultimateAttackDelay = 6.0f;
     [SerializeField] private Slider PlayerUltimateAttackGlobe;
     [SerializeField] private TextMeshProUGUI PlayerUltimateAttackText;
 
-    [Header("Player 방어 스킬 세팅")]
+    [Header("Player Defense skill Settings")]
                     public float defenseSkillDelay = 4.0f;
     [SerializeField] private Slider PlayerShildGlobe;
     [SerializeField] private TextMeshProUGUI PlayerShildText;
 
-    [Header("Player 힐 스킬 세팅")]
+    [Header("Player Healing Skill Settings")]
                      public float healingSkillDelay = 10.0f;
     [SerializeField] private Slider PlayerHealingGlobe;
     [SerializeField] private TextMeshProUGUI PlayerHealingText;
 
-    [Header("Player 회피 무빙 세팅")]
+    [Header("Player Avoidance Settings")]
                     public float avoidanceSkillDelay = 10.0f;
 
-    [Header("Player 디버그 출력 세팅")]
-    [SerializeField] private bool debug = true;
+    [Header("Player Debug Output Settings")]
+                    public bool isDebug = false;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private BasicAttackController basicAttackController;
     private UltimateAttackController ultimateAttackController;
@@ -55,15 +55,15 @@ public class PlayerGUI : MonoBehaviour
     private AvoidanceController avoidanceController;
     private DamageController damageController;
     private AnimationController animationController;
-    
-    // 스킬 딜레이 세팅
+
+    // Skill delay settings
     private float basicAttackDelayTime;
     private float ultimateAttackDelayTime;
     private float avoidanceSkillDelayTime;
     private float defenseSkillDelayTime;
     private float healingSkillDelayTime;
 
-    // 보스 타겟
+    // Boss target settings
     private Boss bossTarget;
     private List<Hobgoblin> summonTargets = new List<Hobgoblin>();
 
@@ -81,23 +81,23 @@ public class PlayerGUI : MonoBehaviour
 
         if (playerDataManager == null)
         {
-            Debug.LogError("PlayerDataManager 인스턴스를 찾을 수 없습니다!");
+            Debug.LogError("PlayerDataManager instance not found!");
             return;
         }
         playerHealth = playerDataManager.playerLinkHealth;
         ultimateAttackGauge = playerDataManager.playerLinkGauge;
 
-        // 모든 Enemy 태그 오브젝트 찾기
+        // Find all Enemy tag objects
         GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemyObject in allEnemies)
         {
-            // Boss 컴포넌트 가진 적 찾기
+            // Find the enemy with Boss component
             Boss boss = enemyObject.GetComponent<Boss>();
             if (boss)
             {
                 bossTarget = boss;
-                break; // 보스 찾으면 중단
+                break; // Stop if you find the boss
             }
         }
     }
@@ -111,13 +111,8 @@ public class PlayerGUI : MonoBehaviour
             animationController.DieAnimation();
             GameOver();
         }
-        /*if ()
-        {
-            animationController.VictoryAnimation();
-            Victory();
-        }*/
 
-        if (debug)
+        if (isDebug)
         {
             DEBUG();
         }
@@ -133,7 +128,7 @@ public class PlayerGUI : MonoBehaviour
             PlayerHpText.text = "0/" + playerHealthLimit;
         }
 
-            PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
+        PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
         PlayerGaugeText.text = ultimateAttackGauge + "/" + ultimateAttackGaugeLimit;
 
         basicAttackDelayTime = basicAttackController.delayTime;
@@ -190,7 +185,7 @@ public class PlayerGUI : MonoBehaviour
     {
         
       playerDataManager.isControlPlayer = false;
-        Debug.Log("Game Over");
+        if (isDebug) Debug.Log("Game Over");
 
         if (GameManager.Instance != null)
         {
@@ -198,21 +193,9 @@ public class PlayerGUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+            Debug.LogWarning("GameManager not found.");
         }
 
-        /*
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
-                Application.Quit();
-        #endif
-        */
-    }
-
-    void Victory()
-    {
-        Debug.Log("Victory");
     }
 
     public void DEBUG()
@@ -228,30 +211,32 @@ public class PlayerGUI : MonoBehaviour
             if (ultimateAttackGauge >= ultimateAttackGaugeLimit) Debug.Log("Ultimate skill available");
             previousGauge = ultimateAttackGauge;
         }
+        /*
         Debug.Log("basicAttackDelay:" + basicAttackDelayTime + "\n" +
                   "ultimateAttackDelay:" + ultimateAttackDelayTime + "\n" +
                   "avoidanceSkillDelay:" + avoidanceSkillDelayTime + "\n" +
                   "defenseSkillDelay:" + defenseSkillDelayTime + "\n" +
                   "healingSkillDelay:" + healingSkillDelayTime);
+        */
     }
 
-    // 홉고블린을 리스트에서 제거하는 메서드
+    // public method to remove a Hobgoblin from the list
     public void RemoveHobgoblinTarget(Hobgoblin hobgoblin)
     {
         if (hobgoblin && summonTargets.Contains(hobgoblin))
         {
             summonTargets.Remove(hobgoblin);
-            Debug.Log($"홉고블린 '{hobgoblin.gameObject.name}'이(가) 타겟 리스트에서 제거되었습니다. 남은 수: {summonTargets.Count}개");
+            if (isDebug) Debug.Log($"Hobgoblin '{hobgoblin.gameObject.name}' has been removed from the target list. Remaining: {summonTargets.Count}");
         }
     }
 
-    // 홉고블린을 플레이어의 타겟 리스트에 추가하는 public 메서드
+    // public method to add Hobgoblin to the player's target list
     public void AddHobgoblinTarget(Hobgoblin hobgoblin)
     {
         if (hobgoblin && !summonTargets.Contains(hobgoblin))
         {
             summonTargets.Add(hobgoblin);
-            Debug.Log($"홉고블린 '{hobgoblin.gameObject.name}'이(가) 타겟 리스트에 추가되었습니다. 현재 총 {summonTargets.Count}개");
+            if (isDebug) Debug.Log($"Hobgoblin '{hobgoblin.gameObject.name}' has been added to the target list; total {summonTargets.Count}");
         }
     }
 }

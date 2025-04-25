@@ -4,21 +4,24 @@ using UnityEngine;
 public class BasicAttackSphereController : MonoBehaviour
 {
 
-                     private Transform player;
+    [Header("Basic Attack sphere Initial Element Connection Settings")]
     [SerializeField] private GameObject collisionEffectPrefab;
+                     private Transform player;
+                     private LayerMask targetLayer;
+                     private AudioSource basicAttackEndSound;
+
+    [Header("Basic Attack sphere Initial Settings")]
+                     public int attackDamage;
                      private float maxDistance = 10.0f;
                      private float lifeTime = 10.0f;
                      private float timer = 0f;
-
-                     private AudioSource basicAttackEndSound;
-                     public int attackDamage;
-                     private LayerMask targetLayer;
                      private bool isInitialized = false;
 
-                        private PlayerGUI playerGUI;
-                     private BasicAttackController basicAttackController;
+    // Setting up an external script connection
+    private PlayerGUI playerGUI;
+    private BasicAttackController basicAttackController;
 
-    public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, PlayerGUI GUI, BasicAttackController controller, Collider planeCollider, AudioSource audioSource)
+    public void Initialize(Transform playerTransform, float maxDist, float lifetime, int attDamage, LayerMask tarLayer, Collider planeCollider, AudioSource audioSource)
     {
         player = playerTransform;
         maxDistance = maxDist;
@@ -26,12 +29,13 @@ public class BasicAttackSphereController : MonoBehaviour
         attackDamage = attDamage;
         targetLayer = tarLayer;
         isInitialized = true;
-        playerGUI = GUI;
-        basicAttackController = controller;
         basicAttackEndSound = audioSource;
 
         Collider AttackCollider = GetComponent<Collider>();
         Physics.IgnoreCollision(AttackCollider, planeCollider);
+
+        playerGUI = FindAnyObjectByType<PlayerGUI>();
+        basicAttackController = FindAnyObjectByType<BasicAttackController>();
     }
     private void Start()
     {
@@ -46,7 +50,7 @@ public class BasicAttackSphereController : MonoBehaviour
         if (timer >= lifeTime)
         {
             Destroy(gameObject);
-            Debug.Log("구체지속시간이 초과하여 삭제되었습니다.");
+            if (playerGUI.isDebug) Debug.Log("Deleted sphere because the Maintenance duration exceeded.");
             return;
         }
 
@@ -56,7 +60,7 @@ public class BasicAttackSphereController : MonoBehaviour
             if (distance > maxDistance)
             {
                 Destroy(gameObject);
-                Debug.Log("구체최대거리보다 초과하여 삭제되었습니다.");
+                if (playerGUI.isDebug) Debug.Log("Deleted sphere above the maximum distance.");
             }
         }
     }
@@ -68,7 +72,7 @@ public class BasicAttackSphereController : MonoBehaviour
         {
 
             GameObject collisionEffect = Instantiate(collisionEffectPrefab, collision.contacts[0].point, Quaternion.identity);
-            // 적의 크기에 따라 조정
+            // Adjusting to the size of the enemy
             Vector3 effectCircleScale = collisionEffect.transform.Find("Circle").localScale;
             effectCircleScale = new Vector3(effectCircleScale.x * 10, effectCircleScale.y * 10, effectCircleScale.z * 10);
             Vector3 effectFireScale = collisionEffect.transform.Find("Fire").localScale;
@@ -83,7 +87,7 @@ public class BasicAttackSphereController : MonoBehaviour
             if (hitBoss)
             {
                 hitBoss.TakeDamage(attackDamage);
-                Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+                if (playerGUI.isDebug) Debug.Log($"Player has done {attackDamage} damage to boss with Basic Attack!");
             }
             else
             {
@@ -91,7 +95,7 @@ public class BasicAttackSphereController : MonoBehaviour
                 if (hitHobgoblin)
                 {
                     hitHobgoblin.TakeDamage(attackDamage);
-                    Debug.Log($"플레이어가 소환수에게 {attackDamage} 데미지를 입혔습니다!");
+                    if (playerGUI.isDebug) Debug.Log($"Player has done {attackDamage} damage to minion with Basic Attack!");
                 }
             }
 

@@ -5,22 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    public static PlayerDataManager Instance;
-
-    [Header("�÷��̾� ü�� ���")]
+    [Header("Player Health Settings")]
     public int playerHealthLimit = 100;
-    public int originPlayerHealth = 100;
+    private int originPlayerHealth = 100;
     public int playerLinkHealth;
 
-    [Header("�÷��̾� �ñر� ������ ���")]
+    [Header("Player Ultimate Attack Gauge Settings")]
     public int playerGaugeLimit = 3;
-    public int originPlayerGauge = 0;
+    private int originPlayerGauge = 0;
     public int playerLinkGauge;
 
-    [Header("�÷��̾� ���� ���� ���� üĿ")]
+    [Header("Setting Player Manipulation Status")]
     public bool isControlPlayer;
 
-    // �ܺ� ��ũ��Ʈ ���� ����
+    // Setting up an external script connection
+    public static PlayerDataManager Instance;
     private PlayerGUI playerGUI;
     private GameManager gameManager;
 
@@ -39,10 +38,10 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         // Find the GameManager reference
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
         if (gameManager == null)
         {
-            Debug.LogWarning("GameManager�� ã�� �� �����ϴ�. PlayerDataManager�� ����� �۵����� ���� �� �ֽ��ϴ�.");
+            Debug.LogWarning("GameManager not found.");
         }
 
         // Only try to find PlayerGUI if we're in a valid game state
@@ -81,7 +80,7 @@ public class PlayerDataManager : MonoBehaviour
         // Make sure we have a reference to GameManager
         if (gameManager == null)
         {
-            gameManager = FindObjectOfType<GameManager>();
+            gameManager = FindAnyObjectByType<GameManager>();
             
         }
 
@@ -107,7 +106,7 @@ public class PlayerDataManager : MonoBehaviour
     // Find PlayerGUI and load player data if it exists
     private void FindAndLoadPlayerGUI()
     {
-        playerGUI = FindObjectOfType<PlayerGUI>();
+        playerGUI = FindAnyObjectByType<PlayerGUI>();
         if (playerGUI != null)
         {
             LoadPlayerData();
@@ -122,7 +121,7 @@ public class PlayerDataManager : MonoBehaviour
             // Only log a warning if we're in a state where PlayerGUI should exist
             if (ShouldLoadPlayerGUI())
             {
-                Debug.LogWarning("PlayerGUI�� �������� �ʾ� �����͸� �ε��� �� �����ϴ�.");
+                Debug.LogWarning("PlayerGUI not found.");
             }
             return;
         }

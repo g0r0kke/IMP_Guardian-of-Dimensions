@@ -1,22 +1,23 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
 public class HealingController : MonoBehaviour
 {
 
-    [Header("힐스킬 초기 요소 연결")]
+    [Header("Healing Skill Initial Element Connection Settings")]
     [SerializeField] private GameObject heallingEffectPrefab;
     [SerializeField] private AudioSource heallingSound;
                      private GameObject heallingEffectCircle;
 
-    [Header("힐스킬 초기 세팅")]
-    [SerializeField] private int HealingAmount = 5;
+    [Header("Healing Skill Initial Settings")]
+    [SerializeField] private int HealingAmount = 30;
     [SerializeField] private Vector3 heallingEffectScale = new Vector3( 0.7f, 0.7f, 0.7f);
     [SerializeField] private float heallingEffectDuration = 4.0f;
                      public float delayTime = 0f;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
@@ -36,7 +37,7 @@ public class HealingController : MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
 
-        bool isPressedHealing = Input.GetKeyDown(KeyCode.V);
+        bool isPressedHealing = Keyboard.current.vKey.wasPressedThisFrame;
 
         if ((isPressedHealing || handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)
         {

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class UltimateAttackController : MonoBehaviour
 {
     
-    [Header("궁극기 초기 요소 연결")]
+    [Header("Ultimate Attack Initial Element Connection Settings")]
     [SerializeField] private GameObject ultimateAttackPrefab;
     [SerializeField] private GameObject ultimateAttackBeforeEffectPrefab;
     [SerializeField] private Collider planeCollider;
@@ -13,7 +14,7 @@ public class UltimateAttackController : MonoBehaviour
     [SerializeField] private AudioSource ultimateAttackStartSound;
     [SerializeField] private AudioSource ultimateAttackEndSound;
 
-    [Header("궁극기 초기 세팅")]
+    [Header("Ultimate Attack Initial Settings")]
     [SerializeField] private float ultimateAttackStartScale = 0.03f;
     [SerializeField] private float ultimateAttackRange = 10.0f;
     [SerializeField] private float ultimateAttackStartHeight = 10.0f;
@@ -23,8 +24,9 @@ public class UltimateAttackController : MonoBehaviour
     [SerializeField] private float ultimateAttackDelTime = 10.0f;
     [SerializeField] private int attackDamage = 30;
                      public float delayTime = 0f;
+                     private bool isEnemyCheck = false;
 
-    // 외부 스크립트 연결 세팅
+    // Setting up an external script connection
     private PlayerDataManager playerDataManager;
     private PlayerGUI playerGUI;
     private HandGestureController handGestureController;
@@ -43,15 +45,23 @@ public class UltimateAttackController : MonoBehaviour
     {
         if (!playerDataManager.isControlPlayer) return;
 
-        bool isPressedUltimateAttack = Input.GetKeyDown(KeyCode.X);
+        bool isPressedUltimateAttack = Keyboard.current.xKey.wasPressedThisFrame;
 
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)
         {
-            animationController.UltimateAttackAnimation();
-            Invoke("UltimateAttack", 0.7f);
+            handGestureController.isUltimateAttackGesture = false;
+            isPressedUltimateAttack = false;
+
+            if (!isEnemyCheck)
+            {
+                isEnemyCheck = true;
+                animationController.UltimateAttackAnimation();
+                Invoke("UltimateAttack", 0.7f);
+            }
         }
-        
-        handGestureController.isUltimateAttackGesture = false;
+        else {
+            handGestureController.isUltimateAttackGesture = false;
+        }
 
         if (delayTime > 0)
         {
@@ -69,7 +79,7 @@ public class UltimateAttackController : MonoBehaviour
 
         if (hits == null || hits.Length == 0)
         {
-            Debug.Log("공격 범위에 적이 존재하지 않습니다");
+            if(playerGUI.isDebug) Debug.Log("There is no enemy in the range of the attack");
             return;
 
         }
@@ -78,6 +88,7 @@ public class UltimateAttackController : MonoBehaviour
 
         playerGUI.ultimateAttackGauge = 0;
         delayTime = playerGUI.ultimateAttackDelay;
+        isEnemyCheck = false;
 
         List<Transform> enemyTransforms = new List<Transform>();
         List<Vector3> spawnPositions = new List<Vector3>();
