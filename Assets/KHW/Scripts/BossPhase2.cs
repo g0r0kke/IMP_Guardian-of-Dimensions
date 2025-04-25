@@ -2,43 +2,48 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+// BossPhase2.cs
+
 namespace Azmodan.Phase2
 {
     public class BossPhase2 : Boss
     {
         [Header("Phase 2 Settings")]
-        [SerializeField] private float phase2DamageMultiplier = 0.8f; // 2페이즈 데미지 배율
-        [SerializeField] private bool playSpawnEffect = true;        // 스폰 이펙트 재생 여부
-        [SerializeField] private GameObject spawnEffectPrefab;       // 스폰 이펙트 프리팹
-        [SerializeField] private LayerMask minionLayerMask;          // 미니언 레이어 설정
+        [SerializeField] private float phase2DamageMultiplier = 0.8f; // Incoming damage is scaled by0 %
+        [SerializeField] private bool playSpawnEffect = true;     // Play a VFX when the boss appears
+        [SerializeField] private GameObject spawnEffectPrefab;     // Prefab for the spawn VFX
+        [SerializeField] private LayerMask minionLayerMask;     // Layer assigned to spawned minions
 
         [Header("Attack Common Settings")]
-        [SerializeField] private float preAttackDelay = 1.0f;   // 공격 전 대기 (선딜)
-        [SerializeField] private float postAttackDelay = 2.0f;  // 공격 후 대기 (후딜)
+        [SerializeField] private float preAttackDelay = 1.0f;  // Delay BEFORE the attack actually fires
+        [SerializeField] private float postAttackDelay = 2.0f;  // Delay AFTER the attack (cool‑down animation)
 
         [Header("Attack Cooldowns")]
-        [SerializeField] private float minionSummonCooldown = 15f; // 미니언 소환 쿨타임
-        [SerializeField] private float missileCooldown = 5f;       // 미사일 공격 쿨타임
-        [SerializeField] private float closeCombatCooldown = 5f;   // 근접 공격 쿨타임
+        [SerializeField] private float minionSummonCooldown = 15f;  // Time between minion waves
+        [SerializeField] private float missileCooldown = 5f;      // Time between missile shots
+        [SerializeField] private float closeCombatCooldown = 5f;  // Time between melee swings
 
-        // 각각 언제 마지막으로 공격했는지 기록
+        // Stores the last time each attack type was executed
         private float lastMinionSummonTime = -9999f;
         private float lastMissileTime = -9999f;
         private float lastCloseCombatTime = -9999f;
 
         [Header("Attack Distances")]
-        [SerializeField] private float minionAttackDistance = 15f;  
-        [SerializeField] private float missileAttackDistance = 18f; 
-        [SerializeField] private float closeCombatDistance = 5f;    
+        [SerializeField] private float minionAttackDistance = 15f;  // Max distance for summoning
+        [SerializeField] private float missileAttackDistance = 18f;   // Max distance for missile
+        [SerializeField] private float closeCombatDistance = 5f;    // Max distance for melee hit
 
+        //  Prefab references
         [Header("Prefabs")]
         [SerializeField] private GameObject missilePrefab;
         [SerializeField] private GameObject minionPrefab;
 
+        //  UI references
         [Header("UI")]
         [SerializeField] private Slider healthBarUI;
         [SerializeField] private int maxHealth = 100; 
 
+        //  Audio references
         [Header("Audio")]
         [SerializeField] public AudioClip minionSummonSound; // Attack1
         [SerializeField] public AudioClip missileSound;      // Attack2
@@ -49,17 +54,17 @@ namespace Azmodan.Phase2
         [SerializeField] public AudioClip teleportInSound;
         [SerializeField] public AudioClip teleportOutSound;
 
-        // 내부 상태 관리
+        //  Internal state control flags
         private BossStateType selectedAttackType;
-        private bool attackSelected = false;
-        private bool attackInitiated = false;
+        private bool attackSelected = false;     // Has an attack been chosen?
+        private bool attackInitiated = false;     // Has the chosen attack begun?
 
         public bool isAttacking = false;
         public bool isTakingDamage = false;
-         private float damageCooldown = 0.4f; // 연속 피격 방지 시간
+         private float damageCooldown = 0.4f; // Continuous Hit Prevention Time
         private float lastDamageTime = -999f;
 
-        private float teleportInterval = 15f;
+        private float teleportInterval = 15f;    // How often the boss CONSIDERS teleporting
         private float lastTeleportCheckTime = -999f;
 
         protected override void Start()
@@ -73,17 +78,17 @@ namespace Azmodan.Phase2
 
             audioSource = GetComponent<AudioSource>();
 
-            // Y 위치 고정
+             // Lock the Y position so the boss appears to hover at eye level.
             Vector3 fixedPos = transform.position;
             fixedPos.y = 1.5f;
             transform.position = fixedPos;
 
-            // 최대체력 / 현재체력 설정
+            // Maximum Physical Fitness / Current Physical Fitness Settings
             health = maxHealth;
 
-            base.Start(); // Boss.cs Start() 호출
+            base.Start(); // Boss.cs Start() call
 
-            // targetPlayer 자동 할당
+            // targetPlayer Auto‑assign
             if (targetPlayer == null)
             {
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -98,10 +103,10 @@ namespace Azmodan.Phase2
                 }
             }
 
-            // 스폰 이펙트
+            // Spawn VFX
             if (playSpawnEffect) PlaySpawnEffect();
 
-            // 체력바 세팅
+            // HP bar UI initialise
             if (healthBarUI != null)
             {
                 healthBarUI.maxValue = maxHealth;
@@ -113,11 +118,10 @@ namespace Azmodan.Phase2
 
         private void PlaySpawnEffect()
         {
-            // 분노(Enraged) 애니메이션
             if (animator != null) animator.SetTrigger("Enraged");
             Debug.Log("보스 2페이즈: 스폰 이펙트 재생 중...");
 
-            // 파티클 Instantiate
+            // Instantiates the spawn VFX prefab
             if (spawnEffectPrefab != null)
             {
                 Instantiate(spawnEffectPrefab, transform.position, Quaternion.identity);
@@ -126,13 +130,14 @@ namespace Azmodan.Phase2
 
         protected override void Update()
         {
-            base.Update(); // 상태머신 Update
+            base.Update(); // State Update
 
-            // 계속해서 Y 고정 (떨어지지 않도록)
+            // Continue to secure Y (to avoid falling off)
             Vector3 pos = transform.position;
-            pos.y = 1.5f;
+            pos.y = 0.5f;
             transform.position = pos;
 
+            // Check if a teleport attempt should be made
             if (Time.time - lastTeleportCheckTime >= teleportInterval && TeleportState.CanTeleport())
             {
                 lastTeleportCheckTime = Time.time;
@@ -141,20 +146,20 @@ namespace Azmodan.Phase2
             }
         }
 
+        //  Finite‑State‑Machine (FSM) state registration
         protected override void InitializeStates()
         {
-            // 2페이즈 전용 상태들 등록
             states[typeof(IdleState)]      = new Phase2IdleState(this);
             states[typeof(WalkState)]      = new Phase2WalkState(this);
-            states[typeof(Attack1State)]   = new Attack1State(this); // 미니언 소환
-            states[typeof(Attack2State)]   = new Attack2State(this); // 미사일
-            states[typeof(Attack3State)]   = new Attack3State(this); // 근접 공격
+            states[typeof(Attack1State)]   = new Attack1State(this); // Summon minions
+            states[typeof(Attack2State)]   = new Attack2State(this); // Launch missile
+            states[typeof(Attack3State)]   = new Attack3State(this); // Melee swipe
             states[typeof(StunState)]      = new StunState(this);
             states[typeof(DeathState)]     = new DeathState(this);
             states[typeof(TeleportState)]  = new TeleportState(this);
         }
 
-        #region Attack Selection Logic
+        #region Attack Selection
         public void SelectAttackType()
         {
             if (attackSelected)
@@ -163,33 +168,28 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 플레이어 거리 계산
+            // Compute player distanc
             float distanceToPlayer = 9999f;
             if (targetPlayer != null)
             {
                 distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
             }
 
-            // 쿨타임 체크 (사용 가능한 공격만 후보에 넣기)
+            // each attack off cooldown
             bool canSummonMinion = (Time.time - lastMinionSummonTime >= minionSummonCooldown);
             bool canMissile      = (Time.time - lastMissileTime      >= missileCooldown);
             bool canCloseCombat  = (Time.time - lastCloseCombatTime  >= closeCombatCooldown);
 
-            // 공격 후보 리스트
+            // Build list of valid attack
             var possibleAttacks = new System.Collections.Generic.List<BossStateType>();
-
-            // 거리 & 쿨타임을 만족하면 후보 등록
             if (canSummonMinion && distanceToPlayer <= minionAttackDistance)
                 possibleAttacks.Add(BossStateType.Attack1);
-
             if (canMissile && distanceToPlayer <= missileAttackDistance)
                 possibleAttacks.Add(BossStateType.Attack2);
-
-            // 근접은 더 짧은 거리 필요
             if (canCloseCombat && distanceToPlayer <= closeCombatDistance)
                 possibleAttacks.Add(BossStateType.Attack3);
 
-            // 아무것도 후보가 없으면 -> Walk
+            // If none are possible we return to Walk
             if (possibleAttacks.Count == 0)
             {
                 Debug.Log("보스: 사용 가능한 공격 없음(쿨타임 or 거리 문제) → Walk 복귀");
@@ -197,64 +197,54 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 후보 중 랜덤 선택
+            // Randomly choose one of the valid attacks
             selectedAttackType = possibleAttacks[Random.Range(0, possibleAttacks.Count)];
             Debug.Log($"보스: {selectedAttackType} 공격 선택!");
 
             attackSelected = true;
-            SetWaitingForAttack(true);
-
-            // Idle로 전환 (IdleState에서 선딜 카운트)
-            TransitionToIdle();
+            SetWaitingForAttack(true);  // Begin pre‑attack wind‑up 
+            TransitionToIdle();   // IdleState counts down the wind‑up
         }
         #endregion
 
-        #region Attack Delay Handling
+        //  Wind‑up (pre‑attack) & cool‑down (post‑attack) helpers
+        #region Attack Delay
         public void SetWaitingForAttack(bool isWaiting)
         {
             if (isWaiting)
             {
-                // 선딜(PreAttackDelay) 서브 스테이트
-                SetSubState(BossSubState.PreAttackDelay, preAttackDelay);
+                SetSubState(BossSubState.PreAttackDelay, preAttackDelay);  // PreAttackDelay substate
             }
             else
             {
-                if (IsInSubState(BossSubState.PreAttackDelay))
-                {
-                    // 선딜 해제
-                }
+                if (IsInSubState(BossSubState.PreAttackDelay)) {}  // PreAttackDelay free
             }
         }
         public bool IsWaitingForAttack() => IsInSubState(BossSubState.PreAttackDelay);
-
         public void SetPostAttackDelay(bool isDelaying)
         {
             if (isDelaying)
             {
-                // 후딜(PostAttackDelay)
+                // PostAttackDelay
                 SetSubState(BossSubState.PostAttackDelay, postAttackDelay);
-                // 공격 플래그들 리셋
+                // attack flags reset
                 attackSelected = false;
                 attackInitiated = false;
             }
             else
             {
-                if (IsInSubState(BossSubState.PostAttackDelay))
-                {
-                    // 후딜 해제
-                }
+                if (IsInSubState(BossSubState.PostAttackDelay)) {}   // PostAttackDelay free
             }
         }
         public bool IsInPostAttackDelay() => IsInSubState(BossSubState.PostAttackDelay);
-
         public float GetPreAttackDelay() => preAttackDelay;
         public float GetPostAttackDelay() => postAttackDelay;
         #endregion
 
-        #region Attack State Transition
+        //  FSM transition helpers
+        #region Attack Transition
         public bool IsAttackSelected() => attackSelected;
         public bool IsAttackInitiated() => attackInitiated;
-
         public void ResetAttackFlags()
         {
             attackInitiated = false;
@@ -272,7 +262,7 @@ namespace Azmodan.Phase2
 
             Debug.Log($"보스: (Phase2) TransitionToAttack - {selectedAttackType}");
 
-            // 거리 체크
+            // distance check
             float distanceToPlayer = 0f;
             if (targetPlayer != null)
             {
@@ -281,7 +271,7 @@ namespace Azmodan.Phase2
                 distanceToPlayer = dir.magnitude;
             }
 
-            // 선택된 공격 범위를 넘어서면 → Teleport 시도
+            // Attempt to Teleport if it exceeds the selected attack range
             float selectedAttackDistance = 0f;
             switch (selectedAttackType)
             {
@@ -297,7 +287,7 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 각도 벗어나면 Walk
+            // If out of angle -> Walk
             if (!IsPlayerInAttackAngle())
             {
                 Debug.Log("보스: (Phase2) 공격 각도 벗어남 → Walk 복귀");
@@ -306,7 +296,7 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 최종 공격 실행
+            // Final Attack Run
             switch (selectedAttackType)
             {
                 case BossStateType.Attack1: ChangeState<Attack1State>(); break; // 미니언
@@ -330,7 +320,7 @@ namespace Azmodan.Phase2
             float dot = Vector3.Dot(bossFwd, dir);
             float angleToPlayer = Mathf.Acos(Mathf.Clamp(dot, -1f, 1f)) * Mathf.Rad2Deg;
 
-            // 정면 기준 45도 이내일 때만 공격 가능
+            // Attack only when it is within 45 degrees from the front
             bool isInAngle = angleToPlayer <= 45f;
             if (!isInAngle)
             {
@@ -340,7 +330,7 @@ namespace Azmodan.Phase2
         }
         #endregion
 
-        #region Attack Behaviors (Minion, Missile, CloseCombat)
+        #region Attack Behaviors
         public void FireMissile()
         {
             if (missilePrefab == null)
@@ -354,10 +344,10 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 마지막 미사일 공격 시점 기록
+            // Record the time of the last missile strike
             lastMissileTime = Time.time;
 
-            // 미사일 생성
+            // missile production
             GameObject missile = Instantiate(missilePrefab, transform.position + Vector3.up, Quaternion.identity);
             MissileController missileCtrl = missile.GetComponent<MissileController>();
             if (missileCtrl != null)
@@ -402,10 +392,9 @@ namespace Azmodan.Phase2
             foreach (Vector3 offset in offsets)
             {
                 Vector3 spawnPos = bossPos + offset;
-                spawnPos.y = GetGroundY(spawnPos); // 바닥 고정
-                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform, minionLayer);
+                spawnPos.y = GetGroundY(spawnPos); // Fixing the floor
+                Hobgoblin.Spawner(minionPrefab, spawnPos, targetPlayer.transform);
             }
-
         }
 
         int GetLayerFromMask(LayerMask mask)
@@ -429,16 +418,12 @@ namespace Azmodan.Phase2
             return position.y;
         }
 
-
-            
-
-
         public void CloseCombatAttack()
         {
-            // 마지막 근접 공격 시점 기록
+            // Record the point of the last close attack
             lastCloseCombatTime = Time.time;
 
-            // 보스 주변 일정 범위 내 플레이어에게 데미지
+            // Damage to players within a range around the boss
             float attackRadius = 2.5f;
             Collider[] hits = Physics.OverlapSphere(transform.position, attackRadius);
             foreach (Collider hit in hits)
@@ -488,8 +473,6 @@ namespace Azmodan.Phase2
             }
         }
 
-
-
         protected override void Die()
         {
             Debug.Log("보스 2페이즈 사망 처리");
@@ -505,7 +488,6 @@ namespace Azmodan.Phase2
     }
 
     #region State Classes
-    // --------------------------------------------------
     public class Phase2IdleState : IdleState
     {
         private BossPhase2 phase2Boss;
@@ -521,14 +503,14 @@ namespace Azmodan.Phase2
         {
             idleTimer += Time.deltaTime;
 
-            // 공격 선딜(PreAttackDelay) 중이면
+            // If in the PreAttackDelay
             if (phase2Boss.IsWaitingForAttack())
             {
                 lastCheckTime += Time.deltaTime;
                 if (lastCheckTime >= checkInterval)
                 {
                     lastCheckTime = 0f;
-                    // 거리/각도 다시 확인
+                    // Check the distance/angle
                     if (boss.targetPlayer != null)
                     {
                         Vector3 dir = boss.targetPlayer.transform.position - boss.transform.position;
@@ -549,7 +531,7 @@ namespace Azmodan.Phase2
                             return;
                         }
 
-                        // Idle 상태에서 플레이어 방향으로 서서히 회전
+                        // Gradually rotate in the player direction from the Idle 
                         dir.y = 0;
                         Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
                         boss.transform.rotation = Quaternion.Slerp(
@@ -560,7 +542,7 @@ namespace Azmodan.Phase2
                     }
                 }
 
-                // 선딜 시간 완료 → Attack 진입
+                // PreAttackDelay Time's up → Attack entry
                 if (idleTimer >= phase2Boss.GetPreAttackDelay())
                 {
                     phase2Boss.SetWaitingForAttack(false);
@@ -569,7 +551,7 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 공격 후딜(PostAttackDelay) 중이면
+            // If in the PostAttackDelay
             if (phase2Boss.IsInPostAttackDelay())
             {
                 if (idleTimer >= phase2Boss.GetPostAttackDelay())
@@ -581,10 +563,10 @@ namespace Azmodan.Phase2
                 return;
             }
 
-            // 일반 Idle
+            // Idle
             if (idleTimer >= boss.idleDuration)
             {
-                // Walk로 전환
+                // Walk
                 boss.TransitionToWalk();
             }
         }
@@ -593,7 +575,6 @@ namespace Azmodan.Phase2
     public class Phase2WalkState : WalkState
     {
         private BossPhase2 phase2Boss;
-
         public Phase2WalkState(BossPhase2 boss) : base(boss)
         {
             phase2Boss = boss;
@@ -614,11 +595,11 @@ namespace Azmodan.Phase2
 
             if (distanceToPlayer > boss.attackDistance)
             {
-                // 계속 이동
+                // keep move
                 direction.Normalize();
                 boss.transform.position += direction * boss.moveSpeed * Time.deltaTime;
 
-                // 방향 회전
+                // rotate angle
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 boss.transform.rotation = Quaternion.Slerp(
                     boss.transform.rotation,
@@ -643,21 +624,21 @@ namespace Azmodan.Phase2
                     return;
                 }
 
-                // 공격이 이미 선택된 상태가 아니면 공격 선택
+                // Select an Attack if the attack is not already selected
                 if (!phase2Boss.IsAttackSelected())
                 {
                     phase2Boss.SelectAttackType();
                 }
                 else if (!phase2Boss.IsWaitingForAttack() && !phase2Boss.IsAttackInitiated())
                 {
-                    // 선딜도 없고 아직 공격 개시 전이라면
+                    // If there's no PreAttackDelay and the Attack hasn't started yet
                     boss.TransitionToAttack();
                 }
             }
         }
     }
 
-    // Attack1State: 미니언 소환
+    // Attack1State : Minions
     public class Attack1State : BossState
     {
         private float attackTimer = 0f;
@@ -697,7 +678,7 @@ namespace Azmodan.Phase2
 
             if (attackTimer >= attackDuration)
             {
-                // 후딜로 전환
+                // PostAttackDelay
                 phase2Boss.SetPostAttackDelay(true);
                 boss.TransitionToIdle();
             }
@@ -710,7 +691,7 @@ namespace Azmodan.Phase2
         }
     }
 
-    // Attack2State: 미사일 발사
+    // Attack2State : Missile
     public class Attack2State : BossState
     {
         private float attackTimer = 0f;
@@ -742,7 +723,7 @@ namespace Azmodan.Phase2
         {
             attackTimer += Time.deltaTime;
 
-            // 중간 타이밍에 미사일 발사
+            // Missile launch in the middle of the line
             if (!hasFiredMissile && attackTimer >= 1.5f)
             {
                 phase2Boss.FireMissile();
@@ -764,7 +745,7 @@ namespace Azmodan.Phase2
         }
     }
 
-    // Attack3State: 근접 공격
+    // Attack3State: Combat
     public class Attack3State : BossState
     {
         private float attackTimer = 0f;
@@ -795,14 +776,14 @@ namespace Azmodan.Phase2
         {
             attackTimer += Time.deltaTime;
 
-            // 공격 모션 중간 타이밍에 실제 타격 판정
+            // Determination of actual strike in the middle of Attack motion
             if (!hasAttacked && attackTimer >= 0.7f)
             {
                 phase2Boss.CloseCombatAttack();
                 hasAttacked = true;
             }
 
-            // 공격 종료 후 Idle
+            // Idle after the end of the Attack
             if (attackTimer >= attackDuration)
             {
                 phase2Boss.SetPostAttackDelay(true);
@@ -818,7 +799,7 @@ namespace Azmodan.Phase2
         }
     }
 
-        // TeleportState: 순간이동 (투명도 점진적 변화 예시)
+    // TeleportState
     public class TeleportState : BossState
     {
         private BossPhase2 phase2Boss;
@@ -941,13 +922,9 @@ namespace Azmodan.Phase2
             }
         }
     }
-    // DeathState: 사망 처리
+    // DeathState
     public class DeathState : BossState
     {
-        private float deathTimer = 0f;
-        // 필요하다면 애니메이션 시간 정도
-        private float deathDuration = 2f;
-
         public DeathState(Boss boss) : base(boss) { }
 
         public override void Enter()
