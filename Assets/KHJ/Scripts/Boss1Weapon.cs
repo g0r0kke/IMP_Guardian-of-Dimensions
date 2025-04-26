@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WeaponCollision : MonoBehaviour
+public class Boss1Weapon : MonoBehaviour
 {
     private Azmodan.Phase1.BossPhase1 bossPhase1;
     private BoxCollider weaponCollider;

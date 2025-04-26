@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossProjectile : MonoBehaviour
+public class Boss1Projectile : MonoBehaviour
 {
     [SerializeField] private int attack2Damage = 10;
     [SerializeField] private float lifetime = 5f;
