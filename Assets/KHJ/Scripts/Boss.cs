@@ -47,7 +47,7 @@ public abstract class Boss : MonoBehaviour
     protected Dictionary<BossSubState, float> subStateTimers = new Dictionary<BossSubState, float>();
     protected Dictionary<BossSubState, float> subStateDurations = new Dictionary<BossSubState, float>();
     protected bool isDead = false;
-    protected bool deathAnimationTriggered = false;
+    protected bool isDeathAnimTriggered = false;
     
     // 디버그 표시 설정
     [Header("Debug Settings")]
@@ -77,7 +77,7 @@ public abstract class Boss : MonoBehaviour
     
         // 시작할 때 죽음 관련 트리거와 플래그 초기화
         isDead = false;
-        deathAnimationTriggered = false;
+        isDeathAnimTriggered = false;
         animator.ResetTrigger("Death");
     
         // 상태 초기화
@@ -220,7 +220,7 @@ public abstract class Boss : MonoBehaviour
     public virtual void TransitionToDeath()
     {
         // 이미 Death 애니메이션이 트리거 되었으면 중복 호출 방지
-        if (deathAnimationTriggered)
+        if (isDeathAnimTriggered)
         {
             // Debug.Log("보스: 이미 사망 처리 중입니다. 중복 호출 무시.");
             return;
@@ -229,7 +229,7 @@ public abstract class Boss : MonoBehaviour
         // Debug.Log("보스: Death 상태로 전환 시작");
 
         // Death 애니메이션 트리거 플래그 설정
-        deathAnimationTriggered = true;
+        isDeathAnimTriggered = true;
         isDead = true;
 
         // 현재 상태 타입 설정
@@ -264,7 +264,7 @@ public abstract class Boss : MonoBehaviour
         health -= damage;
 
         // 사망 처리
-        if (health <= 0 && !deathAnimationTriggered)
+        if (health <= 0 && !isDeathAnimTriggered)
         {
             // 사망 플래그 설정
             isDead = true;

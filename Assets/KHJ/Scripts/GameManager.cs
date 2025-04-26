@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public enum GameState
 {
@@ -27,13 +28,12 @@ public class GameManager : MonoBehaviour
     // [SerializeField] private string phase1SceneName = "BossPhase1Scene";
     [SerializeField] private string phase2SceneName = "BossPhase2Scene";
     [SerializeField] private Vector3 bossPosition = new Vector3(-1.8f, -1f, -11.4f);
-    private Boss currentBoss;
     
     [Header("UI References")]
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject defeatUI;
     [SerializeField] private GameObject uiBackground;
-    [SerializeField] private GameObject BossIndicatorUI;
+    [SerializeField] private GameObject bossIndicatorUI;
 
     [Header("References")]
     [SerializeField] private GameObject bossPrefab;
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
                 
                 if (bossPrefab) bossPrefab.SetActive(true);
                 if (virtualJoystick) virtualJoystick.SetActive(true);
-                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
+                if (bossIndicatorUI) bossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.BossPhase2:
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (hobgoblin) hobgoblin.SetActive(true);
                 }
-                if (BossIndicatorUI) BossIndicatorUI.SetActive(true);
+                if (bossIndicatorUI) bossIndicatorUI.SetActive(true);
                 HideAllUI();
                 break;
             case GameState.Victory:
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (hobgoblin) hobgoblin.SetActive(false);
                 }
-                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
+                if (bossIndicatorUI) bossIndicatorUI.SetActive(false);
                 ShowVictoryUI();
                 break;
             case GameState.Defeat:
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (hobgoblin) hobgoblin.SetActive(false);
                 }
-                if (BossIndicatorUI) BossIndicatorUI.SetActive(false);
+                if (bossIndicatorUI) bossIndicatorUI.SetActive(false);
                 ShowDefeatUI();
                 break;
         }
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
         bossPrefab = GameObject.Find("BossPhase1");
         if (!bossPrefab) bossPrefab = GameObject.Find("BossPhase2");
         if (!virtualJoystick) virtualJoystick = GameObject.Find("UI_JoyStick");
-        if (!BossIndicatorUI) BossIndicatorUI = GameObject.Find("BossIndicatorUI");
+        if (!bossIndicatorUI) bossIndicatorUI = GameObject.Find("bossIndicatorUI");
         
         hobgoblins.Clear(); // 기존 목록 초기화
     

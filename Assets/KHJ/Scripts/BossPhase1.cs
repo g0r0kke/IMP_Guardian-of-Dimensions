@@ -401,7 +401,7 @@ namespace Azmodan.Phase1
         protected override void Die()
         {
             // 이미 죽음 처리 중이거나 사망 상태면 중복 실행 방지
-            if (isDead && deathAnimationTriggered)
+            if (isDead && isDeathAnimTriggered)
             {
                 // Debug.Log("보스: 이미 사망 상태입니다. 중복 사망 처리 무시.");
                 return;
@@ -409,7 +409,7 @@ namespace Azmodan.Phase1
 
             PlayAttackSound(4);
 
-            // isDead 플래그만 설정하고 (deathAnimationTriggered는 TransitionToDeath에서 설정)
+            // isDead 플래그만 설정하고 (isDeathAnimTriggered는 TransitionToDeath에서 설정)
             isDead = true;
             
 
@@ -423,7 +423,7 @@ namespace Azmodan.Phase1
             // 죽음 애니메이션 재생 후 Phase2로 전환을 위해 딜레이 설정
             Invoke("NotifyBossManager", 2.0f);
 
-            // 사망 상태로 전환 (여기서 deathAnimationTriggered 설정됨)
+            // 사망 상태로 전환 (여기서 isDeathAnimTriggered 설정됨)
             TransitionToDeath();
         }
 
