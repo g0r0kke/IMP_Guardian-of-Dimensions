@@ -161,16 +161,23 @@ public abstract class Boss : MonoBehaviour
     // 하위 상태 타이머 업데이트 메서드
     protected virtual void UpdateSubStates()
     {
+        // subStateTimers는 Dictionary
+        // 키 = BossSubState 열거형, 값 = 각 상태의 현재 타이머 시간
+        // .Keys = Dictionary의 모든 키를 가져오기
+        // .ToList() = 키 컬렉션의 복사본 만들기. 반복 중에 컬렉션을 수정하려고 할 때 발생할 수 있는 오류 방지
         foreach (var state in subStateTimers.Keys.ToList())
         {
+            // 현재 상태의 타이머가 지정된 지속 시간보다 작은지 확인
             if (subStateTimers[state] < subStateDurations[state])
             {
-                subStateTimers[state] += Time.deltaTime;
+                subStateTimers[state] += Time.deltaTime; // 타이머 증가
             }
         }
     }
 
     // 상태 변경 메소드 (제네릭 사용)
+    // <T> = 타입 매개변수. 메서드 호출 시 특정 타입 지정
+    // T는 반드시 IState 인터페이스를 구현한 타입이어야 한다.
     protected void ChangeState<T>() where T : IState
     {
         if (currentState != null)
@@ -178,17 +185,23 @@ public abstract class Boss : MonoBehaviour
             currentState.Exit();
         }
 
-        // DeathState로 전환할 때는 애니메이터 파라미터를 초기화하지 않음
+        // DeathState가 아니면
         if (typeof(T) != typeof(DeathState))
         {
             // 모든 애니메이터 파라미터 초기화
             ResetAllAnimatorParameters();
         }
 
+        // typeof(T) = T의 실제 타입 정보를 가져옴
         System.Type type = typeof(T);
+        // Dictionary에서 키(type)에 해당하는 값 찾음
+        // states Dictionary는 키: 상태 타입, 값: 상태 객체
+        // 찾은 상태 객체를 newState 변수에 저장
         if (states.TryGetValue(type, out IState newState))
         {
+            // 찾은 상태 객체를 현재 상태로 설정
             currentState = newState;
+            // 해당 상태의 Enter() 메서드 호출
             currentState.Enter();
         }
     }
