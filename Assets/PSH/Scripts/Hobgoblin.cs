@@ -7,26 +7,24 @@ public class Hobgoblin : MonoBehaviour
     public Transform player;
 
     public IState currentState;
-    public float rotationSpeed = 5f;
+    public float rotationSpeed = 5f;// Rotation speed
 
-    public float walkSpeed = 2f;
-   // public float walkRange = 3f;  
-    public float detectionRange = 10f;
-    public float attackRange = 2.7f; // 공격 거리
-    //public float runSpeed = 3.5f;
-    public int hp = 1;
+    public float walkSpeed = 2f; // Walking speed
+    public float detectionRange = 10f; // Player detection range
+    public float attackRange = 2.7f; // Attack range
+    public int hp = 1; // Hobgoblin health
 
     public AudioSource audioSource;
 
-    public AudioClip goblinLaugh;   // idle
-    public AudioClip goblinCackle;  // walk
-    public AudioClip goblinPunch;   // attack
-    public AudioClip goblinDeath;   // damage/death
+    public AudioClip goblinLaugh;   // idle sound
+    public AudioClip goblinCackle;  // walk sound
+    public AudioClip goblinPunch;   // attack sound
+    public AudioClip goblinDeath;   // damage/death sound
 
-    public int attackDamage = 5; // 플레이어 데미지 입히기
+    public int attackDamage = 5; // Damage dealt to the player
 
 
-    // 플레이어 관련 변수
+    // Player-related variables
     public DamageController playerDamageController;
     private PlayerGUI playerGUI;
 
@@ -37,16 +35,17 @@ public class Hobgoblin : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
+        // Find player
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        // DamageController 찾기 (민우)
+        // Find DamageController (Minwoo)
         playerDamageController = FindFirstObjectByType<DamageController>();
         if (playerDamageController == null)
         {
-            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
+            Debug.LogError("DamageController not found. Cannot load player data.");
         }
 
-        // 플레이어 타겟 리스트에 자신 추가
+        // Add this Hobgoblin to the player's target list
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject)
         {
@@ -58,18 +57,18 @@ public class Hobgoblin : MonoBehaviour
         }
 
 
-
-        ChangeState(new HobIdleState(this)); // 초기 상태
+        // Set initial state to Idle
+        ChangeState(new HobIdleState(this)); 
     }
 
 
-    // 플레이어에게 데미지 입히는 함수 (민우)
+    // Function to deal damage to the player (Minwoo)
     public void DealDamageToPlayer()
     {
         if (playerDamageController != null)
         {
             playerDamageController.PlayerTakeDamage(attackDamage);
-            Debug.Log($"홉고블린이 플레이어에게 {attackDamage} 데미지를 입혔습니다!");
+            Debug.Log($"Hobgoblin dealt {attackDamage} damage to the player!");
         }
     }
 
@@ -78,11 +77,11 @@ public class Hobgoblin : MonoBehaviour
     {
         if (currentState != null)
         {
-            // 플레이어를 향해 회전
+            // Rotate towards the player
             if (player != null && !(currentState is HobDeadState))
             {
                 Vector3 direction = player.position - transform.position;
-                direction.y = 0; // Y축 회전만 적용
+                direction.y = 0; // Only rotate on the Y-axis
 
                 if (direction != Vector3.zero)
                 {
@@ -91,9 +90,11 @@ public class Hobgoblin : MonoBehaviour
                 }
             }
 
+            // Call Update of the current state
             currentState.Update();
         }
     }
+
 
     public void ChangeState(IState newState)
     {
@@ -103,23 +104,24 @@ public class Hobgoblin : MonoBehaviour
         currentState.Enter();
     }
 
+    // Function for taking damage
     public void TakeDamage(int damage)
     {
        
-        if (hp <= 0) return;
+        if (hp <= 0) return; // Ignore if already dead
 
 
-        hp-= damage;
-        ChangeState(new HobDamageState(this));
+        hp -= damage;
+        ChangeState(new HobDamageState(this)); // Switch to damage state
 
 
         if (hp <= 0)
         {
-            //플레이어 타겟 리스트에서 홉고블린 제거
+            // Remove Hobgoblin from the player's target list
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
             if (playerObject)
             {
-                playerGUI.GetComponent<PlayerGUI>(); 
+               // playerGUI.GetComponent<PlayerGUI>(); 
                 if (playerGUI != null)
                 {
                     playerGUI.RemoveHobgoblinTarget(this);
@@ -131,26 +133,26 @@ public class Hobgoblin : MonoBehaviour
         }
     }
 
-    // 외부에서 Hobgoblin 소환활 수 있도록 Spawn 하는 함수
-        public static Hobgoblin Spawner(GameObject prefab, Vector3 spawnPosition, Transform targetPlayer, int minionLayer)
+     // Function to allow external spawning of Hobgoblins
+    public static Hobgoblin Spawner(GameObject prefab, Vector3 spawnPosition, Transform targetPlayer, int minionLayer)
         {
         
             if (prefab == null)
             {
-                Debug.LogError("Hobgoblin 프리팹 안 넣음");
+                Debug.LogError("Hobgoblin prefab is not assigned.");
                 return null;
             }
 
             GameObject hobgoblinObj = GameObject.Instantiate(prefab, spawnPosition, Quaternion.identity);
             hobgoblinObj.layer = minionLayer;
             Hobgoblin hob = hobgoblinObj.GetComponent<Hobgoblin>();
-            hob.player = targetPlayer;
-            
+            hob.player = targetPlayer;  // Set the target player
+
         return hob;
         }
 
-    
-        public void PlayPunchSound()
+    // Play Hobgoblin punch (attack) sound
+    public void PlayPunchSound()
         {
             if (audioSource != null && goblinPunch != null)
             {

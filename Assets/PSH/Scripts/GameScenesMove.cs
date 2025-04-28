@@ -11,31 +11,34 @@ public class GameScenesMove : MonoBehaviour
 
     private void Start()
     {
+        // Fetch fade object from GameManager
         fadeObject = GameManager.Instance.fadeObject;
+        // Fetch fade controller from GameManager
         fadeController = GameManager.Instance.fadeController;
     }
 
+    // Function to control scene transitions
     public void GameSceneCtrl()
     {
         if (fadeObject && fadeController)
         {
-            // 페이드인 애니메이션 실행
+            // Play fade-in animation
             fadeController.PlayFadeAnimation(true, () =>
             {
-                // 페이드인 완료 후 씬 전환
+                // Transition to the new scene after fade-in is complete
                 SceneManager.LoadScene("ARPlaneScene");
 
-                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                // Play fade-out after the scene is loaded (making the screen brighter)
                 fadeController.PlayFadeAnimation(false);
             });
         }
         else
         {
-            Debug.Log("FadeAnimationController component not found on fadeObject");
+            Debug.Log("Fade animation controller is not found on the fade object");
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
     }
