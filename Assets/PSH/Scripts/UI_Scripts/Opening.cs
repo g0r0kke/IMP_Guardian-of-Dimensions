@@ -13,19 +13,22 @@ public class Opening : MonoBehaviour
 
     }
 
+    // Method called when the Start button is clicked
     public void OnClickStart()
     {
-        Debug.Log("시작하기");
+        Debug.Log("Start");
     }
 
+    // Method called when the Settings button is clicked
     public void OnClickSetting()
     {
-        Debug.Log("설정");
+        Debug.Log("Settings");
     }
 
+    // Method called when the Tutorial button is clicked
     public void OnClickTutorial()
     {
-        Debug.Log("튜토리얼 보기");
+        Debug.Log("Tutorial");
     }
 
 }

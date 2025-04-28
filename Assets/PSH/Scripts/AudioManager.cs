@@ -7,54 +7,53 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-    public AudioMixer audioMixer;
-    public AudioMixerGroup musicGroup;
-    public AudioMixerGroup sfxGroup;
+    public AudioMixer audioMixer;  // Audio mixer
+    public AudioMixerGroup musicGroup; // Music mixer group
+    public AudioMixerGroup sfxGroup; // SFX mixer group
 
-    private AudioSource bgmSource;
-    private AudioSource sfxSource;
-    public AudioClip buttonSFX;
+    private AudioSource bgmSource; // Audio source for background music
+    private AudioSource sfxSource; // Audio source for sound effects
+    public AudioClip buttonSFX; // Button click sound effect
 
-    // 씬별 BGM 매핑
+    // Scene-specific BGM mapping
     [System.Serializable]
     public class SceneBGM
     {
-        public string sceneName;
-        public AudioClip bgmClip;
+        public string sceneName; // Scene name
+        public AudioClip bgmClip; // Background music for the scene
     }
 
-    public List<SceneBGM> sceneBGMs = new List<SceneBGM>();
+    public List<SceneBGM> sceneBGMs = new List<SceneBGM>(); // List of BGM for each scene
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            // 오디오 소스 생성
+            DontDestroyOnLoad(gameObject); // Don't destroy the audio manager on scene transitions
+            // Create audio sources
             bgmSource = gameObject.AddComponent<AudioSource>();
             sfxSource = gameObject.AddComponent<AudioSource>();
-            // 믹서 그룹 연결
+            // Connect to mixer groups
             bgmSource.outputAudioMixerGroup = musicGroup;
             sfxSource.outputAudioMixerGroup = sfxGroup;
 
-            LoadVolume();
+            LoadVolume(); // Load saved volume settings
 
 
-            // 씬 변경 이벤트 리스너 추가
+            // Add scene change event listener
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy if instance already exists
             return;
         }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
-        // 씬 변경 시 해당 씬에 맞는 BGM 재생
+        // Play the corresponding BGM for the scene when it's loaded
         string sceneName = scene.name;
         AudioClip clipToPlay = null;
 
@@ -67,46 +66,44 @@ public class AudioManager : MonoBehaviour
             }
         }
 
+        // Play the BGM with fade effect if available
         if (clipToPlay != null)
         {
             PlayBGMWithFade(clipToPlay, 0.5f);
         }
 
-
-        // 현재 씬의 모든 AudioSource를 찾아서 설정
+        // Find and configure all AudioSources in the current scene
         AudioSource[] allAudioSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
-        //AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
         foreach (AudioSource source in allAudioSources)
         {
-            // AudioManager 자신의 소스는 제외
+            // Exclude the AudioManager itself
             if (source != bgmSource && source != sfxSource)
             {
-            // 루프되지 않는 소스는 SFX로 간주 (효과음)
-            if (!source.loop)
-            {
-                source.outputAudioMixerGroup = sfxGroup;
+                // Consider non-looping sources as SFX (sound effects)
+                if (!source.loop)
+                {
+                    source.outputAudioMixerGroup = sfxGroup;
+                }
             }
         }
     }
-        
-    }
 
- 
-
+    // Set the music volume
     public void SetMusicVolume(float volume)
     {
         Debug.Log("SetMusicVolume: " + volume);
         if (volume <= 0.0001f)
         {
-            audioMixer.SetFloat("Music", -80f); // 음소거처럼 처리
+            audioMixer.SetFloat("Music", -80f);  // Mute the music
         }
         else
         {
             audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
         }
-        PlayerPrefs.SetFloat("musicVolume", volume);
+        PlayerPrefs.SetFloat("musicVolume", volume); // Save volume setting
     }
 
+    // Set the SFX volume
     public void SetSFXVolume(float volume)
     {
         if (volume <= 0.0001f)
@@ -117,9 +114,10 @@ public class AudioManager : MonoBehaviour
         {
             audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
         }
-        PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.SetFloat("SFXVolume", volume); // Save volume setting
     }
 
+    // Load saved volume settings
     public void LoadVolume()
     {
         float music = PlayerPrefs.GetFloat("musicVolume", 0.75f);
@@ -128,17 +126,19 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(sfx);
     }
 
+    // Play background music
     public void PlayBGM(AudioClip clip)
     {
         Debug.Log("PlayBGM called with: " + (clip != null ? clip.name : "NULL"));
         if (bgmSource.clip != clip)
         {
             bgmSource.clip = clip;
-            bgmSource.loop = true;
+            bgmSource.loop = true; // Loop background music
             bgmSource.Play();
         }
     }
 
+    // Stop background music
     public void StopBGM()
     {
         if (bgmSource.isPlaying)
@@ -147,12 +147,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Play sound effect
     public void PlaySFX(AudioClip clip)
     {
         if (clip != null)
         {
             Debug.Log("Playing SFX: " + clip.name);
-            sfxSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip); // Play only once
         }
         else
         {
@@ -160,32 +161,32 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Play button click sound effect
     public void PlayButtonSFX()
     {
         Debug.Log("PlayButtonSFX called");
         PlaySFX(buttonSFX);
     }
 
-   
-
-
+    // Play background music with fade-in effect
     public void PlayBGMWithFade(AudioClip clip, float duration = 0.4f)
     {
         StartCoroutine(FadeInBGM(clip, duration));
     }
 
+    // Coroutine for fade-in effect of background music
     private IEnumerator FadeInBGM(AudioClip clip, float duration)
     {
         Debug.Log("FadeInBGM called with: " + (clip != null ? clip.name : "NULL"));
         if (bgmSource.isPlaying && bgmSource.clip == clip)
             yield break;
 
-        // 원래 볼륨 값을 저장
+        // Save the original volume value
         float musicVolume;
         audioMixer.GetFloat("Music", out musicVolume);
         float targetDBVolume = musicVolume;
 
-        // 현재 음악 페이드아웃
+        // Fade out the current music
         if (bgmSource.isPlaying)
         {
             float startTime = Time.time;
@@ -200,16 +201,16 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        // 기존 음악 정지
+        // Stop the current music
         bgmSource.Stop();
 
-        // 새로운 음악 설정
+        // Set the new music
         bgmSource.clip = clip;
         bgmSource.loop = true;
-        audioMixer.SetFloat("Music", -80f); // 완전 음소거 상태에서 시작
+        audioMixer.SetFloat("Music", -80f); // Start with muted state
         bgmSource.Play();
 
-        // 새로운 음악 페이드인
+        // Fade in the new music
         float fadeInStart = Time.time;
         float fadeInEnd = fadeInStart + duration;
 
@@ -220,16 +221,13 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        // 최종 볼륨 설정
+        // Set final volume
         audioMixer.SetFloat("Music", targetDBVolume);
     }
 
+    // Remove scene loading event listener when object is destroyed
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
-
-
-
 }

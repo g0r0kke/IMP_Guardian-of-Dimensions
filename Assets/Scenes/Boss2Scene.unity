@@ -2694,11 +2694,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 51819555396498436, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4058715000614948366, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2707,16 +2702,6 @@ PrefabInstance:
     - target: {fileID: 4058715000614948366, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4058715000614948366, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4058715000614948366, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5036717697634216192, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
@@ -2819,43 +2804,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5679037908155541120, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003438076129824714, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_text
-      value: The Shadow Sovereign
-      objectReference: {fileID: 0}
-    - target: {fileID: 6039769555367805187, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_text
-      value: 'Lord Azmodan
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8571244811903247317, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8571244811903247317, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9120323810003622182, guid: 3ec1b1a1a58a11f4282d1f8545ee7405,
         type: 3}
       propertyPath: m_Name
       value: BossBattleUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 2029083666196673115, guid: 3ec1b1a1a58a11f4282d1f8545ee7405, type: 3}
-    - {fileID: 3540386786458723426, guid: 3ec1b1a1a58a11f4282d1f8545ee7405, type: 3}
-    - {fileID: 7153825743435344640, guid: 3ec1b1a1a58a11f4282d1f8545ee7405, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec1b1a1a58a11f4282d1f8545ee7405, type: 3}

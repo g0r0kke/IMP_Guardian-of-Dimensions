@@ -4,128 +4,130 @@ using UnityEngine.SceneManagement;
 
 public class EndMenuUI : MonoBehaviour
 {
-    public RectTransform arrowHead; // 화살표 이미지 위치
-    public Button[] Buttons; // 0은 MainMenu, 1은 Replay
+    public RectTransform arrowHead; // Arrow image position
+    public Button[] Buttons; // 0 is MainMenu, 1 is Replay
     public Button okayButton;
 
-    public GameObject victoryUI;
-    public GameObject defeatUI;
-    public GameObject background;
+    public GameObject victoryUI; // Victory UI object
+    public GameObject defeatUI;  // Defeat UI object
+    public GameObject background; // Background object
 
-    private int currentSelection = 0;
+    private int currentSelection = 0; // Current selected button index
 
-    // 이전 씬 저장 변수
+    // Variable to store the previous scene
     private string previousScene;
     private GameObject fadeObject;
     private FadeAnimationController fadeController;
 
     void Start()
     {
-        // 초기화: 화살표를 기본 선택 (Main Menu)으로 설정
+        // Initialization: Set the arrow to the default selection (Main Menu)
         ArrowMoveButton(currentSelection);
-        okayButton.onClick.AddListener(ExecuteCurrentSelection);
+        okayButton.onClick.AddListener(ExecuteCurrentSelection); // Add listener to the OK button click event
 
-        // 버튼 클릭 이벤트 추가
-        Buttons[0].onClick.AddListener(() => SelectMainMenu());
-        Buttons[1].onClick.AddListener(() => SelectReplay());
-        
-        fadeObject = GameManager.Instance.fadeObject;
-        fadeController = GameManager.Instance.fadeController;
+        // Add click events for buttons
+        Buttons[0].onClick.AddListener(() => SelectMainMenu()); // Main Menu button click
+        Buttons[1].onClick.AddListener(() => SelectReplay()); // Replay button click
+
+        fadeObject = GameManager.Instance.fadeObject; // Fade animation object
+        fadeController = GameManager.Instance.fadeController; // Fade animation controller
     }
 
-    // 이겼는지 졌는지 bool
+    // Show UI based on whether the game was won or lost
     public void ShowEndMenu(bool isVictory)
     {
-        // 배경을 항상 활성화
+        // Always enable background
         background.SetActive(true);
 
-        // 승리 UI 또는 패배 UI 활성화
+        // Activate victory UI or defeat UI based on the result
         if (isVictory)
         {
-            victoryUI.SetActive(true); // 승리 UI 활성화
-            defeatUI.SetActive(false); // 패배 UI 비활성화
+            victoryUI.SetActive(true); // Activate victory UI
+            defeatUI.SetActive(false); // Deactivate defeat UI
         }
         else
         {
-            victoryUI.SetActive(false); // 승리 UI 비활성화
-            defeatUI.SetActive(true); // 패배 UI 활성화
+            victoryUI.SetActive(false); // Deactivate victory UI
+            defeatUI.SetActive(true); // Activate defeat UI
         }
     }
 
+    // Select Main Menu option
     public void SelectMainMenu()
     {
-        // 버튼 클릭 시 사운드 재생
+        // Play sound on button click
         AudioManager.Instance.PlayButtonSFX();
-        currentSelection = 0;
-        ArrowMoveButton(currentSelection);
+        currentSelection = 0; // Set current selection to Main Menu
+        ArrowMoveButton(currentSelection); // Move the arrow to the selected button
     }
 
+    // Select Replay option
     public void SelectReplay()
     {
-        // 버튼 클릭 시 사운드 재생
+        // Play sound on button click
         AudioManager.Instance.PlayButtonSFX();
-        currentSelection = 1;
-        ArrowMoveButton(currentSelection);
+        currentSelection = 1; // Set current selection to Replay
+        ArrowMoveButton(currentSelection); // Move the arrow to the selected button
     }
 
+    // Move the arrow to the currently selected button
     void ArrowMoveButton(int index)
     {
         if (arrowHead != null && Buttons != null && index < Buttons.Length && Buttons[index] != null)
         {
-            // 화살표의 위치를 현재 선택된 버튼으로 이동
-            arrowHead.position = Buttons[index].transform.position + new Vector3(-200, -5, 0); // 화살표 위치 조정
+            // Move the arrow to the position of the selected button
+            arrowHead.position = Buttons[index].transform.position + new Vector3(-200, -5, 0); // Adjust arrow position
         }
         else
         {
-            Debug.LogWarning("ArrowMoveButton 누락");
+            Debug.LogWarning("ArrowMoveButton missing"); // Warning if the arrow position change fails
         }
     }
 
+    // Execute the action for the currently selected option when OK button is clicked
     public void ExecuteCurrentSelection()
     {
-        // OK 버튼 클릭 시 사운드 재생
+        // Play sound on OK button click
         AudioManager.Instance.PlayButtonSFX();
 
         if (fadeObject && fadeController)
         {
-            // 페이드인 애니메이션 실행 (화면이 검게)
+            // Play fade-in animation (screen goes black)
             fadeController.PlayFadeAnimation(true, () =>
             {
-                // 페이드인 완료 후 씬 전환
+                // After fade-in, transition to the selected scene
                 switch (currentSelection)
                 {
                     case 0:
-                        // Main Menu 선택 시, MainMenu 씬으로 이동
-                        Debug.Log("Main Menu 선택됨");
+                        // If Main Menu is selected, load the MainMenu scene
+                        Debug.Log("Main Menu selected");
                         if (GameManager.Instance)
                         {
-                            GameManager.Instance.SetState(GameState.Intro);
+                            GameManager.Instance.SetState(GameState.Intro); // Set game state to Intro
                         }
-                        
-                        SceneManager.LoadScene("MainMenuScene");
 
-                        //AudioManager.Instance.InitializeSFX(); // 버튼 사운드 초기화
+                        SceneManager.LoadScene("MainMenuScene"); // Load MainMenu scene
 
                         break;
                     case 1:
                         if (GameManager.Instance)
                         {
-                            GameManager.Instance.SetState(GameState.Intro);
+                            GameManager.Instance.SetState(GameState.Intro); // Set game state to Intro
                         }
 
-                        // Replay 선택 시, 현재 씬을 다시 로드
-                        Debug.Log("Replay 선택됨");
-                        SceneManager.LoadScene("ARPlaneScene");
+                        // If Replay is selected, reload the current scene
+                        Debug.Log("Replay selected");
+                        SceneManager.LoadScene("ARPlaneScene"); // Load ARPlane scene
                         break;
                 }
 
-                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                // After scene load, play fade-out animation (screen goes bright again)
                 fadeController.PlayFadeAnimation(false);
             });
         }
         else
         {
-            Debug.Log("FadeAnimationController component not found on fadeObject");
+            Debug.Log("FadeAnimationController component not found on fadeObject"); // Log if fadeObject doesn't have FadeAnimationController
         }
     }
 }
