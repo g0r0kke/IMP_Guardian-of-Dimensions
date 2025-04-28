@@ -161,16 +161,23 @@ public abstract class Boss : MonoBehaviour
     // 하위 상태 타이머 업데이트 메서드
     protected virtual void UpdateSubStates()
     {
+        // subStateTimers는 Dictionary
+        // 키 = BossSubState 열거형, 값 = 각 상태의 현재 타이머 시간
+        // .Keys = Dictionary의 모든 키를 가져오기
+        // .ToList() = 키 컬렉션의 복사본 만들기. 반복 중에 컬렉션을 수정하려고 할 때 발생할 수 있는 오류 방지
         foreach (var state in subStateTimers.Keys.ToList())
         {
+            // 현재 상태의 타이머가 지정된 지속 시간보다 작은지 확인
             if (subStateTimers[state] < subStateDurations[state])
             {
-                subStateTimers[state] += Time.deltaTime;
+                subStateTimers[state] += Time.deltaTime; // 타이머 증가
             }
         }
     }
 
     // 상태 변경 메소드 (제네릭 사용)
+    // <T> = 타입 매개변수. 메서드 호출 시 특정 타입 지정
+    // T는 반드시 IState 인터페이스를 구현한 타입이어야 한다.
     protected void ChangeState<T>() where T : IState
     {
         if (currentState != null)
@@ -178,17 +185,23 @@ public abstract class Boss : MonoBehaviour
             currentState.Exit();
         }
 
-        // DeathState로 전환할 때는 애니메이터 파라미터를 초기화하지 않음
+        // DeathState가 아니면
         if (typeof(T) != typeof(DeathState))
         {
             // 모든 애니메이터 파라미터 초기화
             ResetAllAnimatorParameters();
         }
 
+        // typeof(T) = T의 실제 타입 정보를 가져옴
         System.Type type = typeof(T);
+        // Dictionary에서 키(type)에 해당하는 값 찾음
+        // states Dictionary는 키: 상태 타입, 값: 상태 객체
+        // 찾은 상태 객체를 newState 변수에 저장
         if (states.TryGetValue(type, out IState newState))
         {
+            // 찾은 상태 객체를 현재 상태로 설정
             currentState = newState;
+            // 해당 상태의 Enter() 메서드 호출
             currentState.Enter();
         }
     }
@@ -318,63 +331,63 @@ public abstract class Boss : MonoBehaviour
     }
     
     // 화면에 디버그 텍스트 표시
-    protected virtual void OnGUI()
-    {
-        if (!enableDebug) return;
-        
-        // 보스 위치를 스크린 좌표로 변환
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + debugOffset);
-        
-        // 화면 밖이면 표시하지 않음
-        if (screenPos.z < 0) return;
-        
-        // 상태 텍스트 위치
-        Rect stateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y, 200, 20);
-        Rect subStateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 20, 200, 20);
-        Rect healthRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 40, 200, 20);
-        
-        // 스타일 설정
-        GUIStyle stateStyle = new GUIStyle();
-        stateStyle.normal.textColor = stateDebugColor;
-        stateStyle.fontSize = 30;
-        stateStyle.fontStyle = FontStyle.Bold;
-        stateStyle.alignment = TextAnchor.UpperCenter;
-        
-        GUIStyle subStateStyle = new GUIStyle(stateStyle);
-        subStateStyle.normal.textColor = subStateDebugColor;
-        subStateStyle.fontSize = 30;
-        
-        GUIStyle healthStyle = new GUIStyle(stateStyle);
-        healthStyle.normal.textColor = healthDebugColor;
-        
-        // 텍스트 그리기 (배경 효과를 위해 약간 오프셋된 검은색 텍스트 먼저 그림)
-        // 상태 표시
-        GUI.Label(new Rect(stateRect.x + 1, stateRect.y + 1, stateRect.width, stateRect.height), 
-            $"State: {GetCurrentStateName()}", new GUIStyle(stateStyle) { normal = { textColor = Color.black } });
-        GUI.Label(stateRect, $"State: {GetCurrentStateName()}", stateStyle);
-        
-        // 하위 상태 표시
-        List<BossSubState> activeSubStates = GetActiveSubStates();
-        if (activeSubStates.Count > 0)
-        {
-            StringBuilder sb = new StringBuilder("SubState: ");
-            for (int i = 0; i < activeSubStates.Count; i++)
-            {
-                sb.Append(activeSubStates[i].ToString());
-                if (i < activeSubStates.Count - 1)
-                {
-                    sb.Append(", ");
-                }
-            }
-            
-            GUI.Label(new Rect(subStateRect.x + 1, subStateRect.y + 1, subStateRect.width, subStateRect.height), 
-                sb.ToString(), new GUIStyle(subStateStyle) { normal = { textColor = Color.black } });
-            GUI.Label(subStateRect, sb.ToString(), subStateStyle);
-        }
-        
-        // 체력 표시
-        GUI.Label(new Rect(healthRect.x + 1, healthRect.y + 1, healthRect.width, healthRect.height), 
-            $"Health: {health}", new GUIStyle(healthStyle) { normal = { textColor = Color.black } });
-        GUI.Label(healthRect, $"Health: {health}", healthStyle);
-    }
+    // protected virtual void OnGUI()
+    // {
+    //     if (!enableDebug) return;
+    //     
+    //     // 보스 위치를 스크린 좌표로 변환
+    //     Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + debugOffset);
+    //     
+    //     // 화면 밖이면 표시하지 않음
+    //     if (screenPos.z < 0) return;
+    //     
+    //     // 상태 텍스트 위치
+    //     Rect stateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y, 200, 20);
+    //     Rect subStateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 20, 200, 20);
+    //     Rect healthRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 40, 200, 20);
+    //     
+    //     // 스타일 설정
+    //     GUIStyle stateStyle = new GUIStyle();
+    //     stateStyle.normal.textColor = stateDebugColor;
+    //     stateStyle.fontSize = 30;
+    //     stateStyle.fontStyle = FontStyle.Bold;
+    //     stateStyle.alignment = TextAnchor.UpperCenter;
+    //     
+    //     GUIStyle subStateStyle = new GUIStyle(stateStyle);
+    //     subStateStyle.normal.textColor = subStateDebugColor;
+    //     subStateStyle.fontSize = 30;
+    //     
+    //     GUIStyle healthStyle = new GUIStyle(stateStyle);
+    //     healthStyle.normal.textColor = healthDebugColor;
+    //     
+    //     // 텍스트 그리기 (배경 효과를 위해 약간 오프셋된 검은색 텍스트 먼저 그림)
+    //     // 상태 표시
+    //     GUI.Label(new Rect(stateRect.x + 1, stateRect.y + 1, stateRect.width, stateRect.height), 
+    //         $"State: {GetCurrentStateName()}", new GUIStyle(stateStyle) { normal = { textColor = Color.black } });
+    //     GUI.Label(stateRect, $"State: {GetCurrentStateName()}", stateStyle);
+    //     
+    //     // 하위 상태 표시
+    //     List<BossSubState> activeSubStates = GetActiveSubStates();
+    //     if (activeSubStates.Count > 0)
+    //     {
+    //         StringBuilder sb = new StringBuilder("SubState: ");
+    //         for (int i = 0; i < activeSubStates.Count; i++)
+    //         {
+    //             sb.Append(activeSubStates[i].ToString());
+    //             if (i < activeSubStates.Count - 1)
+    //             {
+    //                 sb.Append(", ");
+    //             }
+    //         }
+    //         
+    //         GUI.Label(new Rect(subStateRect.x + 1, subStateRect.y + 1, subStateRect.width, subStateRect.height), 
+    //             sb.ToString(), new GUIStyle(subStateStyle) { normal = { textColor = Color.black } });
+    //         GUI.Label(subStateRect, sb.ToString(), subStateStyle);
+    //     }
+    //     
+    //     // 체력 표시
+    //     GUI.Label(new Rect(healthRect.x + 1, healthRect.y + 1, healthRect.width, healthRect.height), 
+    //         $"Health: {health}", new GUIStyle(healthStyle) { normal = { textColor = Color.black } });
+    //     GUI.Label(healthRect, $"Health: {health}", healthStyle);
+    // }
 }
