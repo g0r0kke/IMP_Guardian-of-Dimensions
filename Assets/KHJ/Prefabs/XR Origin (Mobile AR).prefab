@@ -852,7 +852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3b1bc62621034429022461bad86006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackPos: {fileID: 3468216698250226297}
+  basicAttackPos: {fileID: 0}
   basicAttackPrefab: {fileID: 7657460935615334125, guid: 9ed07964eeedf394f83139c7b9aa2101,
     type: 3}
   planeCollider: {fileID: 0}
@@ -864,7 +864,7 @@ MonoBehaviour:
   basicAttackStartScale: 1
   basicAttackForce: 1000
   basicAttackDelTime: 2
-  basicAttackMaxDist: 25
+  basicAttackMaxDist: 30
   GaugeIncreaseAmount: 1
   attackDamage: 10
   delayTime: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
   ultimateAttackStartSound: {fileID: 5391278278309695180}
   ultimateAttackEndSound: {fileID: 7874702632907435568}
   ultimateAttackStartScale: 0.03
-  ultimateAttackRange: 50
+  ultimateAttackRange: 10
   ultimateAttackStartHeight: 10
   ultimateAttackStartRange: 10
   ultimateAttackScaleRate: 0.5
@@ -932,7 +932,7 @@ MonoBehaviour:
   heallingEffectPrefab: {fileID: 382166692520362038, guid: 625acbd000f40d14393f572ba88c1198,
     type: 3}
   heallingSound: {fileID: 2359002659516276239}
-  HealingAmount: 30
+  HealingAmount: 5
   heallingEffectScale: {x: 0.7, y: 0.7, z: 0.7}
   heallingEffectDuration: 4
   delayTime: 0
