@@ -72,9 +72,10 @@ public class AudioManager : MonoBehaviour
             PlayBGMWithFade(clipToPlay, 0.5f);
         }
 
-        
+
         // 현재 씬의 모든 AudioSource를 찾아서 설정
-        AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+        AudioSource[] allAudioSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+        //AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
         foreach (AudioSource source in allAudioSources)
         {
             // AudioManager 자신의 소스는 제외
