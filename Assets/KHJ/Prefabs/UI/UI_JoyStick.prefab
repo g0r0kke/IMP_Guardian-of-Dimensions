@@ -256,7 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lever: {fileID: 6624757706896432841}
   leverRange: 60
-  distancePerFrame: 2
+  distancePerFrame: 5
   raycastDistance: 0.5
   wallLayer:
     serializedVersion: 2
@@ -323,7 +323,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &7180555928239167898
 MonoBehaviour:

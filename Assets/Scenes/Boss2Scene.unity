@@ -2970,11 +2970,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3526925566218902335, guid: 9d0ea647c7087c7478bdaaf07c5f904e,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7816513058611116404, guid: 9d0ea647c7087c7478bdaaf07c5f904e,
         type: 3}
       propertyPath: m_Name
@@ -3574,26 +3569,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1351268626315867856, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9975641
-      objectReference: {fileID: 0}
-    - target: {fileID: 1351268626315867856, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.06975647
-      objectReference: {fileID: 0}
-    - target: {fileID: 1351268626315867856, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3404926916758755506, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: isDebug
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3404926916758755506, guid: c2f2cfcd0d4261e49807ad510af47e68,
         type: 3}
       propertyPath: PlayerHpBar
@@ -3659,21 +3634,6 @@ PrefabInstance:
       propertyPath: planeCollider
       value: 
       objectReference: {fileID: 1225320183}
-    - target: {fileID: 4512166328425584984, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: ultimateAttackRange
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893891865826327298, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -40.60069
-      objectReference: {fileID: 0}
-    - target: {fileID: 4896912538108200784, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6464974962502408436, guid: c2f2cfcd0d4261e49807ad510af47e68,
         type: 3}
       propertyPath: m_Name
@@ -3684,11 +3644,6 @@ PrefabInstance:
       propertyPath: planeCollider
       value: 
       objectReference: {fileID: 1225320183}
-    - target: {fileID: 6501373693730726129, guid: c2f2cfcd0d4261e49807ad510af47e68,
-        type: 3}
-      propertyPath: basicAttackMaxDist
-      value: 25
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3707,16 +3662,6 @@ PrefabInstance:
       propertyPath: xrOrigin
       value: 
       objectReference: {fileID: 1821105414700980288}
-    - target: {fileID: 773720234124573430, guid: 924b099aef1d9df4c8f1e558c81f8347,
-        type: 3}
-      propertyPath: distancePerFrame
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 773720234124573430, guid: 924b099aef1d9df4c8f1e558c81f8347,
-        type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 7902363178793143801, guid: 924b099aef1d9df4c8f1e558c81f8347,
         type: 3}
       propertyPath: m_Name
