@@ -866,7 +866,7 @@ MonoBehaviour:
   basicAttackDelTime: 2
   basicAttackMaxDist: 25
   GaugeIncreaseAmount: 1
-  attackDamage: 10
+  attackDamage: 20
   delayTime: 0
 --- !u!114 &4906869048668116429
 MonoBehaviour:
