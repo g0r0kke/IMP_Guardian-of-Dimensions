@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
         bossPrefab = GameObject.Find("BossPhase1");
         if (!bossPrefab) bossPrefab = GameObject.Find("BossPhase2");
         if (!virtualJoystick) virtualJoystick = GameObject.Find("UI_JoyStick");
-        if (!bossIndicatorUI) bossIndicatorUI = GameObject.Find("bossIndicatorUI");
+        if (!bossIndicatorUI) bossIndicatorUI = GameObject.Find("BossIndicatorUI");
         
         hobgoblins.Clear(); // 기존 목록 초기화
     
