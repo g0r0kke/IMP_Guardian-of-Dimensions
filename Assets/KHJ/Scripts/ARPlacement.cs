@@ -5,121 +5,131 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
+/// <summary>
+/// Handles AR object placement on detected planes
+/// </summary>
 public class ARPlacement : MonoBehaviour
 {
-    [SerializeField] private GameObject markerPrefab;
-    [SerializeField] private ARRaycastManager raycastManager;
-    [SerializeField] private ARPlaneManager planeManager;
-    [SerializeField] private AudioSource placementAudioSource;
+    [SerializeField] private GameObject markerPrefab; // Object to place in AR
+    [SerializeField] private ARRaycastManager raycastManager; // AR raycast manager reference
+    [SerializeField] private ARPlaneManager planeManager; // AR plane manager reference
+    [SerializeField] private AudioSource placementAudioSource; // Audio source for placement sound
     
-    private GameObject spawnedObject;
-    private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    private GameObject spawnedObject; // Reference to the currently placed object
+    private List<ARRaycastHit> hits = new List<ARRaycastHit>(); // List to store raycast hits
 
     private void Awake()
     {
-        // New Input System의 Enhanced Touch Support 활성화
+        // Enable Enhanced Touch Support for New Input System
         EnhancedTouchSupport.Enable();
     }
 
     private void OnEnable()
     {
-        // Touch 이벤트 등록
+        // Register touch events
         TouchSimulation.Enable();
         Touch.onFingerDown += OnFingerDown;
     }
 
     private void OnDisable()
     {
-        // Touch 이벤트 해제
+        // Unregister touch events
         TouchSimulation.Disable();
         Touch.onFingerDown -= OnFingerDown;
     }
 
     void Start()
     {
-        // 컴포넌트 참조 확인
-        if (raycastManager == null)
+        // Check raycast manager reference
+        if (!raycastManager)
         {
             raycastManager = FindFirstObjectByType<ARRaycastManager>();
-            if (raycastManager == null)
+            if (!raycastManager)
             {
-                Debug.LogError("AR Raycast Manager를 찾을 수 없습니다!");
+                Debug.LogError("Cannot find AR Raycast Manager!");
                 enabled = false;
                 return;
             }
         }
 
-        if (planeManager == null)
+        // Check plane manager reference
+        if (!planeManager)
         {
             planeManager = FindFirstObjectByType<ARPlaneManager>();
-            if (planeManager == null)
+            if (!planeManager)
             {
-                Debug.LogError("AR Plane Manager를 찾을 수 없습니다!");
+                Debug.LogError("Cannot find AR Plane Manager!");
                 enabled = false;
                 return; 
             }
         }
 
-        if (markerPrefab == null)
+        // Check marker prefab
+        if (!markerPrefab)
         {
-            Debug.LogError("마커 프리팹이 할당되지 않았습니다!");
+            Debug.LogError("Marker prefab is not assigned!");
             enabled = false;
             return;
         }
         
-        if (placementAudioSource == null)
+        // Check audio source
+        if (!placementAudioSource)
         {
             placementAudioSource = GetComponent<AudioSource>();
-            if (placementAudioSource == null)
+            if (!placementAudioSource)
             {
-                Debug.LogWarning("오디오 소스가 할당되지 않았습니다. 소리가 재생되지 않을 수 있습니다.");
+                Debug.LogWarning("Audio source is not assigned. Sound may not play.");
             }
         }
         
-        if (GameManager.Instance != null)
+        // Set initial game state
+        if (GameManager.Instance)
         {
             GameManager.Instance.SetState(GameState.Intro);
         }
         else
         {
-            Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+            Debug.LogWarning("GameManager not found.");
         }
     }
     
+    /// <summary>
+    /// Handles finger touch input for AR placement
+    /// </summary>
     private void OnFingerDown(Finger finger)
     {
-        // AR 플레인이 하나 이상 감지되었는지 확인
+        // Check if at least one AR plane has been detected
         if (planeManager.trackables.count == 0)
         {
-            // 아직 플레인이 감지되지 않음
+            // No planes detected yet
             return;
         }
         
-        // UI 요소 터치 확인 - UI 요소를 터치한 경우 처리하지 않음
+        // Check if touch is over UI elements - ignore if so
         if (IsPointerOverUI(finger.currentTouch.screenPosition))
         {
-            return;  // UI 요소를 터치했으면 레이캐스트 처리하지 않음
+            return; // Ignore touches on UI elements
         }
         
-        // 터치한 화면 위치로부터 Ray 생성
+        // Create ray from touch position
         Ray ray = Camera.main.ScreenPointToRay(finger.currentTouch.screenPosition);
         
-        // AR 플레인과의 충돌 확인
-        if (raycastManager != null && raycastManager.Raycast(finger.currentTouch.screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+        // Check for collision with AR planes
+        if (raycastManager && raycastManager.Raycast(finger.currentTouch.screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
         {
             if (hits.Count > 0)
             {
-                // Ray가 AR 플레인과 충돌한 위치
+                // Get hit position and pose
                 Pose hitPose = hits[0].pose;
                 
-                // 카메라를 향하도록 회전 계산
+                // Calculate rotation to face camera
                 Vector3 directionToCamera = Camera.main.transform.position - hitPose.position;
-                directionToCamera.y = 0; // y축 회전만 적용하기 위해 y값은 0으로 설정
+                directionToCamera.y = 0; // Only apply y-axis rotation
                 
                 Quaternion lookAtCamera = Quaternion.LookRotation(directionToCamera);
                 
-                // 큐브가 아직 없으면 생성, 있으면 위치 업데이트
-                if (spawnedObject == null)
+                // Create or update object position
+                if (!spawnedObject)
                 {
                     spawnedObject = Instantiate(markerPrefab, hitPose.position, lookAtCamera);
                     PlayPlacementAudio();
@@ -134,33 +144,41 @@ public class ARPlacement : MonoBehaviour
         }
     }
     
-    // UI 요소 위에 터치했는지 확인하는 함수
+    /// <summary>
+    /// Checks if pointer is over a UI element
+    /// </summary>
     private bool IsPointerOverUI(Vector2 position)
     {
-        // 이벤트 시스템을 통해 해당 위치에 UI 요소가 있는지 확인
+        // Check if the position is over any UI elements using the event system
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = position;
         
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
         
-        return results.Count > 0;  // 결과가 있으면 UI 요소 위에 있는 것
+        return results.Count > 0; // Return true if results exist (UI element was hit)
     }
     
+    /// <summary>
+    /// Returns the position of the placed object
+    /// </summary>
     public Vector3 GetSpawnedObjectPosition()
     {
-        if (spawnedObject != null)
+        if (spawnedObject)
         {
             return spawnedObject.transform.position;
         }
         return Vector3.zero;
     }
     
+    /// <summary>
+    /// Plays sound effect when object is placed
+    /// </summary>
     private void PlayPlacementAudio()
     {
-        if (placementAudioSource != null && placementAudioSource.clip != null)
+        if (placementAudioSource && placementAudioSource.clip)
         {
-            // 이미 재생 중이면 재시작
+            // Restart if already playing
             if (placementAudioSource.isPlaying)
             {
                 placementAudioSource.Stop();
