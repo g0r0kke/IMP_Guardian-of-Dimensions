@@ -8,95 +8,92 @@ public class Boss1Weapon : MonoBehaviour
     private DamageController playerDamageController;
     [SerializeField] private int attack1Damage = 20;
 
-    [Header("애니메이션 프레임 설정")]
-    [SerializeField] private int attackStartFrame = 17; // 콜라이더 활성화 시작 프레임
-    [SerializeField] private int attackEndFrame = 30;   // 콜라이더 비활성화 프레임
-    [SerializeField] private int totalAnimationFrames = 60; // 전체 애니메이션 프레임 수
+    [Header("Animation Frame Settings")]
+    [SerializeField] private int attackStartFrame = 17; // Frame to activate collider
+    [SerializeField] private int attackEndFrame = 30;   // Frame to deactivate collider
+    [SerializeField] private int totalAnimationFrames = 60; // Total animation frame count
 
     void Start()
     {
-        // 부모 오브젝트에서 BossPhase1 컴포넌트 찾기
+        // Find BossPhase1 component in parent object
         bossPhase1 = GetComponentInParent<Azmodan.Phase1.BossPhase1>();
         
-        // 무기에 콜라이더 추가 또는 가져오기
+        // Get or add weapon collider
         weaponCollider = GetComponent<BoxCollider>();
-        if (weaponCollider == null)
+        if (!weaponCollider)
         {
-            Debug.LogWarning("콜라이더가 없습니다!");
+            Debug.LogWarning("No collider found!");
             return;
         }
         
-        // 트리거로 설정 (물리적 충돌 없이 충돌 감지만)
+        // Set as trigger (detect collisions without physical interaction)
         weaponCollider.isTrigger = true;
         
-        // 초기에는 콜라이더 비활성화
+        // Initially disable collider
         weaponCollider.enabled = false;
         
         playerDamageController = FindFirstObjectByType<DamageController>();
-        if (playerDamageController == null)
+        if (!playerDamageController)
         {
-
-            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
-            return;
-
+            Debug.LogError("Cannot load data because DamageController does not exist.");
         }
     }
 
     void Update()
     {
-        
+        // Draw debug line when collider is enabled
         if (weaponCollider.enabled)
         {
             Debug.DrawLine(transform.position, transform.position + Vector3.up * 2, Color.red);
         }
         
-        // 보스가 Attack1 상태인지 확인 (네임스페이스 없이 BossStateType 사용)
-        if (bossPhase1 != null && bossPhase1.GetSelectedAttackType() == BossStateType.Attack1)
+        // Check if boss is in Attack1 state
+        if (bossPhase1 && bossPhase1.GetSelectedAttackType() == BossStateType.Attack1)
         {
             Animator animator = bossPhase1.GetComponent<Animator>();
-            if (animator != null)
+            if (animator)
             {
-                // 공격 애니메이션의 현재 상태 정보 가져오기
+                // Get current animation state info
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
                 
-                // 공격 애니메이션인지 확인
+                // Check if in attack animation
                 if (stateInfo.IsName("Attack"))
                 {
-                    // 현재 애니메이션 진행률 (0.0 ~ 1.0)
-                    float normalizedTime = stateInfo.normalizedTime % 1.0f; // 반복 애니메이션 고려
+                    // Current animation progress (0.0 - 1.0)
+                    float normalizedTime = stateInfo.normalizedTime % 1.0f; // Account for looping animations
                     
-                    // 진행률을 프레임으로 변환
+                    // Convert progress to frame number
                     int currentFrame = Mathf.FloorToInt(normalizedTime * totalAnimationFrames);
                     
-                    // 지정된 프레임 범위(17~30) 내에 있는지 확인
+                    // Check if within specified frame range (17-30)
                     if (currentFrame >= attackStartFrame && currentFrame <= attackEndFrame)
                     {
-                        // 디버그 로그
+                        // Debug log
                         // if (!weaponCollider.enabled)
                         // {
-                        //     Debug.Log($"무기 콜라이더 활성화 (프레임: {currentFrame})");
+                        //     Debug.Log($"Weapon collider activated (frame: {currentFrame})");
                         // }
                         
-                        // 콜라이더 활성화
+                        // Enable collider
                         weaponCollider.enabled = true;
                         isAttacking = true;
                     }
                     else
                     {
-                        // 디버그 로그
+                        // Debug log
                         // if (weaponCollider.enabled)
                         // {
-                        //     Debug.Log($"무기 콜라이더 비활성화 (프레임: {currentFrame})");
+                        //     Debug.Log($"Weapon collider deactivated (frame: {currentFrame})");
                         // }
                         
-                        // 콜라이더 비활성화
+                        // Disable collider
                         weaponCollider.enabled = false;
                         isAttacking = false;
                     }
                 }
                 else
                 {
-                    // 공격 애니메이션이 아니면 비활성화
+                    // Not in attack animation, disable collider
                     weaponCollider.enabled = false;
                     isAttacking = false;
                 }
@@ -104,7 +101,7 @@ public class Boss1Weapon : MonoBehaviour
         }
         else
         {
-            // 공격 상태가 아니면 콜라이더 비활성화
+            // Not in attack state, disable collider
             weaponCollider.enabled = false;
             isAttacking = false;
         }
@@ -112,23 +109,23 @@ public class Boss1Weapon : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // 모든 충돌 로깅
-        // Debug.Log($"무기가 {other.gameObject.name} 태그:{other.tag}와 충돌");
-        //
+        // Log all collisions
+        // Debug.Log($"Weapon collided with {other.gameObject.name} tag:{other.tag}");
+        
         if (isAttacking && other.CompareTag("Player"))
         {
-            // Debug.Log("근접 공격!!");
+            // Debug.Log("Melee attack!!");
             
-            // 데미지를 주는 로직
+            // Apply damage logic
             playerDamageController.PlayerTakeDamage(attack1Damage);
-            Debug.Log($"보스1 근접 공격: 플레이어에게 {attack1Damage} 데미지를 입혔습니다!");
+            Debug.Log($"Boss1 melee attack: Dealt {attack1Damage} damage to player!");
             
             // SamplePlayer player = other.GetComponent<SamplePlayer>();
-            // if (player != null)
+            // if (player)
             // {
-            //     // BossPhase1.cs의 Attack1State에서 지정한 동일한 데미지값 사용
+            //     // Use same damage value as defined in BossPhase1.cs Attack1State
             //     player.TakeDamage(20);
-            //     Debug.Log($"보스가 플레이어에게 근접 공격으로 20 데미지를 입혔습니다!");
+            //     Debug.Log($"Boss dealt 20 damage to player with melee attack!");
             // }
         }
     }

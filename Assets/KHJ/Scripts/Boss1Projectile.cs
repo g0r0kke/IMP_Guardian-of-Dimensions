@@ -12,38 +12,35 @@ public class Boss1Projectile : MonoBehaviour
 
     private void Start()
     {
-        // Rigidbody가 있는지 확인
+        // Check if Rigidbody exists
         Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb == null)
+        if (!rb)
         {
             rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = true;
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
         
-        // Collider가 있는지 확인
+        // Check if Collider exists
         Collider col = GetComponent<Collider>();
-        if (col == null)
+        if (!col)
         {
-            // 구체 모양의 Collider 추가
+            // Add sphere collider
             SphereCollider sphereCol = gameObject.AddComponent<SphereCollider>();
             sphereCol.radius = 0.5f;
             sphereCol.isTrigger = false;
         }
         
         playerDamageController = FindFirstObjectByType<DamageController>();
-        if (playerDamageController == null)
+        if (!playerDamageController)
         {
-
-            Debug.LogError("DamageController가 존재하지 않아 데이터를 로드할 수 없습니다.");
-            return;
-
+            Debug.LogError("Cannot load data because DamageController does not exist.");
         }
     }
 
     private void Update()
     {
-        // 일정 시간 후 투사체 제거
+        // Destroy projectile after lifetime
         timer += Time.deltaTime;
         if (timer >= lifetime)
         {
@@ -57,21 +54,21 @@ public class Boss1Projectile : MonoBehaviour
         
         hasHit = true;
         
-        // 충돌한 대상이 플레이어인지 확인
+        // Check if collision is with player
         if (collision.gameObject.CompareTag("Player"))
         {
-            // 플레이어에게 데미지 적용
+            // Apply damage to player
             playerDamageController.PlayerTakeDamage(attack2Damage);
-            Debug.Log($"보스1 원거리 공격: 플레이어에게 {attack2Damage} 데미지를 입혔습니다!");
+            Debug.Log($"Boss1 ranged attack: Dealt {attack2Damage} damage to player!");
             
-            // 충돌 이펙트 생성
+            // Create impact effect
             if (impactEffectPrefab)
             {
                 Instantiate(impactEffectPrefab, transform.position, Quaternion.identity);
             }
         }
         
-        // 투사체 제거
+        // Destroy projectile
         Destroy(gameObject);
     }
 }

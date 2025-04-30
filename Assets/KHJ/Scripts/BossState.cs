@@ -62,7 +62,7 @@ public abstract class WalkState : BossState
     public override void Update()
     {
         // If target player is null or destroyed, transition back to Idle
-        if (boss.targetPlayer == null)
+        if (!boss.targetPlayer)
         {
             boss.TransitionToIdle();
             return;

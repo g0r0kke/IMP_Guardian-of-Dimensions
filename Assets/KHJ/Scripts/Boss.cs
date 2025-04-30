@@ -57,7 +57,7 @@ public abstract class Boss : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (GameManager.Instance != null)
+        if (GameManager.Instance)
         {
             Vector3 bossPosition = GameManager.Instance.GetBossPosition();
             transform.position = bossPosition;
@@ -282,7 +282,6 @@ public abstract class Boss : MonoBehaviour
         
             // Process death only once
             Die();
-            return;
         }
     }
 
@@ -317,63 +316,63 @@ public abstract class Boss : MonoBehaviour
     }
     
     // Display debug text on screen
-    protected virtual void OnGUI()
-    {
-        if (!enableDebug) return;
-        
-        // Convert boss position to screen coordinates
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + debugOffset);
-        
-        // Don't display if off-screen
-        if (screenPos.z < 0) return;
-        
-        // State text position
-        Rect stateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y, 200, 20);
-        Rect subStateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 20, 200, 20);
-        Rect healthRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 40, 200, 20);
-        
-        // Set style
-        GUIStyle stateStyle = new GUIStyle();
-        stateStyle.normal.textColor = stateDebugColor;
-        stateStyle.fontSize = 30;
-        stateStyle.fontStyle = FontStyle.Bold;
-        stateStyle.alignment = TextAnchor.UpperCenter;
-        
-        GUIStyle subStateStyle = new GUIStyle(stateStyle);
-        subStateStyle.normal.textColor = subStateDebugColor;
-        subStateStyle.fontSize = 30;
-        
-        GUIStyle healthStyle = new GUIStyle(stateStyle);
-        healthStyle.normal.textColor = healthDebugColor;
-        
-        // Draw text (draw black offset text first for background effect)
-        // Display state
-        GUI.Label(new Rect(stateRect.x + 1, stateRect.y + 1, stateRect.width, stateRect.height), 
-            $"State: {GetCurrentStateName()}", new GUIStyle(stateStyle) { normal = { textColor = Color.black } });
-        GUI.Label(stateRect, $"State: {GetCurrentStateName()}", stateStyle);
-        
-        // Display substates
-        List<BossSubState> activeSubStates = GetActiveSubStates();
-        if (activeSubStates.Count > 0)
-        {
-            StringBuilder sb = new StringBuilder("SubState: ");
-            for (int i = 0; i < activeSubStates.Count; i++)
-            {
-                sb.Append(activeSubStates[i].ToString());
-                if (i < activeSubStates.Count - 1)
-                {
-                    sb.Append(", ");
-                }
-            }
-            
-            GUI.Label(new Rect(subStateRect.x + 1, subStateRect.y + 1, subStateRect.width, subStateRect.height), 
-                sb.ToString(), new GUIStyle(subStateStyle) { normal = { textColor = Color.black } });
-            GUI.Label(subStateRect, sb.ToString(), subStateStyle);
-        }
-        
-        // Display health
-        GUI.Label(new Rect(healthRect.x + 1, healthRect.y + 1, healthRect.width, healthRect.height), 
-            $"Health: {health}", new GUIStyle(healthStyle) { normal = { textColor = Color.black } });
-        GUI.Label(healthRect, $"Health: {health}", healthStyle);
-    }
+    // protected virtual void OnGUI()
+    // {
+    //     if (!enableDebug) return;
+    //     
+    //     // Convert boss position to screen coordinates
+    //     Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + debugOffset);
+    //     
+    //     // Don't display if off-screen
+    //     if (screenPos.z < 0) return;
+    //     
+    //     // State text position
+    //     Rect stateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y, 200, 20);
+    //     Rect subStateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 20, 200, 20);
+    //     Rect healthRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 40, 200, 20);
+    //     
+    //     // Set style
+    //     GUIStyle stateStyle = new GUIStyle();
+    //     stateStyle.normal.textColor = stateDebugColor;
+    //     stateStyle.fontSize = 30;
+    //     stateStyle.fontStyle = FontStyle.Bold;
+    //     stateStyle.alignment = TextAnchor.UpperCenter;
+    //     
+    //     GUIStyle subStateStyle = new GUIStyle(stateStyle);
+    //     subStateStyle.normal.textColor = subStateDebugColor;
+    //     subStateStyle.fontSize = 30;
+    //     
+    //     GUIStyle healthStyle = new GUIStyle(stateStyle);
+    //     healthStyle.normal.textColor = healthDebugColor;
+    //     
+    //     // Draw text (draw black offset text first for background effect)
+    //     // Display state
+    //     GUI.Label(new Rect(stateRect.x + 1, stateRect.y + 1, stateRect.width, stateRect.height), 
+    //         $"State: {GetCurrentStateName()}", new GUIStyle(stateStyle) { normal = { textColor = Color.black } });
+    //     GUI.Label(stateRect, $"State: {GetCurrentStateName()}", stateStyle);
+    //     
+    //     // Display substates
+    //     List<BossSubState> activeSubStates = GetActiveSubStates();
+    //     if (activeSubStates.Count > 0)
+    //     {
+    //         StringBuilder sb = new StringBuilder("SubState: ");
+    //         for (int i = 0; i < activeSubStates.Count; i++)
+    //         {
+    //             sb.Append(activeSubStates[i].ToString());
+    //             if (i < activeSubStates.Count - 1)
+    //             {
+    //                 sb.Append(", ");
+    //             }
+    //         }
+    //         
+    //         GUI.Label(new Rect(subStateRect.x + 1, subStateRect.y + 1, subStateRect.width, subStateRect.height), 
+    //             sb.ToString(), new GUIStyle(subStateStyle) { normal = { textColor = Color.black } });
+    //         GUI.Label(subStateRect, sb.ToString(), subStateStyle);
+    //     }
+    //     
+    //     // Display health
+    //     GUI.Label(new Rect(healthRect.x + 1, healthRect.y + 1, healthRect.width, healthRect.height), 
+    //         $"Health: {health}", new GUIStyle(healthStyle) { normal = { textColor = Color.black } });
+    //     GUI.Label(healthRect, $"Health: {health}", healthStyle);
+    // }
 }

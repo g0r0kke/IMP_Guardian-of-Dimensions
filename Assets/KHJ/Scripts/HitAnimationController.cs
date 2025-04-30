@@ -34,7 +34,7 @@ public class HitAnimationController : MonoBehaviour
     /// </summary>
     public void PlayHitAnimation()
     {
-        if (imageAnimation == null)
+        if (!imageAnimation)
         {
             Debug.LogError("HitAnimationController: Animation component is null");
             return;

@@ -51,7 +51,7 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
     /// </summary>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (joystickObject == null || joystickRectTransform == null) return;
+        if (!joystickObject || !joystickRectTransform) return;
         
         // Activate joystick
         joystickObject.SetActive(true);

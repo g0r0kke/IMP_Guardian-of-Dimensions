@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
         // Find parent UI container first
         GameObject victoryDefeatContainer = GameObject.Find("VictoryDefeat UI");
 
-        if (victoryDefeatContainer != null)
+        if (victoryDefeatContainer)
         {
             // Find child UI elements directly by index
             if (victoryDefeatContainer.transform.childCount >= 3)
