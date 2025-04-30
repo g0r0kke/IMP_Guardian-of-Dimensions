@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// 상태 인터페이스
+// State interface defining required methods for state pattern implementation
 public interface IState
 {
     void Enter();

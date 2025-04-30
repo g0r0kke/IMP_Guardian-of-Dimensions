@@ -30,10 +30,10 @@ public class SamplePlayer : MonoBehaviour
 
         // Find game object with Enemy tag
         GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemyObject != null)
+        if (enemyObject)
         {
             bossTarget = enemyObject.GetComponent<Boss>();
-            if (bossTarget == null)
+            if (!bossTarget)
             {
                 Debug.LogWarning("Could not find Boss component on object with Enemy tag.");
             }
@@ -76,7 +76,7 @@ public class SamplePlayer : MonoBehaviour
         // Press Q to attack
         if (Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
         {
-            if (bossTarget != null)
+            if (bossTarget)
             {
                 // Deal damage to boss
                 bossTarget.TakeDamage(attackDamage);
@@ -88,7 +88,7 @@ public class SamplePlayer : MonoBehaviour
                 Debug.LogWarning("Boss target not set!");
                 // Try to find boss again by Enemy tag
                 GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-                if (enemyObject != null)
+                if (enemyObject)
                 {
                     bossTarget = enemyObject.GetComponent<Boss>();
                 }
@@ -99,7 +99,7 @@ public class SamplePlayer : MonoBehaviour
             {
                 foreach (MinionController minion in minionTargets)
                 {
-                    if (minion != null)
+                    if (minion)
                     {
                         minion.TakeDamage(attackDamage);
                         Debug.Log($"Player dealt {{attackDamage}} damage to minion!");
@@ -124,7 +124,7 @@ public class SamplePlayer : MonoBehaviour
         foreach (GameObject minionObj in minions)
         {
             MinionController minion = minionObj.GetComponent<MinionController>();
-            if (minion != null)
+            if (minion)
             {
                 minionTargets.Add(minion);
             }

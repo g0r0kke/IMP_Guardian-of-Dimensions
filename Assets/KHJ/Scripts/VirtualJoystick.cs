@@ -28,10 +28,6 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     // Player capsule collider reference
     private CapsuleCollider playerCollider;
     
-    // Image components for joystick visibility control
-    private Image joystickImage;
-    private Image leverImage;
-    
     // Canvas scaler reference
     private Canvas parentCanvas;
     
@@ -40,22 +36,15 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         rectTransform = GetComponent<RectTransform>();
         arCamera = Camera.main;
         
-        // Get image components for joystick background and lever
-        joystickImage = GetComponent<Image>();
-        if (lever != null)
-        {
-            leverImage = lever.GetComponent<Image>();
-        }
-        
         // Find parent canvas
         parentCanvas = GetComponentInParent<Canvas>();
         
         // Find collider on object with Player tag
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
+        if (playerObject)
         {
             playerCollider = playerObject.GetComponent<CapsuleCollider>();
-            if (playerCollider == null)
+            if (!playerCollider)
             {
                 // If no direct collider, check in children
                 playerCollider = playerObject.GetComponentInChildren<CapsuleCollider>();
@@ -130,7 +119,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     /// </summary>
     private void InputControlVector()
     {
-        if (xrOrigin != null && arCamera != null)
+        if (xrOrigin && arCamera)
         {
             // Get camera-based directions
             Vector3 forward = arCamera.transform.forward;
@@ -168,7 +157,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     /// <returns>True if wall collision detected, false otherwise</returns>
     private bool CheckWallCollision(Vector3 moveDirection, float moveDistance)
     {
-        if (playerCollider == null) return false;
+        if (!playerCollider) return false;
         
         // Get player capsule information
         Vector3 colliderCenter = xrOrigin.position + playerCollider.center;

@@ -20,19 +20,19 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
     {
         // Get canvas reference
         parentCanvas = GetComponentInParent<Canvas>();
-        if (parentCanvas == null)
+        if (!parentCanvas)
         {
             Debug.LogError("캔버스를 찾을 수 없습니다!");
         }
         
         // Get joystick script and RectTransform references
-        if (joystickObject != null)
+        if (joystickObject)
         {
             joystickScript = joystickObject.GetComponent<VirtualJoystick>();
             joystickRectTransform = joystickObject.GetComponent<RectTransform>();
             
             // Set XR Origin reference
-            if (xrOrigin != null && joystickScript != null)
+            if (xrOrigin && joystickScript)
             {
                 joystickScript.xrOrigin = xrOrigin;
             }
@@ -69,7 +69,7 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
         }
         
         // Forward pointer event to joystick script
-        if (joystickScript != null)
+        if (joystickScript)
         {
             joystickScript.OnPointerDown(eventData);
         }
@@ -81,7 +81,7 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
     public void OnDrag(PointerEventData eventData)
     {
         // Forward drag event to joystick
-        if (joystickScript != null && joystickObject.activeSelf)
+        if (joystickScript && joystickObject.activeSelf)
         {
             joystickScript.OnDrag(eventData);
         }
@@ -93,7 +93,7 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
     public void OnPointerUp(PointerEventData eventData)
     {
         // Forward pointer up event to joystick
-        if (joystickScript != null)
+        if (joystickScript)
         {
             joystickScript.OnPointerUp(eventData);
             

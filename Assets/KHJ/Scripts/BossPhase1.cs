@@ -6,32 +6,31 @@ namespace Azmodan.Phase1
     public class BossPhase1 : Boss
     {
         [Header("Phase 1 Settings")] [SerializeField]
-        private float attackDelay = 2f; // 공격 후 대기 시간
+        private float attackDelay = 2f; // Delay time after attack
 
-        [SerializeField] private float attack1Distance = 2f; // 근접 공격 거리
-        [SerializeField] private float attack2Distance = 5f; // 원거리 공격 거리
-        [SerializeField] private float preAttackDelay = 0.5f; // 공격 전 딜레이 시간
+        [SerializeField] private float attack1Distance = 2f; // Melee attack distance
+        [SerializeField] private float attack2Distance = 5f; // Ranged attack distance
+        [SerializeField] private float preAttackDelay = 0.5f; // Delay time before attack
 
         [Header("Projectile Settings")] [SerializeField]
-        private GameObject projectilePrefab; // 투사체 프리팹
+        private GameObject projectilePrefab; // Projectile prefab
 
-        [SerializeField] private float projectileSpeed = 10f; // 투사체 속도
-        [SerializeField] private float projectileOffset = 1.5f; // 보스 앞에서 얼마나 떨어진 위치에서 발사할지
-        [SerializeField] private float projectileHeight = 7.75f; // 투사체 발사 높이
-        public static GameManager Instance { get; private set; }
+        [SerializeField] private float projectileSpeed = 10f; // Projectile speed
+        [SerializeField] private float projectileOffset = 1.5f; // How far from boss position to spawn projectile
+        [SerializeField] private float projectileHeight = 7.75f; // Projectile spawn height
 
-        private IState previousState; // 스턴 전 상태 저장용
-        private int randomAttackNum; // 랜덤 공격 번호 (1-100)
+        private IState previousState; // Store state before stun
+        private int randomAttackNum; // Random attack number (1-100)
         private BossStateType selectedAttackType;
 
-        // 공격 로직 디버깅을 위한 변수 추가
+        // Variables for attack logic debugging
         private bool attackSelected = false;
         private bool attackInitiated = false;
         
         [Header("Attack Effects")]
         [SerializeField]
-        private GameObject attack1EffectPrefab; // 공격1 이펙트 프리팹
-        [SerializeField] private Vector3 attack1EffectOffset = new Vector3(-1.56f, 3.6f, -8.4f); // 이펙트 위치 오프셋
+        private GameObject attack1EffectPrefab; // Attack1 effect prefab
+        [SerializeField] private Vector3 attack1EffectOffset = new Vector3(-1.56f, 3.6f, -8.4f); // Effect position offset
 
         public GameObject GetAttack1EffectPrefab()
         {
@@ -53,14 +52,14 @@ namespace Azmodan.Phase1
             return attackInitiated;
         }
 
-        // UI 연결
+        // UI connection
         [SerializeField] private Slider healthBarUI;
 
-        // Phase1 전용 오디오 설정 추가
+        // Phase1 specific audio settings
         [Header("Phase 1 Audio")] [SerializeField]
-        private AudioSource walkAudioSource; // 걷기 전용 오디오 소스
+        private AudioSource walkAudioSource; // Audio source for walking
 
-        [SerializeField] private AudioSource attackAudioSource; // 공격 전용 오디오 소스
+        [SerializeField] private AudioSource attackAudioSource; // Audio source for attacks
         [SerializeField] private AudioClip walkSound;
         [SerializeField] private AudioClip attack1Sound;
         [SerializeField] private AudioClip attack2Sound;
@@ -71,63 +70,63 @@ namespace Azmodan.Phase1
         {
             base.Start();
 
-            // 초기 체력 로그 출력
-            Debug.Log($"보스 초기 체력: {health}");
+            // Log initial health
+            Debug.Log($"Boss initial health: {health}");
             
-            // 초기 체력바 설정
-            if (healthBarUI != null)
+            // Set initial health bar
+            if (healthBarUI)
             {
                 healthBarUI.maxValue = health;
                 healthBarUI.value = health;
             }
 
-            // 걷기용 AudioSource 초기화 (없는 경우)
-            if (walkAudioSource == null)
+            // Initialize walk AudioSource (if missing)
+            if (!walkAudioSource)
             {
                 walkAudioSource = gameObject.AddComponent<AudioSource>();
                 walkAudioSource.loop = true;
                 walkAudioSource.playOnAwake = false;
             }
 
-            // 공격용 AudioSource 초기화 (없는 경우)
-            if (attackAudioSource == null)
+            // Initialize attack AudioSource (if missing)
+            if (!attackAudioSource)
             {
                 attackAudioSource = gameObject.AddComponent<AudioSource>();
-                attackAudioSource.loop = false; // 공격 소리는 루프하지 않음
+                attackAudioSource.loop = false; // Attack sound should not loop
                 attackAudioSource.playOnAwake = false;
             }
         }
 
         public void PlayWalkSound()
         {
-            if (walkAudioSource != null && walkSound != null)
+            if (walkAudioSource && walkSound)
             {
                 walkAudioSource.clip = walkSound;
                 if (!walkAudioSource.isPlaying)
                 {
                     walkAudioSource.Play();
-                    // Debug.Log("보스 Phase1: 걷기 소리 재생 시작");
+                    // Debug.Log("Boss Phase1: Started playing walk sound");
                 }
             }
         }
 
         public void StopWalkSound()
         {
-            if (walkAudioSource != null && walkAudioSource.isPlaying)
+            if (walkAudioSource && walkAudioSource.isPlaying)
             {
                 walkAudioSource.Stop();
-                // Debug.Log("보스 Phase1: 걷기 소리 정지");
+                // Debug.Log("Boss Phase1: Stopped walk sound");
             }
         }
 
         public void PlayAttackSound(int attackNum)
         {
-            if (attackAudioSource != null)
+            if (attackAudioSource)
             {
                 switch (attackNum)
                 {
                     case 1:
-                        if (attack1Sound != null)
+                        if (attack1Sound)
                         {
                             attackAudioSource.clip = attack1Sound;
                             attackAudioSource.Play();
@@ -135,7 +134,7 @@ namespace Azmodan.Phase1
 
                         break;
                     case 2:
-                        if (attack2Sound != null)
+                        if (attack2Sound)
                         {
                             attackAudioSource.clip = attack2Sound;
                             attackAudioSource.Play();
@@ -143,7 +142,7 @@ namespace Azmodan.Phase1
 
                         break;
                     case 3:
-                        if (takeDamageSound != null)
+                        if (takeDamageSound)
                         {
                             attackAudioSource.clip = takeDamageSound;
                             attackAudioSource.Play();
@@ -151,7 +150,7 @@ namespace Azmodan.Phase1
 
                         break;
                     case 4:
-                        if (deathSound != null)
+                        if (deathSound)
                         {
                             attackAudioSource.clip = deathSound;
                             attackAudioSource.Play();
@@ -192,20 +191,19 @@ namespace Azmodan.Phase1
             states[typeof(DeathState)] = new DeathState(this);
         }
 
-        // 공격 대기 상태 설정/확인 메서드
+        // Methods to set/check pre-attack waiting state
         public void SetWaitingForAttack(bool isWaiting)
         {
             if (isWaiting)
             {
                 SetSubState(BossSubState.PreAttackDelay, preAttackDelay);
-                // Debug.Log("보스: 공격 대기(선딜레이) 상태 설정됨");
+                // Debug.Log("Boss: Pre-attack delay state set");
             }
             else
             {
-                // 디버깅 메시지 추가
                 if (IsInSubState(BossSubState.PreAttackDelay))
                 {
-                    // Debug.Log("보스: 공격 대기(선딜레이) 상태 해제됨");
+                    // Debug.Log("Boss: Pre-attack delay state cleared");
                 }
             }
         }
@@ -215,24 +213,23 @@ namespace Azmodan.Phase1
             return IsInSubState(BossSubState.PreAttackDelay);
         }
 
-        // 공격 후 딜레이 상태 설정/확인 메서드
+        // Methods to set/check post-attack delay state
         public void SetPostAttackDelay(bool isDelaying)
         {
             if (isDelaying)
             {
                 SetSubState(BossSubState.PostAttackDelay, attackDelay);
-                // Debug.Log("보스: 공격 후 딜레이 상태 설정됨");
+                // Debug.Log("Boss: Post-attack delay state set");
 
-                // 공격 플래그 초기화
+                // Reset attack flags
                 attackSelected = false;
                 attackInitiated = false;
             }
             else
             {
-                // 디버깅 메시지 추가
                 if (IsInSubState(BossSubState.PostAttackDelay))
                 {
-                    // Debug.Log("보스: 공격 후 딜레이 상태 해제됨");
+                    // Debug.Log("Boss: Post-attack delay state cleared");
                 }
             }
         }
@@ -242,7 +239,7 @@ namespace Azmodan.Phase1
             return IsInSubState(BossSubState.PostAttackDelay);
         }
 
-        // 공격 전 딜레이 시간 반환
+        // Get pre-attack delay time
         public float GetPreAttackDelay()
         {
             return preAttackDelay;
@@ -250,10 +247,10 @@ namespace Azmodan.Phase1
 
         public void SelectAttackType()
         {
-            // 이미 공격이 선택된 상태라면 중복 실행 방지
+            // Prevent duplicate execution if attack is already selected
             if (attackSelected)
             {
-                // Debug.Log("보스: 이미 공격이 선택되어 있습니다.");
+                // Debug.Log("Boss: Attack already selected.");
                 return;
             }
 
@@ -261,91 +258,91 @@ namespace Azmodan.Phase1
 
             if (randomAttackNum >= 1 && randomAttackNum <= 30)
             {
-                // 근접 공격 선택 및 저장
+                // Select and store melee attack
                 attackDistance = attack1Distance;
                 selectedAttackType = BossStateType.Attack1;
-                // Debug.Log("보스: 근접 공격 선택됨, 거리: " + attackDistance);
+                // Debug.Log("Boss: Melee attack selected, distance: " + attackDistance);
             }
             else if (randomAttackNum >= 71 && randomAttackNum <= 100)
             {
-                // 원거리 공격 선택 및 저장
+                // Select and store ranged attack
                 attackDistance = attack2Distance;
                 selectedAttackType = BossStateType.Attack2;
-                // Debug.Log("보스: 원거리 공격 선택됨, 거리: " + attackDistance);
+                // Debug.Log("Boss: Ranged attack selected, distance: " + attackDistance);
             }
             else
             {
-                // 그 외의 경우 랜덤하게 선택 (공격 실패 방지)
+                // For other cases, select randomly (prevent attack failure)
                 if (Random.value < 0.5f)
                 {
                     attackDistance = attack1Distance;
                     selectedAttackType = BossStateType.Attack1;
-                    // Debug.Log("보스: 기본 근접 공격 선택됨");
+                    // Debug.Log("Boss: Default melee attack selected");
                 }
                 else
                 {
                     attackDistance = attack2Distance;
                     selectedAttackType = BossStateType.Attack2;
-                    // Debug.Log("보스: 기본 원거리 공격 선택됨");
+                    // Debug.Log("Boss: Default ranged attack selected");
                 }
             }
 
-            // 공격 선택 플래그 설정
+            // Set attack selection flag
             attackSelected = true;
 
-            // 선딜레이를 위한 Idle 상태로 전환
+            // Transition to Idle state for pre-delay
             SetWaitingForAttack(true);
             TransitionToIdle();
         }
 
-        // 1페이즈 전용 공격 상태로 전환
+        // Phase 1 specific attack state transition
         public override void TransitionToAttack()
         {
-            // 공격 시작 플래그 설정 - 디버깅 및 중복 호출 방지용
+            // Set attack start flag - for debugging and prevent duplicate calls
             attackInitiated = true;
 
-            // 모든 애니메이터 파라미터 초기화 (확실히 초기화)
+            // Reset all animator parameters (ensure clean initialization)
             ResetAllAnimatorParameters();
             
-            // Debug.Log($"보스: TransitionToAttack 호출됨 - 선택된 공격 타입: {selectedAttackType}");
+            // Debug.Log($"Boss: TransitionToAttack called - Selected attack type: {selectedAttackType}");
 
-            // 플레이어와의 거리 확인
+            // Check distance to player
             float distanceToPlayer = 0;
-            if (targetPlayer != null)
+            if (targetPlayer)
             {
                 Vector3 direction = targetPlayer.transform.position - transform.position;
-                direction.y = 0; // Y축 무시
+                direction.y = 0; // Ignore Y-axis
                 distanceToPlayer = direction.magnitude;
-                // Debug.Log($"보스: 플레이어와의 거리: {distanceToPlayer}, 공격 거리: {attackDistance}");
+                // Debug.Log($"Boss: Distance to player: {distanceToPlayer}, Attack distance: {attackDistance}");
             }
 
-            // 공격 거리 확인 - 거리를 크게 벗어났을 때만 Walk 상태로 전환
-            // 약간의 여유를 두어 작은 움직임에는 반응하지 않도록 수정
+            // Check attack distance - only transition to Walk if significantly out of range
+            // Modified to not react to small movements
             if (selectedAttackType == BossStateType.Attack1 && distanceToPlayer > attack1Distance * 1.5f ||
                 selectedAttackType == BossStateType.Attack2 && distanceToPlayer > attack2Distance * 1.5f)
             {
-                // Debug.Log("보스: 공격 거리에서 크게 벗어남, 다시 추적");
-                attackInitiated = false; // 공격 시도 실패 플래그 초기화
+                // Debug.Log("Boss: Player is significantly out of attack range, resuming tracking");
+                attackInitiated = false; // Reset attack attempt flag
                 TransitionToWalk();
                 return;
             }
 
-            // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인
+            // Check if player is within the boss's front 90-degree angle
             if (!IsPlayerInAttackAngle())
             {
-                // Debug.Log("보스: 플레이어가 공격 각도 범위(90도) 밖에 있음, 다시 추적");
-                attackInitiated = false; // 공격 시도 실패 플래그 초기화
+                // Debug.Log("Boss: Player is outside of attack angle range (90 degrees), resuming tracking");
+                attackInitiated = false; // Reset attack attempt flag
                 TransitionToWalk();
                 return;
             }
 
-            // 공격 거리 내에 있으면 선택된 공격 실행
+            // If within attack range, execute the selected attack
             currentStateType = selectedAttackType;
 
-            // 현재 공격 중인지 명확히 기록
-            // Debug.Log($"보스: {selectedAttackType} 상태로 명시적 전환 시작");
+            // Clearly record the current attack
+            // Debug.Log($"Boss: Explicitly transitioning to {selectedAttackType} state");
 
-            // 공격 상태로 전환 완료 후
+            // After completing attack state transition
             if (selectedAttackType == BossStateType.Attack1)
             {
                 ChangeState<Attack1State>();
@@ -358,72 +355,72 @@ namespace Azmodan.Phase1
 
         public override void TakeDamage(int damage)
         {
-            // 이미 사망했다면 데미지 처리하지 않음
+            // If already dead, don't process damage
             if (isDead)
             {
-                // Debug.Log("보스: 이미 사망 상태입니다. 데미지 무시.");
+                // Debug.Log("Boss: Already in death state. Ignoring damage.");
                 return;
             }
 
-            // 데미지 적용
+            // Apply damage
             health -= damage;
             PlayAttackSound(3);
-            Debug.Log($"보스 1페이즈: {damage} 데미지 받음 (현재 체력: {health})");
+            Debug.Log($"Boss Phase 1: Took {damage} damage (Current health: {health})");
 
-            // UI 업데이트
-            if (healthBarUI != null)
+            // Update UI
+            if (healthBarUI)
             {
                 healthBarUI.value = health;
             }
 
-            // 사망 처리
+            // Handle death
             if (health <= 0)
             {
-                // 사망 플래그 설정 (중복 호출 방지)
+                // Set death flag (prevent duplicate calls)
                 isDead = true;
-                Debug.Log("보스 1페이즈: 사망 처리 시작");
+                Debug.Log("Boss Phase 1: Starting death process");
 
-                // 사망 상태로 전환
+                // Transition to death state
                 Die();
-                return; // 이후 코드 실행 방지
+                return; // Prevent further code execution
             }
 
-            // 여기서부터는 health > 0인 경우에만 실행됨
-            // Idle 또는 Walk 상태일 때만 스턴 상태로 전환
+            // Only execute if health > 0
+            // Only transition to stun state if currently in Idle or Walk state
             if (currentState is IdleState || currentState is WalkState)
             {
-                previousState = currentState; // 현재 상태 저장
+                previousState = currentState; // Save current state
                 TransitionToStun();
             }
         }
 
-        // 사망 처리 재정의
+        // Override death handler
         protected override void Die()
         {
-            // 이미 죽음 처리 중이거나 사망 상태면 중복 실행 방지
+            // Prevent duplicate execution if already dead or in death state
             if (isDead && isDeathAnimTriggered)
             {
-                // Debug.Log("보스: 이미 사망 상태입니다. 중복 사망 처리 무시.");
+                // Debug.Log("Boss: Already in death state. Ignoring duplicate death processing.");
                 return;
             }
 
             PlayAttackSound(4);
 
-            // isDead 플래그만 설정하고 (isDeathAnimTriggered는 TransitionToDeath에서 설정)
+            // Only set isDead flag (isDeathAnimTriggered will be set in TransitionToDeath)
             isDead = true;
             
 
-            // 모든 진행 중인 SubState 초기화
+            // Reset all active SubStates
             foreach (BossSubState state in System.Enum.GetValues(typeof(BossSubState)))
             {
                 subStateTimers[state] = 0f;
                 subStateDurations[state] = 0f;
             }
 
-            // 죽음 애니메이션 재생 후 Phase2로 전환을 위해 딜레이 설정
+            // Set delay for Phase2 transition after death animation
             Invoke("NotifyBossManager", 2.0f);
 
-            // 사망 상태로 전환 (여기서 isDeathAnimTriggered 설정됨)
+            // Transition to death state (isDeathAnimTriggered is set here)
             TransitionToDeath();
         }
 
@@ -431,115 +428,114 @@ namespace Azmodan.Phase1
         {
             if (GameManager.Instance != null)
             {
-                Debug.Log("보스 1페이즈: BossManager에 Phase2 전환 신호 보냄");
+                Debug.Log("Boss Phase 1: Sending Phase2 transition signal to BossManager");
                 GameManager.Instance.TransitionToPhase2();
             }
             else
             {
-                Debug.LogError("보스 1페이즈: BossManager.Instance를 찾을 수 없음!");
+                Debug.LogError("Boss Phase 1: Cannot find BossManager.Instance!");
             }
         }
 
-        // StunState를 Override하여 이전 상태로 돌아가는 기능 구현
+        // Override StunState to implement returning to previous state
         public override void TransitionToStun()
         {
-            // 현재 상태 저장 (Idle 또는 Walk 상태일 때만)
+            // Save current state (only if in Idle or Walk state)
             if (currentState is IdleState || currentState is WalkState)
             {
                 previousState = currentState;
             }
 
-            // 스턴 상태로 전환
+            // Transition to stun state
             base.TransitionToStun();
         }
 
-        // 투사체 발사 메서드
+        // Projectile firing method
         public void FireProjectile()
         {
             if (projectilePrefab != null && targetPlayer != null)
             {
-                // 보스의 앞쪽 위치 계산 (보스의 현재 XZ 위치에 특정 높이 적용)
+                // Calculate boss's forward position (using current XZ position with specific height)
                 Vector3 spawnPosition = new Vector3(
                     transform.position.x + transform.forward.x * projectileOffset,
-                    projectileHeight, // 지정된 높이 사용
+                    projectileHeight, // Use specified height
                     transform.position.z + transform.forward.z * projectileOffset
                 );
 
-                // 플레이어 방향 계산
+                // Calculate direction to player
                 Vector3 directionToPlayer = targetPlayer.transform.position - spawnPosition;
                 directionToPlayer.Normalize();
 
-                // 투사체 생성 (spawnPosition 위치에 플레이어 방향을 향하는 회전값으로)
+                // Create projectile (at spawnPosition with rotation toward player)
                 Quaternion rotationToPlayer = Quaternion.LookRotation(directionToPlayer);
                 GameObject projectile = Instantiate(projectilePrefab, spawnPosition, rotationToPlayer);
 
-                // Rigidbody 설정
+                // Configure Rigidbody
                 Rigidbody rb = projectile.GetComponent<Rigidbody>();
-                if (rb != null)
+                if (rb)
                 {
-                    // 중력 영향 제거
+                    // Remove gravity influence
                     rb.useGravity = false;
             
                     rb.linearVelocity = directionToPlayer * projectileSpeed;
                 }
                 else
                 {
-                    Debug.LogWarning("투사체에 Rigidbody 컴포넌트가 없습니다!");
+                    Debug.LogWarning("Projectile does not have a Rigidbody component!");
                 }
             }
             else
             {
-                Debug.LogWarning("투사체 프리팹이 설정되지 않았거나 타겟 플레이어가 없습니다!");
+                Debug.LogWarning("Projectile prefab is not set or target player is missing!");
             }
         }
 
-        // 공격 후 대기 시간 Getter
+        // Getter for attack delay time
         public float GetAttackDelay()
         {
             return attackDelay;
         }
 
-        // 플레이어가 보스의 앞쪽 90도 범위 안에 있는지 확인하는 메서드
+        // Method to check if player is within the boss's front 90-degree angle
         public bool IsPlayerInAttackAngle()
         {
-            if (targetPlayer == null) return false;
+            if (!targetPlayer) return false;
 
-            // 보스로부터 플레이어까지의 방향 벡터
+            // Direction vector from boss to player
             Vector3 directionToPlayer = targetPlayer.transform.position - transform.position;
-            directionToPlayer.y = 0; // Y축은 무시 (수평면에서만 체크)
+            directionToPlayer.y = 0; // Ignore Y-axis (check only on horizontal plane)
             directionToPlayer.Normalize();
 
-            // 보스의 forward 벡터 (정면 방향)
+            // Boss's forward vector (front direction)
             Vector3 bossForward = transform.forward;
-            bossForward.y = 0; // Y축은 무시
+            bossForward.y = 0; // Ignore Y-axis
             bossForward.Normalize();
 
-            // 두 벡터 사이의 각도 계산 (내적 사용)
+            // Calculate angle between the two vectors (using dot product)
             float dotProduct = Vector3.Dot(bossForward, directionToPlayer);
 
-            // 내적 값을 각도로 변환 (라디안에서 도로 변환)
+            // Convert dot product to angle (convert from radians to degrees)
             float angleToPlayer = Mathf.Acos(Mathf.Clamp(dotProduct, -1f, 1f)) * Mathf.Rad2Deg;
 
-            // 45도 이내인지 확인 (90도 범위 = 양쪽으로 45도씩)
+            // Check if within 45 degrees (90-degree range = 45 degrees on each side)
             bool isInAngle = angleToPlayer <= 45f;
 
-            // 디버그 로그
             if (!isInAngle)
             {
-                // Debug.Log($"보스: 플레이어가 공격 각도 밖에 있습니다. (각도: {angleToPlayer}°)");
+                // Debug.Log($"Boss: Player is outside the attack angle. (Angle: {angleToPlayer}°)");
             }
 
             return isInAngle;
         }
     }
 
-    // 1페이즈 전용 근접 공격 상태
+    // Phase 1 specific melee attack state
     public class Attack1State : BossState
     {
         private float attackTimer = 0f;
         private float attackDuration = 2f;
         private bool hasDealtDamage = false;
-        private bool hasSoundPlayed = false; // 소리 재생 여부 추적을 위한 변수
+        private bool hasSoundPlayed = false; // Variable to track if sound has played
         private bool hasSpawnedEffect = false;
         private BossPhase1 phase1Boss;
 
@@ -550,28 +546,28 @@ namespace Azmodan.Phase1
 
         public override void Enter()
         {
-            // 타이머 초기화
+            // Initialize timers
             attackTimer = 0f;
             hasDealtDamage = false;
             hasSoundPlayed = false;
             hasSpawnedEffect = false;
 
-            // 공격1 애니메이션 재생
+            // Play attack1 animation
             boss.animator.SetTrigger("Attack");
-            // Debug.Log("보스: 공격1 상태 시작");
+            // Debug.Log("Boss: Attack1 state started");
         }
 
         public override void Update()
         {
             attackTimer += Time.deltaTime;
 
-            // 공격 1초 시점에서 공격 소리 재생
+            // Play attack sound at 1 second mark
             if (attackTimer >= 1.0f && !hasSoundPlayed)
             {
-                // 공격 소리 재생
+                // Play attack sound
                 phase1Boss.PlayAttackSound(1);
                 hasSoundPlayed = true;
-                // Debug.Log("보스: 공격1 소리 재생");
+                // Debug.Log("Boss: Playing Attack1 sound");
             }
             
             if (attackTimer >= 1.0f && !hasSpawnedEffect)
