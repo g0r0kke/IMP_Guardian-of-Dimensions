@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace Azmodan.Phase1
 {
+    /// <summary>
+    /// Implements the first phase of Azmodan boss with melee and ranged attacks, movement, audio, and UI integration.
+    /// </summary>
     public class BossPhase1 : Boss
     {
         [Header("Phase 1 Settings")] [SerializeField]

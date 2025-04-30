@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Manages the boss's melee weapon collision detection based on animation frames and applies damage to the player.
+/// </summary>
 public class Boss1Weapon : MonoBehaviour
 {
     private Azmodan.Phase1.BossPhase1 bossPhase1;

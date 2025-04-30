@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI element that displays an indicator arrow pointing toward the boss when it's off-screen or behind the camera.
+/// </summary>
 public class BossDirectionIndicator : MonoBehaviour
 {
     [Header("Settings")]

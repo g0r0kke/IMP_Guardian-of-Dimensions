@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine.InputSystem;
 
 // Enum for main boss states
 public enum BossStateType
@@ -22,7 +23,9 @@ public enum BossSubState
     PostAttackDelay  // Delay after attack
 }
 
-// Abstract boss class (includes common functionality)
+/// <summary>
+/// Abstract base class implementing a state machine for boss enemies with health, movement, and state transition logic.
+/// </summary>
 public abstract class Boss : MonoBehaviour
 {
     protected IState currentState;
@@ -130,10 +133,10 @@ public abstract class Boss : MonoBehaviour
     protected virtual void Update()
     {
         // To be removed later
-        // if (Keyboard.current.qKey.wasPressedThisFrame)
-        // {
-        //    TakeDamage(50);
-        // }
+        if (Keyboard.current.qKey.wasPressedThisFrame)
+        {
+           TakeDamage(50);
+        }
         
         // If in death state, only update the current state (DeathState)
         if (isDead)

@@ -3569,6 +3569,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1490680005613657508, guid: c2f2cfcd0d4261e49807ad510af47e68,
+        type: 3}
+      propertyPath: HealingAmount
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3404926916758755506, guid: c2f2cfcd0d4261e49807ad510af47e68,
         type: 3}
       propertyPath: PlayerHpBar

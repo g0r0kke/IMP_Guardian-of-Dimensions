@@ -1,6 +1,8 @@
 using UnityEngine;
 
-// Base state class for boss behavior
+/// <summary>
+/// Defines the base state classes for the boss state machine, including idle, walk, stun, and death behaviors.
+/// </summary>
 public abstract class BossState : IState
 {
     protected Boss boss;

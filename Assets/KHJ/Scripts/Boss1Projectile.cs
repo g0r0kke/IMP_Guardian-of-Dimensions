@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls the boss's ranged projectile behavior including movement, collision detection, and damage application.
+/// </summary>
 public class Boss1Projectile : MonoBehaviour
 {
     [SerializeField] private int attack2Damage = 10;
