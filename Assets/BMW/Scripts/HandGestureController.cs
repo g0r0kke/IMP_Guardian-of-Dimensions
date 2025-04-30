@@ -43,13 +43,15 @@ public class HandGestureController : MonoBehaviour
 
         foreach (var handInfo in ManoMotionManager.Instance.HandInfos)
         {
-
+            // Basic Attack Recognition
             if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.CLICK)
             {
                 isBasicAttackGesture = true;
                 ResetGrab();
                 ResetPinch();
             }
+
+            // Ultimate Attack Recognition
             else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.RELEASE_GESTURE)
             {
                 ResetGrab();
@@ -60,6 +62,8 @@ public class HandGestureController : MonoBehaviour
                 isGrabbing = true;
                 ResetPinch();
             }
+
+            // healing Skills Gesture Recognition
             else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.PICK)
             {
                 isPinching = true;
@@ -71,6 +75,8 @@ public class HandGestureController : MonoBehaviour
                 ResetGrab();
                 ResetPinch();
             }
+
+            // Defense Skills Gesture Recognition
             else if (handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.SWIPE_RIGHT ||
                      handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.SWIPE_LEFT ||
                      handInfo.gestureInfo.manoGestureTrigger == ManoGestureTrigger.SWIPE_UP ||

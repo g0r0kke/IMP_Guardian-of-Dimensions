@@ -38,31 +38,35 @@ public class AnimationController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    // Basic attack animation
     public void BasicAttackAnimation()
     {
         animator.SetBool("isBasicAttack", true);
         isPlayed = true;
     }
 
+    // Ultimate attack animation
     public void UltimateAttackAnimation()
     {
         animator.SetBool("isUltimateAttack", true);
         isPlayed = true;
     }
 
+    //Healing animation
     public void HealingAnimation()
     {
         animator.SetBool("isHealing", true);
         isPlayed = true;
     }
 
+    //Defense animation
     public void DefenseAnimation()
     {
         animator.SetBool("isDefense", true);
         isPlayed = true;
     }
 
+    //victory animation
     public void VictoryAnimation()
     {
         animator.SetBool("isBasicAttack", false);
@@ -76,6 +80,7 @@ public class AnimationController : MonoBehaviour
         isPlayed = true;
     }
 
+    //die animation
     public void DieAnimation()
     {
         animator.SetBool("isBasicAttack", false);
@@ -88,6 +93,7 @@ public class AnimationController : MonoBehaviour
         isPlayed = true;
     }
 
+    //retry animation
     public void RetryAnimation()
     {
         animator.SetBool("isBasicAttack", false);

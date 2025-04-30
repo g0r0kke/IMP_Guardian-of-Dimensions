@@ -36,6 +36,7 @@ public class DamageController : MonoBehaviour
         }
     }
 
+    //Handling Goblin and Boss Attack Damage
     public void PlayerTakeDamage(int damageIntensity)
     {
         if (!isAvoid && !isDefense)
@@ -56,6 +57,7 @@ public class DamageController : MonoBehaviour
         }
     }
 
+    //Handling damage in case of collision
     void OnCollisionEnter(Collision collision)
     {
         if (IsInTargetLayer(collision.gameObject) && !isConstantContact)

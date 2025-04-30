@@ -46,6 +46,7 @@ public class BasicAttackController: MonoBehaviour
         
         bool isPressedBasicAttack = Keyboard.current.zKey.wasPressedThisFrame;
 
+        // Perform a Basic attack after verifying the Basic attack gestur
         if ((isPressedBasicAttack || handGestureController.isBasicAttackGesture ) && delayTime <= 0)
         {
             animationController.BasicAttackAnimation();

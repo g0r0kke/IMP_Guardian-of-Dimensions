@@ -117,6 +117,7 @@ public class PlayerGUI : MonoBehaviour
             DEBUG();
         }
 
+        //Player Health UI Update
         if (playerHealth > 0)
         {
             PlayerHpBar.value = (float)playerHealth / (float)playerHealthLimit;
@@ -128,24 +129,29 @@ public class PlayerGUI : MonoBehaviour
             PlayerHpText.text = "0/" + playerHealthLimit;
         }
 
+        //Player Attack Gauge UI Update
         PlayerGaugeBar.value = (float)ultimateAttackGauge / (float)ultimateAttackGaugeLimit;
         PlayerGaugeText.text = ultimateAttackGauge + "/" + ultimateAttackGaugeLimit;
 
+        //Player Basic Attack UI Update
         basicAttackDelayTime = basicAttackController.delayTime;
         PlayerBasicAttackGlobe.value = (float)basicAttackDelayTime / (float)basicAttackDelay;
         if (Mathf.Ceil(basicAttackDelayTime) != 0) PlayerBasicAttackText.text = $"{Mathf.Ceil(basicAttackDelayTime)}";
         else PlayerBasicAttackText.text = $" ";
 
+        //Player Ultimate Attack UI Update
         ultimateAttackDelayTime = ultimateAttackController.delayTime;
         PlayerUltimateAttackGlobe.value = (float)ultimateAttackDelayTime / (float)ultimateAttackDelay;
         if (Mathf.Ceil(ultimateAttackDelayTime) != 0) PlayerUltimateAttackText.text = $"{Mathf.Ceil(ultimateAttackDelayTime)}";
         else PlayerUltimateAttackText.text = " ";
 
+        //Player defense skill UI Update
         defenseSkillDelayTime = defenseController.delayTime;
         PlayerShildGlobe.value = (float)defenseSkillDelayTime / (float)defenseSkillDelay;
         if (Mathf.Ceil(defenseSkillDelayTime) != 0) PlayerShildText.text = $"{Mathf.Ceil(defenseSkillDelayTime)}";
         else PlayerShildText.text = " ";
 
+        //Player healing skill UI Update
         healingSkillDelayTime = healingController.delayTime;
         PlayerHealingGlobe.value = (float)healingSkillDelayTime / (float)healingSkillDelay;
         if (Mathf.Ceil(healingSkillDelayTime) != 0) PlayerHealingText.text = $"{Mathf.Ceil(healingSkillDelayTime)}";
@@ -153,6 +159,7 @@ public class PlayerGUI : MonoBehaviour
 
         avoidanceSkillDelayTime = avoidanceController.delayTime;
 
+        //Update Player Data in Player Data Manager
         if (playerDataManager != null)
         {
             playerDataManager.playerLinkHealth = playerHealth;

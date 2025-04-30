@@ -47,6 +47,7 @@ public class UltimateAttackController : MonoBehaviour
 
         bool isPressedUltimateAttack = Keyboard.current.xKey.wasPressedThisFrame;
 
+        // Perform a Ultimate attack after verifying the Ultimate attack gesture
         if ((isPressedUltimateAttack || handGestureController.isUltimateAttackGesture) && delayTime <= 0 && playerGUI.ultimateAttackGauge == playerGUI.ultimateAttackGaugeLimit)
         {
             handGestureController.isUltimateAttackGesture = false;

@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 public class PlayerDataManager : MonoBehaviour
 {
     [Header("Player Health Settings")]
-    public int playerHealthLimit = 100;
-    private int originPlayerHealth = 100;
-    public int playerLinkHealth;
+    public int playerHealthLimit = 100;         // Player's maximum health
+    private int originPlayerHealth = 100;       // Player's initial health
+    public int playerLinkHealth;                // Current player health
 
     [Header("Player Ultimate Attack Gauge Settings")]
-    public int playerGaugeLimit = 3;
-    private int originPlayerGauge = 0;
-    public int playerLinkGauge;
+    public int playerGaugeLimit = 3;            // Ultimate gauge maximum value
+    private int originPlayerGauge = 0;          // Initial gauge value
+    public int playerLinkGauge;                 // Current ultimate gauge
 
     [Header("Setting Player Manipulation Status")]
     public bool isControlPlayer;
@@ -51,6 +51,7 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    // Initialize player data to original values
     public void PlayerOriginSetting()
     {
         playerLinkHealth = originPlayerHealth;
@@ -73,6 +74,7 @@ public class PlayerDataManager : MonoBehaviour
         StartCoroutine(DelayedLoadAfterSceneLoad());
     }
 
+    // Wait one frame after scene load before loading data (ensures all objects are initialized)
     private IEnumerator DelayedLoadAfterSceneLoad()
     {
         yield return new WaitForEndOfFrame();
@@ -113,6 +115,7 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    // Apply player data to PlayerGUI
     public void LoadPlayerData()
     {
         // Double-check that we have a valid PlayerGUI
