@@ -95,11 +95,10 @@ namespace Azmodan.Phase2
                 if (player != null)
                 {
                     targetPlayer = player;
-                    Debug.Log("보스 2페이즈: targetPlayer 자동 설정 완료");
                 }
                 else
                 {
-                    Debug.LogWarning("보스 2페이즈: Player 태그 오브젝트를 찾지 못함!");
+                    Debug.LogWarning("Player tag object not found");
                 }
             }
 
@@ -113,13 +112,12 @@ namespace Azmodan.Phase2
                 healthBarUI.value = health;
             }
 
-            Debug.Log($"보스 2페이즈 초기 체력: {health}");
+            Debug.Log($"Boss 2 Phase Initial Physical Fitness: {health}");
         }
 
         private void PlaySpawnEffect()
         {
             if (animator != null) animator.SetTrigger("Enraged");
-            Debug.Log("보스 2페이즈: 스폰 이펙트 재생 중...");
 
             // Instantiates the spawn VFX prefab
             if (spawnEffectPrefab != null)
@@ -141,7 +139,6 @@ namespace Azmodan.Phase2
             if (Time.time - lastTeleportCheckTime >= teleportInterval && TeleportState.CanTeleport())
             {
                 lastTeleportCheckTime = Time.time;
-                Debug.Log("보스: 순간이동 시도");
                 ChangeState<TeleportState>();
             }
         }
@@ -162,9 +159,9 @@ namespace Azmodan.Phase2
         #region Attack Selection
         public void SelectAttackType()
         {
+            // The boss is already attacking
             if (attackSelected)
             {
-                Debug.Log("보스: 이미 공격이 선택되어 있음(중복 선택 방지).");
                 return;
             }
 
@@ -192,14 +189,14 @@ namespace Azmodan.Phase2
             // If none are possible we return to Walk
             if (possibleAttacks.Count == 0)
             {
-                Debug.Log("보스: 사용 가능한 공격 없음(쿨타임 or 거리 문제) → Walk 복귀");
+                Debug.Log("Walk back");
                 TransitionToWalk();
                 return;
             }
 
             // Randomly choose one of the valid attacks
             selectedAttackType = possibleAttacks[Random.Range(0, possibleAttacks.Count)];
-            Debug.Log($"보스: {selectedAttackType} 공격 선택!");
+            Debug.Log($"{selectedAttackType} Attack Selection");
 
             attackSelected = true;
             SetWaitingForAttack(true);  // Begin pre‑attack wind‑up 
@@ -253,14 +250,14 @@ namespace Azmodan.Phase2
 
         public override void TransitionToAttack()
         {
+            // The boss is already attacking
             if (attackInitiated)
             {
-                Debug.Log("보스: 이미 공격 중 (중복 호출 무시)");
                 return;
             }
             attackInitiated = true;
 
-            Debug.Log($"보스: (Phase2) TransitionToAttack - {selectedAttackType}");
+            Debug.Log($"TransitionToAttack - {selectedAttackType}");
 
             // distance check
             float distanceToPlayer = 0f;
@@ -280,9 +277,10 @@ namespace Azmodan.Phase2
                 case BossStateType.Attack3: selectedAttackDistance = closeCombatDistance; break;
             }
 
+            // Teleport when you are away from the player
             if (distanceToPlayer > selectedAttackDistance * 1.3f)
             {
-                Debug.Log("보스: (Phase2) 공격 거리 넘김 → 순간이동 시도");
+                Debug.Log("Attempt to teleport");
                 ChangeState<TeleportState>();
                 return;
             }
@@ -290,7 +288,7 @@ namespace Azmodan.Phase2
             // If out of angle -> Walk
             if (!IsPlayerInAttackAngle())
             {
-                Debug.Log("보스: (Phase2) 공격 각도 벗어남 → Walk 복귀");
+                Debug.Log("back Walk");
                 attackInitiated = false;
                 TransitionToWalk();
                 return;
@@ -324,23 +322,20 @@ namespace Azmodan.Phase2
             bool isInAngle = angleToPlayer <= 45f;
             if (!isInAngle)
             {
-                Debug.Log($"보스: 플레이어가 공격 각도 밖 (각도: {angleToPlayer:F1}°)");
+                Debug.Log($"Player out of attack angle ({angleToPlayer:F1}°)");
             }
             return isInAngle;
         }
         #endregion
 
         #region Attack Behaviors
+
+        // Summoning Guided Missiles
         public void FireMissile()
         {
-            if (missilePrefab == null)
+            if (missilePrefab == null || targetPlayer == null)
             {
-                Debug.LogWarning("보스: 미사일 프리팹이 없음");
-                return;
-            }
-            if (targetPlayer == null)
-            {
-                Debug.LogWarning("보스: 플레이어 없음 → 미사일 발사 불가");
+                Debug.LogWarning("Prefab or Player Not Found");
                 return;
             }
 
@@ -356,16 +351,19 @@ namespace Azmodan.Phase2
             }
         }
 
+        // Summoning the summoner
         public void SpawnMinions()
         {
             if (minionPrefab == null || targetPlayer == null)
             {
-                Debug.LogWarning("보스: 프리팹 또는 플레이어 없음");
+                Debug.LogWarning("Prefab or Player Not Found");
                 return;
             }
 
+            // Record the time of the last summon time
             lastMinionSummonTime = Time.time;
 
+            // Calculate boss reference position and orientation
             Vector3 bossPos = transform.position;
             Vector3 forwardDir = transform.forward;
             Vector3 rightDir = transform.right;
@@ -373,22 +371,26 @@ namespace Azmodan.Phase2
             float forwardOffset = 4f;
             float sideOffset = 1.5f;
 
+            // No more summon if the number of enemy already exists is 4 or more
             GameObject[] existing = GameObject.FindGameObjectsWithTag("Enemy");
             if (existing.Length >= 4) return;
 
+            // Two summon position offsets (left and right)
             Vector3[] offsets = new Vector3[]
             {
                 forwardDir * forwardOffset + rightDir * sideOffset,
                 forwardDir * forwardOffset - rightDir * sideOffset
             };
 
+            // Gets the actual layer number from the layer mask
             int minionLayer = GetLayerFromMask(minionLayerMask);
             if (minionLayer == -1)
             {
-                Debug.LogError("enemyLayerMask에 유효한 레이어가 없습니다!");
+                Debug.LogError("enemyLayerMask does not have a valid layer");
                 return;
             }
 
+            // Summon minions to each location
             foreach (Vector3 offset in offsets)
             {
                 Vector3 spawnPos = bossPos + offset;
@@ -397,6 +399,7 @@ namespace Azmodan.Phase2
             }
         }
 
+        // Extracted the actual layer number from LayerMask
         int GetLayerFromMask(LayerMask mask)
         {
             int maskValue = mask.value;
@@ -408,6 +411,7 @@ namespace Azmodan.Phase2
             return -1;
         }
 
+        // Calculate Y coordinates with Raycast to accurately position the ground
         private float GetGroundY(Vector3 position)
         {
             Ray ray = new Ray(position + Vector3.up * 5f, Vector3.down);
@@ -434,7 +438,6 @@ namespace Azmodan.Phase2
                     if (player != null)
                     {
                         player.TakeDamage(10); 
-                        Debug.Log("보스 근접공격 → 플레이어 데미지");
                     }
                 }
             }
@@ -442,19 +445,24 @@ namespace Azmodan.Phase2
         #endregion
 
         #region Damage & Death
+        // Applies incoming damage to the boss, plays effects, and handles death if HP reaches 0.
          public override void TakeDamage(int damage)
         {
+            // Ignore damage if within damage cooldown
             if (Time.time - lastDamageTime < damageCooldown)
                 return;
 
             lastDamageTime = Time.time;
 
+            // Apply damage scaling for Phase 2
             int actualDamage = Mathf.RoundToInt(damage * phase2DamageMultiplier);
             health -= actualDamage;
 
+            // Update HP bar
             if (healthBarUI != null)
                 healthBarUI.value = health;
 
+            // Play damage animation (if not attacking)
             if (animator != null && !isAttacking)
             {
                 animator.ResetTrigger("Attack");
@@ -465,8 +473,9 @@ namespace Azmodan.Phase2
             if (audioSource != null && hitSound != null)
                 audioSource.PlayOneShot(hitSound);
 
-            Debug.Log($"보스 2페이즈: {actualDamage} 데미지! 남은 HP: {health}");
+            Debug.Log($"HP Remaining: {health}");
 
+            // Check for death
             if (health <= 0)
             {
                 Die();
@@ -475,14 +484,14 @@ namespace Azmodan.Phase2
 
         protected override void Die()
         {
-            Debug.Log("보스 2페이즈 사망 처리");
+            Debug.Log("Boss 2 Phase dead");
 
             if (audioSource != null && deathSound != null)
             {
                 audioSource.PlayOneShot(deathSound);
             }
 
-            ChangeState<DeathState>();
+            ChangeState<DeathState>();  // Transition to DeathState
         }
         #endregion
     }
@@ -519,14 +528,12 @@ namespace Azmodan.Phase2
                         if (dist > boss.attackDistance * 1.5f)
                         {
                             phase2Boss.SetWaitingForAttack(false);
-                            Debug.Log("보스: 선딜 중 거리 벗어남 → Walk");
                             boss.TransitionToWalk();
                             return;
                         }
                         if (!phase2Boss.IsPlayerInAttackAngle())
                         {
                             phase2Boss.SetWaitingForAttack(false);
-                            Debug.Log("보스: 선딜 중 각도 벗어남 → Walk");
                             boss.TransitionToWalk();
                             return;
                         }
@@ -557,7 +564,6 @@ namespace Azmodan.Phase2
                 if (idleTimer >= phase2Boss.GetPostAttackDelay())
                 {
                     phase2Boss.SetPostAttackDelay(false);
-                    Debug.Log("보스: 후딜 종료 → Walk");
                     boss.TransitionToWalk();
                 }
                 return;
@@ -584,7 +590,6 @@ namespace Azmodan.Phase2
         {
             if (boss.targetPlayer == null)
             {
-                Debug.LogWarning("보스: Walk 중 targetPlayer 없음 → Idle 복귀");
                 boss.TransitionToIdle();
                 return;
             }
@@ -609,11 +614,8 @@ namespace Azmodan.Phase2
             }
             else
             {
-                Debug.Log("보스: 공격 범위 도달!");
-
                 if (!phase2Boss.IsPlayerInAttackAngle())
                 {
-                    Debug.Log("보스: 각도 벗어남 → 회전만 진행");
                     direction.Normalize();
                     Quaternion targetRot = Quaternion.LookRotation(direction);
                     boss.transform.rotation = Quaternion.Slerp(
@@ -641,9 +643,9 @@ namespace Azmodan.Phase2
     // Attack1State : Minions
     public class Attack1State : BossState
     {
-        private float attackTimer = 0f;
-        private float attackDuration = 2.0f;
-        private bool hasSpawnedMinions = false;
+        private float attackTimer = 0f;  // Time since the attack started
+        private float attackDuration = 2.0f;  // Total duration of the attack
+        private bool hasSpawnedMinions = false;  // Whether minions have been spawne
         private BossPhase2 phase2Boss;
 
         public Attack1State(Boss boss) : base(boss)
@@ -659,7 +661,7 @@ namespace Azmodan.Phase2
             boss.animator.ResetTrigger("Damage");
             boss.animator.SetTrigger("Attack");
 
-            Debug.Log("보스 2페이즈: 소환 공격 시작");
+            Debug.Log("start attack1");
             if (phase2Boss != null && phase2Boss.audioSource != null && phase2Boss.minionSummonSound != null)
             {
                 phase2Boss.audioSource.PlayOneShot(phase2Boss.minionSummonSound);
@@ -670,12 +672,14 @@ namespace Azmodan.Phase2
         {
             attackTimer += Time.deltaTime;
 
+            // Spawn minions after 0.5 seconds
             if (!hasSpawnedMinions && attackTimer >= 0.5f)
             {
                 phase2Boss.SpawnMinions();
                 hasSpawnedMinions = true;
             }
 
+            // After full attack duration, go back to idle with post-attack delay
             if (attackTimer >= attackDuration)
             {
                 // PostAttackDelay
@@ -687,16 +691,16 @@ namespace Azmodan.Phase2
         public override void Exit()
         {
             phase2Boss.isAttacking = false;
-            phase2Boss.ResetAttackFlags();
+            phase2Boss.ResetAttackFlags();   // Reset internal flags to allow next attack
         }
     }
 
     // Attack2State : Missile
     public class Attack2State : BossState
     {
-        private float attackTimer = 0f;
-        private float attackDuration = 3f;
-        private bool hasFiredMissile = false;
+        private float attackTimer = 0f;    // Time since attack started
+        private float attackDuration = 3f;  // Total attack duration
+        private bool hasFiredMissile = false;  // Whether missile has been fired
         private BossPhase2 phase2Boss;
 
         public Attack2State(Boss boss) : base(boss)
@@ -712,7 +716,7 @@ namespace Azmodan.Phase2
             boss.animator.SetTrigger("Attack");
 
 
-            Debug.Log("보스 2페이즈: 미사일 공격 시작");
+            Debug.Log("start attack2");
             if (phase2Boss != null && phase2Boss.audioSource != null && phase2Boss.missileSound != null)
             {
                 phase2Boss.audioSource.PlayOneShot(phase2Boss.missileSound);
@@ -730,6 +734,7 @@ namespace Azmodan.Phase2
                 hasFiredMissile = true;
             }
 
+            // Return to idle after the attack duration ends
             if (attackTimer >= attackDuration)
             {
                 phase2Boss.SetPostAttackDelay(true);
@@ -739,18 +744,17 @@ namespace Azmodan.Phase2
 
         public override void Exit()
         {
-            Debug.Log("보스 2페이즈: 미사일 공격 종료");
             phase2Boss.isAttacking = false;
-            phase2Boss.ResetAttackFlags();
+            phase2Boss.ResetAttackFlags();   // Reset internal flags to allow next attack
         }
     }
 
     // Attack3State: Combat
     public class Attack3State : BossState
     {
-        private float attackTimer = 0f;
-        private float attackDuration = 1.5f;
-        private bool hasAttacked = false;
+        private float attackTimer = 0f;  // Time since attack started
+        private float attackDuration = 1.5f;   // Duration of entire attack animation
+        private bool hasAttacked = false;  // Whether attack damage has already been applied
         private BossPhase2 phase2Boss;
 
         public Attack3State(Boss boss) : base(boss)
@@ -764,7 +768,7 @@ namespace Azmodan.Phase2
             hasAttacked = false;
             boss.animator.ResetTrigger("Damage");
             boss.animator.SetTrigger("Attack"); 
-            Debug.Log("보스 2페이즈: 근접 공격 시작");
+            Debug.Log("start attack3");
 
             if (phase2Boss != null && phase2Boss.audioSource != null && phase2Boss.closeCombatSound != null)
             {
@@ -793,9 +797,8 @@ namespace Azmodan.Phase2
 
         public override void Exit()
         {
-            Debug.Log("보스 2페이즈: 근접 공격 종료");
             phase2Boss.isAttacking = false;
-            phase2Boss.ResetAttackFlags();
+            phase2Boss.ResetAttackFlags();  // Reset internal flags to allow next attack
         }
     }
 
@@ -803,25 +806,27 @@ namespace Azmodan.Phase2
     public class TeleportState : BossState
     {
         private BossPhase2 phase2Boss;
-        private Renderer[] renderers;
+        private Renderer[] renderers;  // Materials for opacity control
 
         private float fadeOutDuration = 0.5f;
         private float fadeInDuration = 0.5f;
 
         private static float teleportCooldown = 10f;
-        private static float lastTeleportTime = -9999f;
+        private static float lastTeleportTime = -9999f;  // Last teleport timestamp
 
         public TeleportState(Boss boss) : base(boss)
         {
             phase2Boss = boss as BossPhase2;
         }
 
+        // Called when teleport state is entered. Begins the teleport coroutine
         public override void Enter()
         {
             renderers = phase2Boss.GetComponentsInChildren<Renderer>();
             phase2Boss.StartCoroutine(DramaticTeleportRoutine());
         }
 
+        // Static method to check if teleport is off cooldown
         public static bool CanTeleport()
         {
             return Time.time - lastTeleportTime >= teleportCooldown;
@@ -835,6 +840,7 @@ namespace Azmodan.Phase2
             if (phase2Boss.audioSource != null && phase2Boss.teleportOutSound != null)
                 phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportOutSound);
 
+            // First fade out and move backward
             while (t < fadeOutDuration)
             {
                 t += Time.deltaTime;
@@ -843,10 +849,12 @@ namespace Azmodan.Phase2
                 yield return null;
             }
 
+            // Move behind current position
             Vector3 backPos = phase2Boss.transform.position - phase2Boss.transform.forward * 5f;
             backPos.y = 1.5f;
             phase2Boss.transform.position = backPos;
 
+            // Fade back in
             t = 0f;
             while (t < fadeInDuration)
             {
@@ -856,12 +864,13 @@ namespace Azmodan.Phase2
                 yield return null;
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);  // Pause briefly before next phase
 
             t = 0f;
             if (phase2Boss.audioSource != null && phase2Boss.teleportOutSound != null)
                 phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportOutSound);
 
+            // Second fade out
             while (t < fadeOutDuration)
             {
                 t += Time.deltaTime;
@@ -870,6 +879,7 @@ namespace Azmodan.Phase2
                 yield return null;
             }
 
+            // Move near player and face them
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
@@ -883,6 +893,7 @@ namespace Azmodan.Phase2
                 phase2Boss.transform.rotation = targetRot;
             }
 
+            // Final fade in
             t = 0f;
             if (phase2Boss.audioSource != null && phase2Boss.teleportInSound != null)
                 phase2Boss.audioSource.PlayOneShot(phase2Boss.teleportInSound);
@@ -895,10 +906,11 @@ namespace Azmodan.Phase2
                 yield return null;
             }
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.3f);  // Short delay before returning to Idle
             boss.TransitionToIdle();
         }
 
+        // Applies transparency to all materials on the boss
         private void ApplyOpacity(float alpha)
         {
             if (renderers == null) return;
@@ -922,6 +934,7 @@ namespace Azmodan.Phase2
             }
         }
     }
+
     // DeathState
     public class DeathState : BossState
     {
@@ -931,13 +944,14 @@ namespace Azmodan.Phase2
         {
             if (boss.animator != null) boss.animator.SetTrigger("Death");
 
+            // Notify the GameManager that the player has won
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.SetState(GameState.Victory);
             }
             else
             {
-                Debug.LogWarning("GameManager를 찾을 수 없습니다.");
+                Debug.LogWarning("GameManager not found");
             }
         }
 
