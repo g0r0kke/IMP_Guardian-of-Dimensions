@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
-// 상태 기본 클래스
+// Base state class for boss behavior
 public abstract class BossState : IState
 {
     protected Boss boss;
@@ -16,6 +15,7 @@ public abstract class BossState : IState
     public virtual void Exit() { }
 }
 
+// Base class for idle states
 public abstract class IdleState : BossState
 {
     protected float idleTimer = 0f;
@@ -26,60 +26,62 @@ public abstract class IdleState : BossState
     {
         idleTimer = 0f;
         boss.animator.SetTrigger("Idle");
-        // Debug.Log("보스: Idle 상태 시작");
+        // Debug.Log("Boss: Idle state started");
     }
 
     public override void Update()
     {
-        // 타이머 증가
+        // Increment timer
         idleTimer += Time.deltaTime;
         
-        // 자식 클래스에서 구현할 상태 로직 처리
+        // Handle state logic in derived classes
         HandleIdle();
     }
     
-    // 자식 클래스에서 구현할 추상 메서드
+    // Abstract method to be implemented by derived classes
     protected abstract void HandleIdle();
     
     public override void Exit()
     {
-        // Debug.Log("보스: Idle 상태 종료");
+        // Debug.Log("Boss: Idle state ended");
     }
 }
 
+// Base class for walk states
 public abstract class WalkState : BossState
 {
     public WalkState(Boss boss) : base(boss) { }
 
     public override void Enter()
     {
-        // Walk 애니메이션 재생
+        // Play walk animation
         boss.animator.SetTrigger("Walk");
-        // Debug.Log("보스: Walk 상태 시작");
+        // Debug.Log("Boss: Walk state started");
     }
 
     public override void Update()
     {
-        // 타겟 플레이어가 없거나 파괴된 경우 다시 Idle 상태로
-        if (boss.targetPlayer == null)
+        // If target player is null or destroyed, transition back to Idle
+        if (!boss.targetPlayer)
         {
             boss.TransitionToIdle();
             return;
         }
 
-        // 자식 클래스에서 구현할 이동 로직 처리
+        // Handle movement logic in derived classes
         HandleWalk();
     }
     
-    // 자식 클래스에서 구현할 추상 메서드
+    // Abstract method to be implemented by derived classes
     protected abstract void HandleWalk();
     
     public override void Exit()
     {
-        // Debug.Log("보스: Walk 상태 종료");
+        // Debug.Log("Boss: Walk state ended");
     }
 }
 
+// Stun state for when boss takes damage
 public class StunState : BossState
 {
     protected float stunTimer = 0f;
@@ -91,7 +93,7 @@ public class StunState : BossState
     {
         stunTimer = 0f;
         boss.animator.SetBool("Damage", true);
-        // Debug.Log("보스: 스턴 상태 시작");
+        // Debug.Log("Boss: Stun state started");
     }
 
     public override void Update()
@@ -99,12 +101,12 @@ public class StunState : BossState
         stunTimer += Time.deltaTime;
         if (stunTimer >= stunDuration)
         {
-            // BossPhase1의 경우 이전 상태로 복귀
+            // For BossPhase1, return to previous state
             if (boss is Azmodan.Phase1.BossPhase1 phase1Boss)
             {
                 boss.animator.SetBool("Damage", false);
                 
-                // BossPhase1의 previousState 값에 따라 다른 상태로 전환
+                // Transition to different state based on BossPhase1's previousState
                 IState prevState = phase1Boss.GetPreviousState();
                 if (prevState is IdleState)
                 {
@@ -116,13 +118,13 @@ public class StunState : BossState
                 }
                 else
                 {
-                    // 기본값으로 Idle
+                    // Default to Idle
                     boss.TransitionToIdle();
                 }
             }
             else
             {
-                // 기본 동작: Idle 상태로 전환
+                // Default behavior: Transition to Idle state
                 boss.TransitionToIdle();
             }
         }
@@ -131,10 +133,11 @@ public class StunState : BossState
     public override void Exit()
     {
         boss.animator.SetBool("Damage", false);
-        // Debug.Log("보스: 스턴 상태 종료");
+        // Debug.Log("Boss: Stun state ended");
     }
 }
 
+// Death state for boss death behavior
 public class DeathState : BossState
 {
     private float deathTimer = 0f;
@@ -148,10 +151,10 @@ public class DeathState : BossState
         deathTimer = 0f;
         animationComplete = false;
         
-        // 명시적인 애니메이션 트리거 설정은 하지 않음
-        // 이미 TransitionToDeath에서 설정했기 때문
+        // No explicit animation trigger setting needed
+        // Already set in TransitionToDeath
         
-        // Debug.Log("보스: 사망 상태 시작");
+        // Debug.Log("Boss: Death state started");
     }
 
     public override void Update()
@@ -163,7 +166,7 @@ public class DeathState : BossState
         if (deathTimer >= deathDuration)
         {
             animationComplete = true;
-            // Debug.Log("보스: 사망 애니메이션 완료");
+            // Debug.Log("Boss: Death animation completed");
             
             boss.gameObject.SetActive(false);
         }
@@ -171,6 +174,6 @@ public class DeathState : BossState
 
     public override void Exit()
     {
-        // Debug.Log("보스: 사망 상태 종료 - 이 메시지가 출력되면 상태 전환에 문제가 있음");
+        // Debug.Log("Boss: Death state ended - If this message appears, there's an issue with state transition");
     }
 }

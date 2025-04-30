@@ -2,34 +2,33 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Implements a virtual joystick for movement control with wall collision detection
+/// </summary>
 public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField] private RectTransform lever;
     private RectTransform rectTransform;
     [SerializeField, Range(10f, 150f)] private float leverRange = 50f;
-    [SerializeField] private float distancePerFrame = 2.0f; // 이동 속도
+    [SerializeField] private float distancePerFrame = 2.0f; // Movement speed
 
-    // 레이캐스트 관련 변수
-    [SerializeField] private float raycastDistance = 0.5f; // 레이캐스트 거리
-    [SerializeField] private LayerMask wallLayer; // Wall 레이어 마스크
+    // Raycast related variables
+    [SerializeField] private float raycastDistance = 0.5f; // Raycast distance
+    [SerializeField] private LayerMask wallLayer; // Wall layer mask
     
     private Vector2 inputVector;
     private bool isInput;
     
-    // XR Origin 참조
+    // XR Origin reference
     [HideInInspector] public Transform xrOrigin;
     
-    // 카메라 참조 (방향 계산용)
+    // Camera reference (for direction calculation)
     private Camera arCamera;
 
-    // 플레이어 캡슐 콜라이더 참조
+    // Player capsule collider reference
     private CapsuleCollider playerCollider;
     
-    // 조이스틱 visible 제어를 위한 이미지 컴포넌트
-    private Image joystickImage;
-    private Image leverImage;
-    
-    // 캔버스 스케일러 참조
+    // Canvas scaler reference
     private Canvas parentCanvas;
     
     private void Awake()
@@ -37,29 +36,22 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         rectTransform = GetComponent<RectTransform>();
         arCamera = Camera.main;
         
-        // 조이스틱 배경과 레버의 이미지 컴포넌트 가져오기
-        joystickImage = GetComponent<Image>();
-        if (lever != null)
-        {
-            leverImage = lever.GetComponent<Image>();
-        }
-        
-        // 부모 캔버스 찾기
+        // Find parent canvas
         parentCanvas = GetComponentInParent<Canvas>();
         
-        // Player 태그를 가진 오브젝트에서 콜라이더 찾기
+        // Find collider on object with Player tag
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
+        if (playerObject)
         {
             playerCollider = playerObject.GetComponent<CapsuleCollider>();
-            if (playerCollider == null)
+            if (!playerCollider)
             {
-                // 직접적으로 연결된 콜라이더가 없으면 자식 오브젝트에서 찾기
+                // If no direct collider, check in children
                 playerCollider = playerObject.GetComponentInChildren<CapsuleCollider>();
             }
         }
         
-        // Wall 레이어 설정
+        // Set up wall layer
         wallLayer = LayerMask.GetMask("Wall");
     }
     
@@ -71,115 +63,133 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         }
     }
     
+    /// <summary>
+    /// Called when pointer is pressed on joystick
+    /// </summary>
     public void OnPointerDown(PointerEventData eventData)
     {
-        // 레버 초기화
+        // Reset lever position
         lever.anchoredPosition = Vector2.zero;
         isInput = true;
-        // Debug.Log("[조이스틱] 터치 시작");
+        // Debug.Log("[Joystick] Touch started");
     }
     
+    /// <summary>
+    /// Called when pointer is dragged on joystick
+    /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
         if (!isInput) return;
         
-        // 스크린 좌표를 로컬 좌표로 변환
+        // Convert screen coordinates to local coordinates
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             rectTransform,
             eventData.position,
             parentCanvas.worldCamera,
             out Vector2 localPoint))
         {
-            // 로컬 좌표계에서의 방향 계산
+            // Calculate direction in local coordinate system
             Vector2 inputDir = localPoint;
             
-            // 최대 범위 제한
+            // Limit to maximum range
             Vector2 clampedDir = inputDir.magnitude < leverRange ? inputDir 
                 : inputDir.normalized * leverRange;
                 
             lever.anchoredPosition = clampedDir;
             inputVector = clampedDir / leverRange;
             
-            // Debug.Log("[조이스틱] 레버 위치: " + clampedDir);
+            // Debug.Log("[Joystick] Lever position: " + clampedDir);
         }
     }
     
+    /// <summary>
+    /// Called when pointer is released from joystick
+    /// </summary>
     public void OnPointerUp(PointerEventData eventData)
     {
-        // 값 초기화
+        // Reset values
         lever.anchoredPosition = Vector2.zero;
         inputVector = Vector2.zero;
         isInput = false;
-        // Debug.Log("[조이스틱] 터치 종료");
+        // Debug.Log("[Joystick] Touch ended");
     }
     
+    /// <summary>
+    /// Processes joystick input for character movement
+    /// </summary>
     private void InputControlVector()
     {
-        if (xrOrigin != null && arCamera != null)
+        if (xrOrigin && arCamera)
         {
-            // 카메라 기준 방향 가져오기
+            // Get camera-based directions
             Vector3 forward = arCamera.transform.forward;
             Vector3 right = arCamera.transform.right;
             
-            // Y축(수직) 성분 제거하여 수평면에서만 이동하도록 설정
+            // Remove Y-axis (vertical) component to move only on horizontal plane
             forward.y = 0;
             right.y = 0;
             forward.Normalize();
             right.Normalize();
             
-            // 입력벡터에 따른 이동 방향 계산
+            // Calculate movement direction based on input vector
             Vector3 moveDirection = forward * inputVector.y + right * inputVector.x;
             
-            // 이동 거리 계산
+            // Calculate move distance
             float moveDistance = distancePerFrame * Time.deltaTime;
             
-            // 이동할 위치 계산
+            // Calculate target position
             Vector3 targetPosition = xrOrigin.position + moveDirection * moveDistance;
             
-            // 벽 충돌 체크 및 이동
+            // Check wall collision and move
             if (!CheckWallCollision(moveDirection, moveDistance))
             {
-                // 벽과 충돌하지 않으면 이동
+                // Move if no wall collision
                 xrOrigin.position = targetPosition;
             }
         }
     }
     
+    /// <summary>
+    /// Checks for wall collisions in the movement direction
+    /// </summary>
+    /// <param name="moveDirection">Direction of movement</param>
+    /// <param name="moveDistance">Distance to move</param>
+    /// <returns>True if wall collision detected, false otherwise</returns>
     private bool CheckWallCollision(Vector3 moveDirection, float moveDistance)
     {
-        if (playerCollider == null) return false;
+        if (!playerCollider) return false;
         
-        // 플레이어 캡슐 정보 가져오기
+        // Get player capsule information
         Vector3 colliderCenter = xrOrigin.position + playerCollider.center;
         float colliderRadius = playerCollider.radius;
         float colliderHeight = playerCollider.height;
         
-        // 레이캐스트 시작 위치들 (캡슐 콜라이더의 경계 부분에서 시작)
+        // Raycast start positions (from capsule collider boundaries)
         Vector3[] raycastOrigins = new Vector3[]
         {
-            colliderCenter, // 중앙
-            colliderCenter + Vector3.up * (colliderHeight * 0.5f - colliderRadius), // 상단
-            colliderCenter + Vector3.down * (colliderHeight * 0.5f - colliderRadius) // 하단
+            colliderCenter, // Center
+            colliderCenter + Vector3.up * (colliderHeight * 0.5f - colliderRadius), // Top
+            colliderCenter + Vector3.down * (colliderHeight * 0.5f - colliderRadius) // Bottom
         };
         
-        // 여러 방향으로 레이캐스트를 발사하여 벽 충돌 확인
+        // Cast rays in multiple directions to check for wall collisions
         foreach (Vector3 origin in raycastOrigins)
         {
-            // 디버그 레이 표시
+            // Show debug ray
             Debug.DrawRay(origin, moveDirection * (raycastDistance + colliderRadius), Color.red, 0.1f);
             
-            // 레이캐스트로 벽 감지
+            // Detect walls with raycast
             if (Physics.Raycast(origin, moveDirection, out RaycastHit hit, raycastDistance + colliderRadius, wallLayer))
             {
-                // 벽과의 거리가 콜라이더 반경보다 작으면 충돌로 간주
+                // Consider collision if distance is less than collider radius
                 if (hit.distance <= colliderRadius + raycastDistance)
                 {
-                    Debug.Log("벽 감지: " + hit.collider.name + ", 거리: " + hit.distance);
-                    return true; // 충돌 발생
+                    Debug.Log("Wall detected: " + hit.collider.name + ", distance: " + hit.distance);
+                    return true; // Collision occurred
                 }
             }
         }
         
-        return false; // 충돌 없음
+        return false; // No collision
     }
 }

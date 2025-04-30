@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class BossDirectionIndicator : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float borderOffset = 20f;      // 화면 가장자리로부터의 오프셋
-    [SerializeField] private Transform playerTransform;     // 플레이어 트랜스폼 레퍼런스 (없으면 Player 태그로 자동 찾음)
+    [SerializeField] private float borderOffset = 20f;      // Offset from the screen edge
+    [SerializeField] private Transform playerTransform;     // Player transform reference (if null, finds object with Player tag)
     
-    private Camera mainCamera;                              // 메인 카메라 레퍼런스
+    private Camera mainCamera;                              // Main camera reference
     private Canvas parentCanvas;
     private RectTransform canvasRect;
     private Image indicatorImage;
@@ -16,141 +16,133 @@ public class BossDirectionIndicator : MonoBehaviour
     
     private void Start()
     {
-        // 필요한 컴포넌트 참조 가져오기
+        // Get required component references
         indicatorImage = GetComponent<Image>();
         indicatorRect = GetComponent<RectTransform>();
         
-        // 메인 카메라 사용
+        // Use main camera
         mainCamera = Camera.main;
-        if (mainCamera == null)
+        if (!mainCamera)
         {
-            Debug.LogError("BossDirectionIndicator: 메인 카메라를 찾을 수 없습니다!");
+            Debug.LogError("BossDirectionIndicator: Cannot find main camera!");
         }
         
-        // 플레이어 트랜스폼이 설정되지 않은 경우 Player 태그로 찾기
-        if (playerTransform == null)
+        // If player transform is not set, find object with Player tag
+        if (!playerTransform)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
+            if (player)
             {
                 playerTransform = player.transform;
             }
             else
             {
-                Debug.LogWarning("BossDirectionIndicator: Player 태그를 가진 게임 오브젝트를 찾을 수 없습니다!");
+                Debug.LogWarning("BossDirectionIndicator: Cannot find game object with Player tag!");
             }
         }
         
-        // 부모 캔버스 찾기
+        // Find parent canvas
         parentCanvas = GetComponentInParent<Canvas>();
-        if (parentCanvas != null)
+        if (parentCanvas)
         {
             canvasRect = parentCanvas.GetComponent<RectTransform>();
         }
         else
         {
-            Debug.LogError("BossDirectionIndicator: 부모 캔버스를 찾을 수 없습니다!");
+            Debug.LogError("BossDirectionIndicator: Cannot find parent canvas!");
         }
         
-        // Enemy 태그를 가진 게임 오브젝트 중 Boss 컴포넌트가 있는 것만 찾기
+        // Find game object with Enemy tag that has Boss component
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
         {
-            // Boss 컴포넌트가 있는지 확인 (어떤 Boss 파생 클래스든 상관없음)
+            // Check if it has any Boss component (any derived class is fine)
             Boss bossComponent = enemy.GetComponent<Boss>();
-            if (bossComponent != null)
+            if (bossComponent)
             {
                 targetBoss = enemy.transform;
-                break; // 첫 번째 보스를 찾으면 루프 종료
+                break; // End loop after finding the first boss
             }
         }
     
-        if (targetBoss == null)
+        if (!targetBoss)
         {
-            Debug.LogWarning("BossDirectionIndicator: Boss 컴포넌트를 가진 적을 찾을 수 없습니다!");
+            Debug.LogWarning("BossDirectionIndicator: Cannot find enemy with Boss component!");
             indicatorImage.enabled = false;
         }
-        
-        // 권장 앵커 설정 (코드로 설정하려면 아래 주석 해제)
-        // indicatorRect.anchorMin = new Vector2(0.5f, 0.5f);
-        // indicatorRect.anchorMax = new Vector2(0.5f, 0.5f);
-        // indicatorRect.pivot = new Vector2(0.5f, 0.5f);
     }
     
     private void Update()
     {
-        // 타겟 보스나 카메라가 없으면 인디케이터 숨기기
-        if (targetBoss == null || mainCamera == null)
+        // Hide indicator if target boss or camera is missing
+        if (!targetBoss || !mainCamera)
         {
             indicatorImage.enabled = false;
             return;
         }
     
-        // 보스의 월드 위치를 뷰포트 좌표로 변환 (0~1 범위)
+        // Convert boss world position to viewport coordinates (0-1 range)
         Vector3 viewportPosition = mainCamera.WorldToViewportPoint(targetBoss.position);
     
-        // 보스가 카메라 뒤에 있는지 확인 (z < 0)
+        // Check if boss is behind camera (z < 0)
         bool isBossBehind = viewportPosition.z < 0;
     
-        // 보스가 화면 밖에 있는지 확인
+        // Check if boss is off-screen
         bool isOffScreen = viewportPosition.x < 0 || viewportPosition.x > 1 || 
                            viewportPosition.y < 0 || viewportPosition.y > 1;
     
-        // 보스가 화면 밖에 있거나 카메라 뒤에 있을 때만 인디케이터 표시
+        // Show indicator only when boss is off-screen or behind camera
         indicatorImage.enabled = isOffScreen || isBossBehind;
     
-        // 인디케이터가 비활성화된 경우 더 이상 계산하지 않음
+        // Stop calculations if indicator is disabled
         if (!indicatorImage.enabled)
         {
             return;
         }
 
-        // 캔버스 크기 얻기
+        // Get canvas size
         Vector2 canvasSize = canvasRect.sizeDelta;
     
-        // 화면 테두리를 따라 인디케이터 위치 계산
+        // Calculate indicator position along screen border
         Vector2 indicatorPos = CalculateIndicatorPosition(viewportPosition, canvasSize);
         
-        // 보스의 수직 중앙 위치 계산
+        // Calculate boss vertical center position
         Renderer bossRenderer = targetBoss.GetComponent<Renderer>();
         Vector3 bossCenterPosition;
         
-        if (bossRenderer != null)
+        if (bossRenderer)
         {
-            // 렌더러가 있는 경우 바운드의 수직 중앙점 사용
+            // Use bounds center point for vertical middle if renderer exists
             bossCenterPosition = targetBoss.position;
-            bossCenterPosition.y = bossRenderer.bounds.center.y; // 수직 중앙만 사용
+            bossCenterPosition.y = bossRenderer.bounds.center.y; // Use only vertical center
         }
         else
         {
-            // 렌더러가 없는 경우 그냥 트랜스폼 위치 사용
+            // Use transform position if no renderer
             bossCenterPosition = targetBoss.position;
         }
         
-        // 보스 위치를 스크린 좌표로 변환
-        Vector3 bossViewportPos = mainCamera.WorldToViewportPoint(bossCenterPosition);
-        
-        // 플레이어 위치를 스크린 좌표로 변환
+        // Convert player position to screen coordinates
         Vector2 playerScreenPos;
-        if (playerTransform != null)
+        if (playerTransform)
         {
             playerScreenPos = mainCamera.WorldToScreenPoint(playerTransform.position);
-            playerScreenPos.y = Screen.height - playerScreenPos.y; // UI 좌표계로 변환
+            playerScreenPos.y = Screen.height - playerScreenPos.y; // Convert to UI coordinate system
         }
         else
         {
-            // 플레이어 참조가 없으면 화면 중앙을 사용
+            // Use screen center if no player reference
             playerScreenPos = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
         }
         
-        // 보스 위치를 스크린 좌표로 변환
+        // Convert boss position to screen coordinates
         Vector2 bossScreenPos = mainCamera.WorldToScreenPoint(bossCenterPosition);
-        bossScreenPos.y = Screen.height - bossScreenPos.y; // UI 좌표계로 변환
+        bossScreenPos.y = Screen.height - bossScreenPos.y; // Convert to UI coordinate system
         
         Vector2 directionToIndicator;
         if (isBossBehind)
         {
-            // 보스가 뒤에 있는 경우, 방향을 반대로
+            // If boss is behind, reverse direction
             directionToIndicator = (playerScreenPos - bossScreenPos).normalized;
         }
         else
@@ -160,39 +152,39 @@ public class BossDirectionIndicator : MonoBehaviour
         
         float angle = Mathf.Atan2(directionToIndicator.y, directionToIndicator.x) * Mathf.Rad2Deg;
         
-        // 인디케이터 위치와 회전 설정
+        // Set indicator position and rotation
         indicatorRect.anchoredPosition = indicatorPos;
-        indicatorRect.localRotation = Quaternion.Euler(0, 0, angle - 90); // -90도는 화살표가 위쪽을 가리키도록 조정
+        indicatorRect.localRotation = Quaternion.Euler(0, 0, angle - 90); // -90 degrees to make arrow point upward
     }
     
     private Vector2 CalculateIndicatorPosition(Vector3 viewportPos, Vector2 canvasSize)
     {
-        // 화면 크기의 절반
+        // Half of screen size
         float halfWidth = canvasSize.x * 0.5f;
         float halfHeight = canvasSize.y * 0.5f;
         
-        // 화면 테두리 경계값 (오프셋 적용)
+        // Screen border boundaries (with offset)
         float edgeX = halfWidth - borderOffset;
         float edgeY = halfHeight - borderOffset;
         
-        // 뷰포트 좌표를 -0.5 ~ 0.5 범위로 변환 (화면 중앙이 원점)
+        // Convert viewport coordinates to -0.5 ~ 0.5 range (screen center is origin)
         float viewX = viewportPos.x - 0.5f;
         float viewY = viewportPos.y - 0.5f;
         
-        // 화면 밖에 있는지 여부 확인
+        // Check if boss is off-screen
         bool isOffScreen = viewportPos.x < 0 || viewportPos.x > 1 || 
                           viewportPos.y < 0 || viewportPos.y > 1;
         
-        // 카메라 뒤에 있는지 여부 확인
+        // Check if boss is behind camera
         bool isBehind = viewportPos.z < 0;
         
-        // 방향 벡터 계산 (정규화)
+        // Calculate direction vector (normalized)
         Vector2 direction;
         
         if (isBehind)
         {
-            // 보스가 카메라 뒤에 있으면 아래쪽을 가리키되, 좌우는 보스 위치 반영
-            // x 좌표는 유지하고 y는 항상 아래쪽(-1)으로 설정
+            // If boss is behind camera, point downward but reflect horizontal position
+            // Keep x coordinate but set y to always point down (-1)
             direction = new Vector2(viewX, -1).normalized;
         }
         else
@@ -200,23 +192,23 @@ public class BossDirectionIndicator : MonoBehaviour
             direction = new Vector2(viewX, viewY).normalized;
         }
         
-        // 화면 테두리 위치 계산
+        // Calculate position on screen border
         Vector2 indicatorPos;
         
         if (isOffScreen || isBehind)
         {
-            // 보스가 화면 밖에 있거나 카메라 뒤에 있는 경우
-            // 화면 테두리를 따라 표시
+            // If boss is off-screen or behind camera
+            // Display along screen border
             
             if (isBehind)
             {
-                // 카메라 뒤에 있을 때, 아래쪽으로 가리키되 좌우는 보스 위치 기준
+                // When behind camera, point downward but horizontal position follows boss
                 float xPos = Mathf.Clamp(direction.x * edgeX, -edgeX, edgeX);
                 indicatorPos = new Vector2(xPos, -edgeY);
             }
             else if (Mathf.Abs(direction.x) * edgeY > Mathf.Abs(direction.y) * edgeX)
             {
-                // x방향 테두리와 교차
+                // Intersect with x-axis border
                 float sign = Mathf.Sign(direction.x);
                 indicatorPos = new Vector2(
                     sign * edgeX,
@@ -225,7 +217,7 @@ public class BossDirectionIndicator : MonoBehaviour
             }
             else
             {
-                // y방향 테두리와 교차
+                // Intersect with y-axis border
                 float sign = Mathf.Sign(direction.y);
                 indicatorPos = new Vector2(
                     (direction.x / direction.y) * sign * edgeY,
@@ -235,14 +227,14 @@ public class BossDirectionIndicator : MonoBehaviour
         }
         else
         {
-            // 보스가 화면 안에 있는 경우
-            // 보스의 위치를 뷰포트에서 캔버스 좌표로 변환
+            // If boss is on-screen
+            // Convert boss position from viewport to canvas coordinates
             indicatorPos = new Vector2(
                 viewX * canvasSize.x,
                 viewY * canvasSize.y
             );
             
-            // 인디케이터가 화면 테두리를 벗어나지 않도록 조정
+            // Ensure indicator stays within screen border
             float maxMagnitude = Mathf.Min(edgeX, edgeY);
             if (indicatorPos.magnitude > maxMagnitude)
             {

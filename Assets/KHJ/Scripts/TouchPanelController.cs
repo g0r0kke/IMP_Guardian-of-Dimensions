@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Manages touch input on panel and dynamically positions virtual joystick
+/// </summary>
 public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    [Tooltip("조이스틱 오브젝트")]
+    [Tooltip("Joystick game object")]
     [SerializeField] private GameObject joystickObject;
     
-    [Tooltip("XR Origin 참조")]
+    [Tooltip("XR Origin reference")]
     [SerializeField] private Transform xrOrigin;
     
     private VirtualJoystick joystickScript;
@@ -15,42 +18,45 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
     
     private void Awake()
     {
-        // 캔버스 참조 가져오기
+        // Get canvas reference
         parentCanvas = GetComponentInParent<Canvas>();
-        if (parentCanvas == null)
+        if (!parentCanvas)
         {
             Debug.LogError("캔버스를 찾을 수 없습니다!");
         }
         
-        // 조이스틱 스크립트 및 RectTransform 참조 가져오기
-        if (joystickObject != null)
+        // Get joystick script and RectTransform references
+        if (joystickObject)
         {
             joystickScript = joystickObject.GetComponent<VirtualJoystick>();
             joystickRectTransform = joystickObject.GetComponent<RectTransform>();
             
-            // XR Origin 참조 설정
-            if (xrOrigin != null && joystickScript != null)
+            // Set XR Origin reference
+            if (xrOrigin && joystickScript)
             {
                 joystickScript.xrOrigin = xrOrigin;
             }
             
-            // 처음에는 조이스틱 비활성화
+            // Initially hide joystick
             joystickObject.SetActive(false);
         }
         else
         {
-            Debug.LogError("조이스틱 오브젝트가 설정되지 않았습니다!");
+            Debug.LogError("Joystick object not assigned!");
         }
     }
     
+    /// <summary>
+    /// Called when pointer is pressed on the panel
+    /// </summary>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (joystickObject == null || joystickRectTransform == null) return;
+        if (!joystickObject || !joystickRectTransform) return;
         
-        // 조이스틱 활성화
+        // Activate joystick
         joystickObject.SetActive(true);
         
-        // 터치 위치로 조이스틱 이동
+        // Move joystick to touch position
         Vector2 localPoint;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             parentCanvas.transform as RectTransform,
@@ -59,33 +65,39 @@ public class TouchPanelController : MonoBehaviour, IPointerDownHandler, IPointer
             out localPoint))
         {
             joystickRectTransform.localPosition = localPoint;
-            // Debug.Log("조이스틱 위치 설정: " + localPoint);
+            // Debug.Log("Joystick position set: " + localPoint);
         }
         
-        // 조이스틱 스크립트에 포인터 이벤트 전달
-        if (joystickScript != null)
+        // Forward pointer event to joystick script
+        if (joystickScript)
         {
             joystickScript.OnPointerDown(eventData);
         }
     }
     
+    /// <summary>
+    /// Called when pointer is dragged on the panel
+    /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        // 드래그 이벤트를 조이스틱에 전달
-        if (joystickScript != null && joystickObject.activeSelf)
+        // Forward drag event to joystick
+        if (joystickScript && joystickObject.activeSelf)
         {
             joystickScript.OnDrag(eventData);
         }
     }
     
+    /// <summary>
+    /// Called when pointer is released from the panel
+    /// </summary>
     public void OnPointerUp(PointerEventData eventData)
     {
-        // 포인터 업 이벤트를 조이스틱에 전달
-        if (joystickScript != null)
+        // Forward pointer up event to joystick
+        if (joystickScript)
         {
             joystickScript.OnPointerUp(eventData);
             
-            // 조이스틱 비활성화 (조이스틱 스크립트의 OnPointerUp 함수가 실행된 후)
+            // Hide joystick (after joystick script's OnPointerUp is executed)
             joystickObject.SetActive(false);
         }
     }

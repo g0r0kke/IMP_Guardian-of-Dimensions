@@ -2,59 +2,62 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Controls screen fade animations for scene transitions
+/// </summary>
 public class FadeAnimationController : MonoBehaviour
 {
-    // Animation 컴포넌트 참조
+    // Animation component reference
     private Animation imageAnimation;
     
-    // 애니메이션 클립 참조
-    [SerializeField] private AnimationClip fadeInClip;  // 페이드인(화면이 어두워지는) 애니메이션
-    [SerializeField] private AnimationClip fadeOutClip; // 페이드아웃(화면이 밝아지는) 애니메이션
+    // Animation clip references
+    [SerializeField] private AnimationClip fadeInClip; // Fade-in (screen darkens)
+    [SerializeField] private AnimationClip fadeOutClip; // Fade-out (screen brightens)
     
-    // 캔버스
+    // Canvas reference
     private Canvas canvas;
     
-    // 페이드 효과가 적용될 이미지
+    // Image that the fade effect will be applied to
     [SerializeField] private Image fadeImage;
     
-    // 애니메이션 완료 후 호출될 콜백
+    // Callback to be invoked after animation completion
     public delegate void FadeAnimationComplete();
     private FadeAnimationComplete onComplete;
     
     void Awake()
     {
-        // Canvas 컴포넌트 가져오기
+        // Get Canvas component
         canvas = GetComponent<Canvas>();
         
         if (!canvas)
         {
-            Debug.LogError("Canvas 컴포넌트를 찾을 수 없습니다!");
+            Debug.LogError("Cannot find Canvas component!");
         }
         
-        // 페이드 이미지 확인
+        // Check fade image
         if (!fadeImage)
         {
-            Debug.LogError("Fade Image가 할당되지 않았습니다!");
+            Debug.LogError("Fade Image is not assigned!");
         }
         else
         {
-            // Image의 Animation 컴포넌트 가져오기
+            // Get Animation component from Image
             imageAnimation = fadeImage.GetComponent<Animation>();
             
             if (!imageAnimation)
             {
-                Debug.LogError("Image에 Animation 컴포넌트를 찾을 수 없습니다!");
+                Debug.LogError("Cannot find Animation component on Image!");
                 return;
             }
             
-            // 애니메이션 클립을 Animation 컴포넌트에 추가
+            // Add animation clips to Animation component
             if (fadeInClip)
             {
                 imageAnimation.AddClip(fadeInClip, "FadeIn");
             }
             else
             {
-                Debug.LogError("FadeIn 애니메이션 클립이 할당되지 않았습니다!");
+                Debug.LogError("FadeIn animation clip is not assigned!");
             }
             
             if (fadeOutClip)
@@ -63,68 +66,73 @@ public class FadeAnimationController : MonoBehaviour
             }
             else
             {
-                Debug.LogError("FadeOut 애니메이션 클립이 할당되지 않았습니다!");
+                Debug.LogError("FadeOut animation clip is not assigned!");
             }
             
-            // 자동 재생 방지
+            // Prevent automatic playback
             imageAnimation.playAutomatically = false;
         }
     }
 
     void Start()
     {
-        // Canvas가 루트 게임오브젝트인지 확인
+        // Check if Canvas is a root GameObject
         if (transform.parent)
         {
-            Debug.LogWarning("Canvas가 루트 게임오브젝트가 아닙니다. 씬 전환 시 유지되지 않을 수 있습니다.");
+            Debug.LogWarning("Canvas is not a root GameObject. It may not persist between scene transitions.");
         }
         
+        // Make this object persist between scene loads
         DontDestroyOnLoad(gameObject);
     }
     
-    // 페이드 애니메이션 재생 (fadeIn이 true면 페이드인, false면 페이드아웃)
+    /// <summary>
+    /// Plays fade animation (fadeIn=true for fade-in, false for fade-out)
+    /// </summary>
+    /// <param name="fadeIn">Direction of fade animation</param>
+    /// <param name="callback">Optional callback after animation completes</param>
     public void PlayFadeAnimation(bool fadeIn, FadeAnimationComplete callback = null)
     {
         if (!imageAnimation || !fadeImage) return;
 
-        // 콜백 저장
+        // Store callback
         onComplete = callback;
         
-        // Canvas의 sortingOrder 설정
+        // Set Canvas sorting order
         if (canvas)
         {
             canvas.sortingOrder = 2;
         }
         
-        // 이미 재생 중인 애니메이션 중지
-        // imageAnimation.Stop();
-        
-        // 선택한 애니메이션 재생
+        // Select and play animation
         string clipName = fadeIn ? "FadeIn" : "FadeOut";
         imageAnimation.Play(clipName);
         
-        // 애니메이션 완료 대기 코루틴 시작
+        // Start coroutine to wait for animation completion
         AnimationClip currentClip = fadeIn ? fadeInClip : fadeOutClip;
         StartCoroutine(WaitForAnimationComplete(currentClip));
     }
     
+    /// <summary>
+    /// Waits for animation to complete and then invokes callback
+    /// </summary>
     private IEnumerator WaitForAnimationComplete(AnimationClip clip)
     {
-        // 애니메이션 지속 시간만큼 대기
+        // Wait for the duration of the animation
         if (clip)
         {
             yield return new WaitForSeconds(clip.length);
         }
         else
         {
-            yield return new WaitForSeconds(1.0f); // 기본 1초 대기
+            yield return new WaitForSeconds(1.0f); // Default 1 second wait
         }
         
-        // 콜백 실행
+        // Execute callback
         if (onComplete != null)
         {
             onComplete();
-            onComplete = null; // 콜백 초기화
+            onComplete = null; // Reset callback
         }
     }
 }

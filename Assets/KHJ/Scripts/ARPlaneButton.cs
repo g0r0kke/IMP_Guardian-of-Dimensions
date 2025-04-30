@@ -2,10 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Handles AR object placement confirmation and scene transition
+/// </summary>
 public class ARPlaneButton : MonoBehaviour
 {
     [SerializeField] private ARPlacement arPlacement;
-    [SerializeField] private string targetSceneName = "Boss1Scene"; // 전환할 씬 이름
+    [SerializeField] private string targetSceneName = "Boss1Scene"; // Scene to transition to
 
     private Button button;
     private GameObject fadeObject;
@@ -13,17 +16,20 @@ public class ARPlaneButton : MonoBehaviour
 
     private void Start()
     {
+        // Get the button component
         button = GetComponent<Button>();
         if (!button) return;
 
+        // Find ARPlacement if not assigned
         if (!arPlacement)
         {
             arPlacement = FindFirstObjectByType<ARPlacement>();
         }
 
-        // 버튼 클릭 이벤트에 메서드 연결
+        // Connect button click event to method
         button.onClick.AddListener(SaveBossPosition);
 
+        // Get fade animation references from GameManager
         if (GameManager.Instance)
         {
             fadeObject = GameManager.Instance.fadeObject;
@@ -31,17 +37,20 @@ public class ARPlaneButton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Saves the position of the AR placed object and transitions to the boss scene
+    /// </summary>
     public void SaveBossPosition()
     {
-        // 버튼 사운드 재생
+        // Play button sound effect
         AudioManager.Instance.PlayButtonSFX();
 
-        // AR 배치 오브젝트 위치 저장
+        // Save AR placement object position
         if (arPlacement && GameManager.Instance)
         {
             Vector3 cubePosition = arPlacement.GetSpawnedObjectPosition();
 
-            // 유효한 위치가 있으면 저장
+            // Save position if valid
             if (cubePosition != Vector3.zero)
             {
                 GameManager.Instance.SetBossPosition(cubePosition);
@@ -50,19 +59,19 @@ public class ARPlaneButton : MonoBehaviour
 
         if (fadeObject && fadeController)
         {
-            // 페이드인 애니메이션 실행 (화면이 검게)
+            // Execute fade-in animation (screen turns black)
             fadeController.PlayFadeAnimation(true, () =>
             {
-                // GameManager 상태 설정
+                // Set GameManager state
                 if (GameManager.Instance)
                 {
                     GameManager.Instance.SetState(GameState.BossPhase1);
                 }
                 
-                // 씬 전환
+                // Transition to target scene
                 SceneManager.LoadScene(targetSceneName);
 
-                // 씬 로드 후 페이드아웃 실행 (화면이 다시 밝게)
+                // Execute fade-out animation after scene load (screen brightens)
                 fadeController.PlayFadeAnimation(false);
             });
         }

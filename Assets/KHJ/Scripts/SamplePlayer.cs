@@ -2,43 +2,48 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
+/// <summary>
+/// Sample player implementation for testing purposes only.
+/// This class provides basic movement, combat, and health management functionality
+/// for development and debugging. Do not use in production build.
+/// </summary>
 public class SamplePlayer : MonoBehaviour
 {
     public float distancePerFrame = 2.0f;
     private Vector2 movement;
 
-    [Header("플레이어 상태")] public int maxHealth = 100;
+    [Header("Player Status")] public int maxHealth = 100;
     public int currentHealth;
 
-    [Header("공격 설정")] public int attackDamage = 10;
+    [Header("Attack Settings")] public int attackDamage = 10;
 
-    [Header("보스 타겟")] private Boss bossTarget;
+    [Header("Boss Target")] private Boss bossTarget;
 
-    [Header("소환물 타겟들")]
+    [Header("Minion Targets")]
     private List<MinionController> minionTargets = new List<MinionController>();
 
 
     void Start()
     {
-        // 초기 체력 설정
+        // Initialize health
         currentHealth = maxHealth;
 
-        // Enemy 태그를 가진 게임 오브젝트 찾기
+        // Find game object with Enemy tag
         GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemyObject != null)
+        if (enemyObject)
         {
             bossTarget = enemyObject.GetComponent<Boss>();
-            if (bossTarget == null)
+            if (!bossTarget)
             {
-                Debug.LogWarning("Enemy 태그를 가진 오브젝트에서 Boss 컴포넌트를 찾을 수 없습니다.");
+                Debug.LogWarning("Could not find Boss component on object with Enemy tag.");
             }
         }
         else
         {
-            Debug.LogWarning("Enemy 태그를 가진 게임 오브젝트를 찾을 수 없습니다.");
+            Debug.LogWarning("Could not find any game object with Enemy tag.");
         }
 
-        FindAllMinions();  // 소환물 타겟들 찾기기
+        FindAllMinions(); // Find all minion targets
     }
 
     void Update()
@@ -47,6 +52,9 @@ public class SamplePlayer : MonoBehaviour
         HandleAttack();
     }
 
+    /// <summary>
+    /// Handles basic WASD movement input for testing
+    /// </summary>
     void HandleMovement()
     {
         if (Keyboard.current != null)
@@ -60,49 +68,55 @@ public class SamplePlayer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles attack input (press Q to attack)
+    /// </summary>
     void HandleAttack()
     {
-        // Q키를 눌러 공격
+        // Press Q to attack
         if (Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame)
         {
-            if (bossTarget != null)
+            if (bossTarget)
             {
-                // 보스에게 데미지 주기
+                // Deal damage to boss
                 bossTarget.TakeDamage(attackDamage);
 
-                Debug.Log($"플레이어가 보스에게 {attackDamage} 데미지를 입혔습니다!");
+                Debug.Log($"Player dealt {attackDamage} damage to boss!");
             }
             else
             {
-                Debug.LogWarning("보스 타겟이 설정되지 않았습니다!");
-                // Enemy 태그로 다시 찾아보기
+                Debug.LogWarning("Boss target not set!");
+                // Try to find boss again by Enemy tag
                 GameObject enemyObject = GameObject.FindGameObjectWithTag("Enemy");
-                if (enemyObject != null)
+                if (enemyObject)
                 {
                     bossTarget = enemyObject.GetComponent<Boss>();
                 }
             }
 
-            // 소환물 공격
+            // Attack minions
             if (minionTargets.Count > 0)
             {
                 foreach (MinionController minion in minionTargets)
                 {
-                    if (minion != null)
+                    if (minion)
                     {
                         minion.TakeDamage(attackDamage);
-                        Debug.Log($"플레이어가 소환물에게 {attackDamage} 데미지를 입혔습니다!");
+                        Debug.Log($"Player dealt {{attackDamage}} damage to minion!");
                     }
                 }
             }
             else
             {
-                // Debug.LogWarning("소환물 타겟이 없습니다. 다시 검색합니다.");
+                // Debug.LogWarning("No minion targets. Searching again.");
                 FindAllMinions();
             }
         }
     }
 
+    /// <summary>
+    /// Finds all minions in the scene and adds them to the target list
+    /// </summary>
     void FindAllMinions()
     {
         minionTargets.Clear();
@@ -110,35 +124,40 @@ public class SamplePlayer : MonoBehaviour
         foreach (GameObject minionObj in minions)
         {
             MinionController minion = minionObj.GetComponent<MinionController>();
-            if (minion != null)
+            if (minion)
             {
                 minionTargets.Add(minion);
             }
         }
 
-        // Debug.Log($"소환물 {minionTargets.Count}개 찾음");
+        // Debug.Log($"Found {minionTargets.Count} minions");
     }
 
-    // 플레이어가 데미지를 받는 메서드
+    /// <summary>
+    /// Applies damage to the player
+    /// </summary>
+    /// <param name="damage">Amount of damage to apply</param>
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
 
-        // 현재 체력 로그 출력
-        Debug.Log($"플레이어 체력: {currentHealth}/{maxHealth}");
+        // Log current health
+        Debug.Log($"Player health: {currentHealth}/{maxHealth}");
 
-        // 체력이 0 이하면 사망 처리
+        // Check for death
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-    // 사망 처리 메서드
+    /// <summary>
+    /// Handles player death
+    /// </summary>
     private void Die()
     {
-        Debug.Log("플레이어 사망!");
-        // 사망 처리 로직 (선택 사항)
+        Debug.Log("Player died!");
+        // Death handling logic (optional)
         // gameObject.SetActive(false);
     }
 }

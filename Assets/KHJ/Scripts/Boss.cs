@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine.InputSystem;
 
+// Enum for main boss states
 public enum BossStateType
 {
     Idle,
@@ -15,26 +15,24 @@ public enum BossStateType
     Death
 }
 
+// Enum for sub-states that can be active alongside main states
 public enum BossSubState
 {
-    None,
-    PreAttackDelay,   // 공격 전 대기
-    PostAttackDelay,  // 공격 후 대기
-    InvinciblePeriod  // 무적 시간
+    PreAttackDelay,   // Delay before attack
+    PostAttackDelay  // Delay after attack
 }
 
-// 추상 보스 클래스 (공통 기능 포함)
+// Abstract boss class (includes common functionality)
 public abstract class Boss : MonoBehaviour
 {
     protected IState currentState;
     protected Dictionary<System.Type, IState> states = new Dictionary<System.Type, IState>();
     
-    // 현재 상태 유형
+    // Current state type
     protected BossStateType currentStateType;
 
-    // 보스 공통 속성
+    // Boss common properties
     protected int health = 100;
-    protected Transform target;
 
     [SerializeField] public float idleDuration = 2f;
     [SerializeField] public float attackDistance = 2f;
@@ -49,7 +47,7 @@ public abstract class Boss : MonoBehaviour
     protected bool isDead = false;
     protected bool isDeathAnimTriggered = false;
     
-    // 디버그 표시 설정
+    // Debug display settings
     [Header("Debug Settings")]
     [SerializeField] protected bool enableDebug = true;
     [SerializeField] protected Color stateDebugColor = Color.yellow;
@@ -59,15 +57,15 @@ public abstract class Boss : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (GameManager.Instance != null)
+        if (GameManager.Instance)
         {
             Vector3 bossPosition = GameManager.Instance.GetBossPosition();
             transform.position = bossPosition;
-            Debug.Log($"GameManager에서 가져온 보스 위치로 설정됨: {bossPosition}");
+            Debug.Log($"Boss position set from GameManager: {bossPosition}");
         }
         else
         {
-            Debug.LogWarning("GameManager를 찾을 수 없습니다. 기본 위치를 사용합니다.");
+            Debug.LogWarning("GameManager not found. Using default position.");
         }
     }
     
@@ -75,36 +73,36 @@ public abstract class Boss : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     
-        // 시작할 때 죽음 관련 트리거와 플래그 초기화
+        // Initialize death-related triggers and flags at start
         isDead = false;
         isDeathAnimTriggered = false;
         animator.ResetTrigger("Death");
     
-        // 상태 초기화
+        // Initialize states
         InitializeStates();
-        // 초기 상태 설정
+        // Set initial state
         TransitionToIdle();
         InitializeSubStates();
     }
     
-    // 모든 애니메이터 파라미터 초기화 메서드
+    // Method to reset all animator parameters
     protected void ResetAllAnimatorParameters()
     {
-        // Boolean 파라미터 초기화
+        // Reset Boolean parameters
         animator.SetBool("Damage", false);
     
-        // Trigger 파라미터는 ResetTrigger 메서드 사용
+        // Use ResetTrigger method for Trigger parameters
         animator.ResetTrigger("Idle");
         animator.ResetTrigger("Walk");
         animator.ResetTrigger("Attack");
     
-        // Death 트리거도 명시적으로 초기화
+        // Explicitly reset Death trigger
         animator.ResetTrigger("Death");
     }
     
     protected virtual void InitializeSubStates()
     {
-        // 열거형의 모든 값에 대해 타이머와 지속시간 초기화
+        // Initialize timer and duration for all substate values
         foreach (BossSubState state in System.Enum.GetValues(typeof(BossSubState)))
         {
             subStateTimers[state] = 0f;
@@ -119,65 +117,65 @@ public abstract class Boss : MonoBehaviour
                subStateTimers[state] < subStateDurations[state];
     }
     
-    // 하위 상태 설정 메서드
+    // Method to set a substate
     public void SetSubState(BossSubState state, float duration)
     {
         subStateTimers[state] = 0f;
         subStateDurations[state] = duration;
     }
 
-    // 자식 클래스가 구현할 상태 초기화 메소드
+    // State initialization method to be implemented by child classes
     protected abstract void InitializeStates();
 
     protected virtual void Update()
     {
-        // 삭제 예정
-        if (Keyboard.current.qKey.wasPressedThisFrame)
-        {
-           TakeDamage(50);
-        }
+        // To be removed later
+        // if (Keyboard.current.qKey.wasPressedThisFrame)
+        // {
+        //    TakeDamage(50);
+        // }
         
-        // 사망 상태면 현재 상태만 업데이트 (DeathState)
+        // If in death state, only update the current state (DeathState)
         if (isDead)
         {
             if (currentState != null && currentState is DeathState)
             {
-                // Death 상태일 때도 애니메이션 트리거는 다시 설정하지 않음
+                // Don't set animation trigger again when in Death state
                 currentState.Update();
             }
             return;
         }
 
-        // 현재 상태 업데이트
+        // Update current state
         if (currentState != null)
         {
             currentState.Update();
         }
     
-        // 하위 상태 타이머 업데이트
+        // Update substate timers
         UpdateSubStates();
     }
     
-    // 하위 상태 타이머 업데이트 메서드
+    // Method to update substate timers
     protected virtual void UpdateSubStates()
     {
-        // subStateTimers는 Dictionary
-        // 키 = BossSubState 열거형, 값 = 각 상태의 현재 타이머 시간
-        // .Keys = Dictionary의 모든 키를 가져오기
-        // .ToList() = 키 컬렉션의 복사본 만들기. 반복 중에 컬렉션을 수정하려고 할 때 발생할 수 있는 오류 방지
+        // subStateTimers is a Dictionary
+        // Keys = BossSubState enum, Values = current timer time for each state
+        // .Keys = Get all keys from the Dictionary
+        // .ToList() = Create a copy of the key collection to prevent errors when trying to modify the collection during iteration
         foreach (var state in subStateTimers.Keys.ToList())
         {
-            // 현재 상태의 타이머가 지정된 지속 시간보다 작은지 확인
+            // Check if current state's timer is less than the specified duration
             if (subStateTimers[state] < subStateDurations[state])
             {
-                subStateTimers[state] += Time.deltaTime; // 타이머 증가
+                subStateTimers[state] += Time.deltaTime; // Increment timer
             }
         }
     }
 
-    // 상태 변경 메소드 (제네릭 사용)
-    // <T> = 타입 매개변수. 메서드 호출 시 특정 타입 지정
-    // T는 반드시 IState 인터페이스를 구현한 타입이어야 한다.
+    // State change method (using generics)
+    // <T> = Type parameter. Specify a specific type when calling the method
+    // T must be a type that implements IState interface
     protected void ChangeState<T>() where T : IState
     {
         if (currentState != null)
@@ -185,28 +183,28 @@ public abstract class Boss : MonoBehaviour
             currentState.Exit();
         }
 
-        // DeathState가 아니면
+        // If not DeathState
         if (typeof(T) != typeof(DeathState))
         {
-            // 모든 애니메이터 파라미터 초기화
+            // Reset all animator parameters
             ResetAllAnimatorParameters();
         }
 
-        // typeof(T) = T의 실제 타입 정보를 가져옴
+        // typeof(T) = Get actual type information for T
         System.Type type = typeof(T);
-        // Dictionary에서 키(type)에 해당하는 값 찾음
-        // states Dictionary는 키: 상태 타입, 값: 상태 객체
-        // 찾은 상태 객체를 newState 변수에 저장
+        // Find value corresponding to key(type) in Dictionary
+        // states Dictionary has keys: state type, values: state object
+        // Store found state object in newState variable
         if (states.TryGetValue(type, out IState newState))
         {
-            // 찾은 상태 객체를 현재 상태로 설정
+            // Set found state object as current state
             currentState = newState;
-            // 해당 상태의 Enter() 메서드 호출
+            // Call Enter() method on that state
             currentState.Enter();
         }
     }
     
-    // 상태 전환 메서드
+    // State transition methods
     public virtual void TransitionToIdle()
     {
         currentStateType = BossStateType.Idle;
@@ -219,104 +217,91 @@ public abstract class Boss : MonoBehaviour
         ChangeState<WalkState>();
     }
     
-    // 공격 상태 전환: 자식 클래스에서 반드시 구현해야 함
+    // Attack state transition: must be implemented by child classes
     public abstract void TransitionToAttack();
     
-    // 스턴 상태로 전환
+    // Transition to stun state
     public virtual void TransitionToStun()
     {
         currentStateType = BossStateType.Stun;
         ChangeState<StunState>();
     }
     
-    // 사망 상태로 전환
+    // Transition to death state
     public virtual void TransitionToDeath()
     {
-        // 이미 Death 애니메이션이 트리거 되었으면 중복 호출 방지
+        // Prevent duplicate calls if Death animation is already triggered
         if (isDeathAnimTriggered)
         {
-            // Debug.Log("보스: 이미 사망 처리 중입니다. 중복 호출 무시.");
+            // Debug.Log("Boss: Already processing death. Ignoring duplicate call.");
             return;
         }
 
-        // Debug.Log("보스: Death 상태로 전환 시작");
+        // Debug.Log("Boss: Starting transition to Death state");
 
-        // Death 애니메이션 트리거 플래그 설정
+        // Set Death animation trigger flag
         isDeathAnimTriggered = true;
         isDead = true;
 
-        // 현재 상태 타입 설정
+        // Set current state type
         currentStateType = BossStateType.Death;
 
-        // 모든 진행 중인 코루틴 중지
+        // Stop all running coroutines
         StopAllCoroutines();
 
-        // 여기가 중요: SetTrigger 다시 사용 (트리거가 확실히 발동하도록)
-        // 명시적으로 모든 트리거 리셋 후 Death 트리거 설정
-        // 이렇게 해야 애니메이션이 확실하게 재생됨
+        // Use SetTrigger again (to ensure trigger activates)
+        // Explicitly reset all triggers then set Death trigger
+        // This ensures the animation plays reliably
         animator.ResetTrigger("Idle");
         animator.ResetTrigger("Walk");
         animator.ResetTrigger("Attack");
-        animator.ResetTrigger("Death");  // Death 트리거 초기화 먼저 하고
-        animator.SetTrigger("Death");    // 다시 설정
+        animator.ResetTrigger("Death");  // Reset Death trigger first
+        animator.SetTrigger("Death");    // Then set it again
 
-        // 상태 변경 실행
+        // Execute state change
         ChangeState<DeathState>();
     }
 
-    // 공통 메소드들 
+    // Common methods 
     public virtual void TakeDamage(int damage)
     {
-        // 이미 사망했다면 데미지 처리하지 않음
+        // Don't process damage if already dead
         if (isDead) 
         {
             return;
         }
 
-        // 데미지 적용
+        // Apply damage
         health -= damage;
 
-        // 사망 처리
+        // Handle death
         if (health <= 0 && !isDeathAnimTriggered)
         {
-            // 사망 플래그 설정
+            // Set death flag
             isDead = true;
         
-            // 사망 처리는 한 번만
+            // Process death only once
             Die();
-            return;
         }
-    }
-    
-    protected virtual void ResetAllStates()
-    {
-        // 모든 하위 상태 타이머 초기화
-        foreach (BossSubState state in System.Enum.GetValues(typeof(BossSubState)))
-        {
-            subStateTimers[state] = 0f;
-            subStateDurations[state] = 0f;
-        }
-    
-        // Debug.Log("보스: 모든 상태 초기화됨 (사망 처리)");
     }
 
     protected virtual void Die()
     {
-        if (!isDead) // 이미 죽은 상태가 아닐 때만 처리
+        if (!isDead) // Only process if not already dead
         {
-            isDead = true; // 사망 플래그 설정
+            isDead = true; // Set death flag
             TransitionToDeath();
         }
     }
     
-    // 현재 상태 이름 가져오기
+    // Get current state name
     public string GetCurrentStateName()
     {
         if (currentState == null) return "None";
         return currentState.GetType().Name;
     }
     
-    // 활성화된 하위 상태 가져오기
+    // Get active substates
     public List<BossSubState> GetActiveSubStates()
     {
         List<BossSubState> activeStates = new List<BossSubState>();
@@ -330,23 +315,23 @@ public abstract class Boss : MonoBehaviour
         return activeStates;
     }
     
-    // 화면에 디버그 텍스트 표시
+    // Display debug text on screen
     // protected virtual void OnGUI()
     // {
     //     if (!enableDebug) return;
     //     
-    //     // 보스 위치를 스크린 좌표로 변환
+    //     // Convert boss position to screen coordinates
     //     Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + debugOffset);
     //     
-    //     // 화면 밖이면 표시하지 않음
+    //     // Don't display if off-screen
     //     if (screenPos.z < 0) return;
     //     
-    //     // 상태 텍스트 위치
+    //     // State text position
     //     Rect stateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y, 200, 20);
     //     Rect subStateRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 20, 200, 20);
     //     Rect healthRect = new Rect(screenPos.x - 100, Screen.height - screenPos.y + 40, 200, 20);
     //     
-    //     // 스타일 설정
+    //     // Set style
     //     GUIStyle stateStyle = new GUIStyle();
     //     stateStyle.normal.textColor = stateDebugColor;
     //     stateStyle.fontSize = 30;
@@ -360,13 +345,13 @@ public abstract class Boss : MonoBehaviour
     //     GUIStyle healthStyle = new GUIStyle(stateStyle);
     //     healthStyle.normal.textColor = healthDebugColor;
     //     
-    //     // 텍스트 그리기 (배경 효과를 위해 약간 오프셋된 검은색 텍스트 먼저 그림)
-    //     // 상태 표시
+    //     // Draw text (draw black offset text first for background effect)
+    //     // Display state
     //     GUI.Label(new Rect(stateRect.x + 1, stateRect.y + 1, stateRect.width, stateRect.height), 
     //         $"State: {GetCurrentStateName()}", new GUIStyle(stateStyle) { normal = { textColor = Color.black } });
     //     GUI.Label(stateRect, $"State: {GetCurrentStateName()}", stateStyle);
     //     
-    //     // 하위 상태 표시
+    //     // Display substates
     //     List<BossSubState> activeSubStates = GetActiveSubStates();
     //     if (activeSubStates.Count > 0)
     //     {
@@ -385,7 +370,7 @@ public abstract class Boss : MonoBehaviour
     //         GUI.Label(subStateRect, sb.ToString(), subStateStyle);
     //     }
     //     
-    //     // 체력 표시
+    //     // Display health
     //     GUI.Label(new Rect(healthRect.x + 1, healthRect.y + 1, healthRect.width, healthRect.height), 
     //         $"Health: {health}", new GUIStyle(healthStyle) { normal = { textColor = Color.black } });
     //     GUI.Label(healthRect, $"Health: {health}", healthStyle);
