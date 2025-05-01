@@ -41,7 +41,7 @@ public class DefenseController : MonoBehaviour
         bool isPressedDefense = Keyboard.current.cKey.wasPressedThisFrame;
 
         // Perform a Defense skill after verifying the Defense gesture
-        if ((isPressedDefense || handGestureController.isDefenseGesture) && delayTime <= 0)
+        if ((/*isPressedDefense ||*/ handGestureController.isDefenseGesture) && delayTime <= 0)
         {
             animationController.DefenseAnimation();
             StartCoroutine(Defense());

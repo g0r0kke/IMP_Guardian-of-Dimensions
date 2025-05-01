@@ -40,7 +40,7 @@ public class HealingController : MonoBehaviour
         bool isPressedHealing = Keyboard.current.vKey.wasPressedThisFrame;
 
         // Perform a healing skill after verifying the healing gesture
-        if ((isPressedHealing || handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)
+        if ((/*isPressedHealing ||*/ handGestureController.isHealingGesture) && delayTime <= 0 && playerGUI.playerHealth < playerGUI.playerHealthLimit)
         {
             animationController.HealingAnimation();
             Invoke("Healing", 1.3f);
