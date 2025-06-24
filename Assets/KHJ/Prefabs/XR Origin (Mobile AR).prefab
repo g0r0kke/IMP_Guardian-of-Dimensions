@@ -866,7 +866,7 @@ MonoBehaviour:
   basicAttackDelTime: 2
   basicAttackMaxDist: 25
   GaugeIncreaseAmount: 1
-  attackDamage: 10
+  attackDamage: 20
   delayTime: 0
 --- !u!114 &4906869048668116429
 MonoBehaviour:
@@ -3432,7 +3432,6 @@ GameObject:
   - component: {fileID: 5832917395539718324}
   - component: {fileID: 2833293605250732181}
   - component: {fileID: 42668054880683048}
-  - component: {fileID: 1342410841302910590}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3701,23 +3700,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &1342410841302910590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8726153219386410976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b15f82cc229284894964d2d30806969d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HumanSegmentationStencilMode: 3
-  m_HumanSegmentationDepthMode: 1
-  m_EnvironmentDepthMode: 0
-  m_EnvironmentDepthTemporalSmoothing: 0
-  m_OcclusionPreferenceMode: 1
 --- !u!1001 &3472258197215961687
 PrefabInstance:
   m_ObjectHideFlags: 0
